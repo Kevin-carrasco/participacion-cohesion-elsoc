@@ -1,12 +1,11 @@
-# Perception of Meritocracy and Changes in the justification of Inequalities in Education
+# Participación política y cohesión barrial
 
-Juan Carlos Castillo, Department of Sociology, Universidad de Chile - juancastillov@uchile.cl - [github](https://github.com/juancarloscastillo)
+Nicolás Angelcos, Department of Sociology, Universidad de Chile - 
 
-Julio Iturra, Bremen International Graduate School of Social Sciences - [github](https://github.com/jciturras) 
+Daniel Miranda 
 
 Kevin Carrasco, Center for Social Conflict and Cohesion Studies - [github](https://github.com/kevin-carrasco)
 
 
-Análisis: [https://justicia-distributiva.github.io/merit-edjust/production/prod_analysis.html#3_Models](https://justicia-distributiva.github.io/merit-edjust/production/prod_analysis.html#3_Models)
+Análisis: [https://kevin-carrasco.github.io/participacion-cohesion-elsoc/production/prod_analysis-fix-t5.html](https://kevin-carrasco.github.io/participacion-cohesion-elsoc/production/prod_analysis-fix-t5.html)
 
-[Presentation ISSP Annual meeting, Chile, July 2024](https://justicia-distributiva.github.io/merit-edjust/presentations/ISPP-santiago2024/ispp2024.html)
