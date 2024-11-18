@@ -1566,7 +1566,7 @@ border-radius: 0px;
 
 
 <h1 class="title toc-ignore">Preparación de datos</h1>
-<h4 class="date">lunes 11 noviembre 2024 11:02:20</h4>
+<h4 class="date">lunes 18 noviembre 2024 0:05:43</h4>
 
 </div>
 
@@ -1744,10 +1744,10 @@ sjlabelled::set_label(x = elsoc_long_2016_2022.2$part_com,
 # Education_______________________________________
 elsoc_long_2016_2022.2$educ &lt;- 
   car::recode(elsoc_long_2016_2022.2$educacion,
-              &quot;c(1,2,3)=1;c(4,5)=2;c(6,7)=3;c(8,9,10)=4; c(-888,-999)=NA&quot;)
+              &quot;c(1,2,3,4,5)=1;c(6,7)=2;c(8,9,10)=3; c(-888,-999)=NA&quot;)
 elsoc_long_2016_2022.2$educ &lt;-
   factor(elsoc_long_2016_2022.2$educ,
-         labels = c(&quot;Básica&quot;,&quot;Media&quot;,&quot;Técnica&quot;,&quot;Universitaria&quot;))
+         labels = c(&quot;Media o menos&quot;,&quot;Técnica&quot;,&quot;Universitaria&quot;))
 
 #reverse education, reference level is the highest level
 #elsoc_long_2016_2022.2$educ &lt;- forcats::fct_rev(elsoc_long_2016_2022.2$educ)
@@ -1757,15 +1757,14 @@ sjlabelled::set_label(x = elsoc_long_2016_2022.2$educ,
                       label = &quot;Educación&quot;)
 sjmisc::frq(elsoc_long_2016_2022.2$educ)</code></pre>
 <pre><code>## Educación (x) &lt;categorical&gt; 
-## # total N=18035 valid N=18020 mean=2.32 sd=1.02
+## # total N=18035 valid N=18020 mean=1.54 sd=0.79
 ## 
-## Value         |    N | Raw % | Valid % | Cum. %
-## -----------------------------------------------
-## Básica        | 3999 | 22.17 |   22.19 |  22.19
-## Media         | 7672 | 42.54 |   42.57 |  64.77
-## Técnica       | 2927 | 16.23 |   16.24 |  81.01
-## Universitaria | 3422 | 18.97 |   18.99 | 100.00
-## &lt;NA&gt;          |   15 |  0.08 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+## Value         |     N | Raw % | Valid % | Cum. %
+## ------------------------------------------------
+## Media o menos | 11671 | 64.71 |   64.77 |  64.77
+## Técnica       |  2927 | 16.23 |   16.24 |  81.01
+## Universitaria |  3422 | 18.97 |   18.99 | 100.00
+## &lt;NA&gt;          |    15 |  0.08 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code>#Recoding of education to years based on casen 2017.
 # elsoc_long_2016_2022.2$educyear&lt;- as.numeric(
 #   car::recode(elsoc_long_2016_2022.2$m01, 
@@ -1940,12 +1939,14 @@ sjmisc::frq(elsoc_long_2016_2022.2$quintil1)</code></pre>
 ## QNA   | 3546 | 19.66 |   19.66 | 100.00
 ## &lt;NA&gt;  |    0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code>#Age Ranges
-elsoc_long_2016_2022.2$edad &lt;- 
+elsoc_long_2016_2022.2$edad &lt;- as.numeric(elsoc_long_2016_2022.2$m0_edad)
+
+elsoc_long_2016_2022.2$edad_cat &lt;- 
   factor(car::recode(elsoc_long_2016_2022.2$m0_edad, 
                      &quot;18:29=1;30:49=2;50:64=3;65:150=4&quot;),
          labels = c(&#39;18-29&#39;, &#39;30-49&#39;, &#39;50-64&#39;, &#39;65 or more&#39;))
-elsoc_long_2016_2022.2$edad &lt;-
-  sjlabelled::set_label(elsoc_long_2016_2022.2$edad, 
+elsoc_long_2016_2022.2$edad_cat &lt;-
+  sjlabelled::set_label(elsoc_long_2016_2022.2$edad_cat, 
                         label = c(&quot;Rango etario&quot;)) 
 # Other controls______________________________________________________________
 # Subjective social status: individual ____________________________
@@ -3019,13 +3020,13 @@ Educación
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Básica<br>Media<br>Técnica<br>Universitaria
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3936<br>7506<br>2898<br>3210
+11442<br>2898<br>3210
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-22.43<br>42.77<br>16.51<br>18.29
+65.20<br>16.51<br>18.29
 </td>
 </tr>
 <tr>
@@ -3116,24 +3117,19 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 edad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-categorical
+numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Rango etario
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 6 (0.03%)
 </td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
+<em>range: 18-88</em>
+</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-18-29<br>30-49<br>50-64<br>65 or more
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3036<br>6942<br>5034<br>2550
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-17.29<br>39.53<br>28.66<br>14.52
 </td>
 </tr>
 <tr>
@@ -3962,13 +3958,13 @@ Educación
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Básica<br>Media<br>Técnica<br>Universitaria
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3936<br>7506<br>2898<br>3210
+11442<br>2898<br>3210
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-22.43<br>42.77<br>16.51<br>18.29
+65.20<br>16.51<br>18.29
 </td>
 </tr>
 <tr>
@@ -4050,21 +4046,16 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 edad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Rango etario
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 6 (0.03%)
 </td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
+<em>range: 18-88</em>
+</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-18-29<br>30-49<br>50-64<br>65 or more
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3036<br>6942<br>5034<br>2550
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-17.29<br>39.53<br>28.66<br>14.52
 </td>
 </tr>
 <tr>
@@ -4838,13 +4829,13 @@ Educación
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Básica<br>Media<br>Técnica<br>Universitaria
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2412<br>4512<br>1590<br>1848
+6924<br>1590<br>1848
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-23.28<br>43.54<br>15.34<br>17.83
+66.82<br>15.34<br>17.83
 </td>
 </tr>
 <tr>
@@ -4926,21 +4917,16 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 edad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Rango etario
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 0 (0.00%)
 </td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
+<em>range: 18-78</em>
+</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-18-29<br>30-49<br>50-64<br>65 or more
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-1656<br>3888<br>3390<br>1434
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-15.97<br>37.50<br>32.70<br>13.83
 </td>
 </tr>
 <tr>

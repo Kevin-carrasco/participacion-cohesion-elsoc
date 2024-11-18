@@ -209,10 +209,10 @@ sjlabelled::set_label(x = elsoc_long_2016_2022.2$part_com,
 # Education_______________________________________
 elsoc_long_2016_2022.2$educ <- 
   car::recode(elsoc_long_2016_2022.2$educacion,
-              "c(1,2,3)=1;c(4,5)=2;c(6,7)=3;c(8,9,10)=4; c(-888,-999)=NA")
+              "c(1,2,3,4,5)=1;c(6,7)=2;c(8,9,10)=3; c(-888,-999)=NA")
 elsoc_long_2016_2022.2$educ <-
   factor(elsoc_long_2016_2022.2$educ,
-         labels = c("Básica","Media","Técnica","Universitaria"))
+         labels = c("Media o menos","Técnica","Universitaria"))
 
 #reverse education, reference level is the highest level
 #elsoc_long_2016_2022.2$educ <- forcats::fct_rev(elsoc_long_2016_2022.2$educ)
@@ -338,12 +338,14 @@ sjmisc::frq(elsoc_long_2016_2022.2$quintil1)
 
 
 #Age Ranges
-elsoc_long_2016_2022.2$edad <- 
+elsoc_long_2016_2022.2$edad <- as.numeric(elsoc_long_2016_2022.2$m0_edad)
+
+elsoc_long_2016_2022.2$edad_cat <- 
   factor(car::recode(elsoc_long_2016_2022.2$m0_edad, 
                      "18:29=1;30:49=2;50:64=3;65:150=4"),
          labels = c('18-29', '30-49', '50-64', '65 or more'))
-elsoc_long_2016_2022.2$edad <-
-  sjlabelled::set_label(elsoc_long_2016_2022.2$edad, 
+elsoc_long_2016_2022.2$edad_cat <-
+  sjlabelled::set_label(elsoc_long_2016_2022.2$edad_cat, 
                         label = c("Rango etario")) 
 # Other controls______________________________________________________________
 # Subjective social status: individual ____________________________
