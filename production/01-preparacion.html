@@ -1566,7 +1566,7 @@ border-radius: 0px;
 
 
 <h1 class="title toc-ignore">Preparación de datos</h1>
-<h4 class="date">lunes 18 noviembre 2024 0:05:43</h4>
+<h4 class="date">domingo 01 diciembre 2024 22:15:35</h4>
 
 </div>
 
@@ -1593,26 +1593,23 @@ max-width: 331px !important;
 max-height: 102% !important;
 }
 </style>
-</div>
-<div id="download-data" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Download data</h1>
-<div id="individual-data" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Individual data</h2>
+<div id="individual-data" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Individual data</h2>
 <pre class="r"><code>remove(list = ls()) # clean workspace
 # .rs.restartR() #restart R session
 if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;) # install pacman
 # load libraries
 pacman::p_load(dplyr,readxl,sjmisc, sjlabelled, questionr, car,here)
-load(here::here(&quot;input/data-original/elsoc_long.Rdata&quot;))
+load(here::here(&quot;input/data-original/elsoc_long_2016_2023.Rdata&quot;))
 
-elsoc_long_2016_2022.2[elsoc_long_2016_2022.2 ==-999] &lt;- NA
-elsoc_long_2016_2022.2[elsoc_long_2016_2022.2 ==-888] &lt;- NA
-elsoc_long_2016_2022.2[elsoc_long_2016_2022.2 ==-777] &lt;- NA
-elsoc_long_2016_2022.2[elsoc_long_2016_2022.2 ==-666] &lt;- NA
+elsoc_long_2016_2023[elsoc_long_2016_2023 ==-999] &lt;- NA
+elsoc_long_2016_2023[elsoc_long_2016_2023 ==-888] &lt;- NA
+elsoc_long_2016_2023[elsoc_long_2016_2023 ==-777] &lt;- NA
+elsoc_long_2016_2023[elsoc_long_2016_2023 ==-666] &lt;- NA
 
 # Attitudes toward inmigrants__________________________________________________
-elsoc_long_2016_2022.2 &lt;- 
-elsoc_long_2016_2022.2 %&gt;% 
+elsoc_long_2016_2023 &lt;- 
+elsoc_long_2016_2023 %&gt;% 
   #create new variables
   mutate(part_com=c07_02,
          marchar=c08_02,
@@ -1632,6 +1629,7 @@ elsoc_long_2016_2022.2 %&gt;%
          satisfaccion_proximidadcolegios=t06_06,
          satisfaccion_proximidadcomercio=t06_07,
          satisfaccion_proximidadfamilia=t06_08,
+         perc_seguridad=t10,
          sexo=m0_sexo,
          edad=m0_edad,
          educacion=m01,
@@ -1640,194 +1638,112 @@ elsoc_long_2016_2022.2 %&gt;%
   sjlabelled::drop_labels(., drop.na = FALSE)
   
 #
-sjmisc::frq(elsoc_long_2016_2022.2$marchar)</code></pre>
+sjmisc::frq(elsoc_long_2016_2023$marchar)</code></pre>
 <pre><code>## Frecuencia: Asiste a marcha o manifestacion pacifica (x) &lt;numeric&gt; 
-## # total N=18035 valid N=18017 mean=1.29 sd=0.76
+## # total N=20761 valid N=20742 mean=1.28 sd=0.74
 ## 
 ## Value |              Label |     N | Raw % | Valid % | Cum. %
 ## -------------------------------------------------------------
-##     1 |              Nunca | 15258 | 84.60 |   84.69 |  84.69
-##     2 |         Casi nunca |   985 |  5.46 |    5.47 |  90.15
-##     3 |            A veces |  1194 |  6.62 |    6.63 |  96.78
-##     4 |     Frecuentemente |   423 |  2.35 |    2.35 |  99.13
-##     5 | Muy frecuentemente |   157 |  0.87 |    0.87 | 100.00
-##  &lt;NA&gt; |               &lt;NA&gt; |    18 |  0.10 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
-<pre class="r"><code>elsoc_long_2016_2022.2$marchar &lt;- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$marchar, 
+##     1 |              Nunca | 17739 | 85.44 |   85.52 |  85.52
+##     2 |         Casi nunca |  1090 |  5.25 |    5.26 |  90.78
+##     3 |            A veces |  1292 |  6.22 |    6.23 |  97.01
+##     4 |     Frecuentemente |   452 |  2.18 |    2.18 |  99.19
+##     5 | Muy frecuentemente |   169 |  0.81 |    0.81 | 100.00
+##  &lt;NA&gt; |               &lt;NA&gt; |    19 |  0.09 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+<pre class="r"><code>elsoc_long_2016_2023$marchar &lt;- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$marchar, 
                       label = &quot;Frecuencia: marchar&quot;)
 
 
-sjmisc::frq(elsoc_long_2016_2022.2$part_com)</code></pre>
+sjmisc::frq(elsoc_long_2016_2023$part_com)</code></pre>
 <pre><code>## Frecuencia: Asistio a reunion sobre temas de interes publico/comunitario (x) &lt;numeric&gt; 
-## # total N=18035 valid N=15280 mean=1.58 sd=0.78
+## # total N=20761 valid N=18005 mean=1.58 sd=0.78
 ## 
-## Value |                    Label |    N | Raw % | Valid % | Cum. %
-## ------------------------------------------------------------------
-##     1 |            Nunca lo hizo | 9268 | 51.39 |   60.65 |  60.65
-##     2 |  Lo hizo una o dos veces | 3180 | 17.63 |   20.81 |  81.47
-##     3 | Lo hizo mas de dos veces | 2832 | 15.70 |   18.53 | 100.00
-##  &lt;NA&gt; |                     &lt;NA&gt; | 2755 | 15.28 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
-<pre class="r"><code>elsoc_long_2016_2022.2$part_com &lt;- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$part_com, 
+## Value |                    Label |     N | Raw % | Valid % | Cum. %
+## -------------------------------------------------------------------
+##     1 |            Nunca lo hizo | 10886 | 52.43 |   60.46 |  60.46
+##     2 |  Lo hizo una o dos veces |  3774 | 18.18 |   20.96 |  81.42
+##     3 | Lo hizo mas de dos veces |  3345 | 16.11 |   18.58 | 100.00
+##  &lt;NA&gt; |                     &lt;NA&gt; |  2756 | 13.27 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+<pre class="r"><code>elsoc_long_2016_2023$part_com &lt;- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$part_com, 
                       label = &quot;Frecuencia: reuniones publicas/comunitarias&quot;)
 
-# #
-# elsoc_long_2016_2022.2$just_pension &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$just_pension, 
-#                       label = &quot;Pension distributive justice&quot;)
-# 
-# #
-# elsoc_long_2016_2022.2$just_salud &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$just_salud, 
-#                       label = &quot;Health distributive justice&quot;)
-# 
-# #
-# elsoc_long_2016_2022.2$des_perc &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$des_perc, 
-#                       label = &quot;Income differences are too large&quot;)
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$merit_effort)
-# elsoc_long_2016_2022.2$merit_effort &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$merit_effort, 
-#                       label = &quot;People are rewarded for their efforts&quot;)
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$merit_talent)
-# elsoc_long_2016_2022.2$merit_talent &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$merit_talent, 
-#                       label = &quot;People are rewarded for their intelligence&quot;)
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_family)
-# elsoc_long_2016_2022.2$ahead_family &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$ahead_family, 
-#                       label = &quot;Coming from a wealthy family&quot;) 
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_educ)
-# elsoc_long_2016_2022.2$ahead_educ &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$ahead_educ, 
-#                       label = &quot;Having a good level of education&quot;) 
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_ambition)
-# elsoc_long_2016_2022.2$ahead_ambition &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$ahead_ambition, 
-#                       label = &quot;Having ambition&quot;) 
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_hardwork)
-# elsoc_long_2016_2022.2$ahead_hardwork &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$ahead_hardwork, 
-#                       label = &quot;Hard work&quot;)
-
-# for (i in c(&quot;marchar&quot;, &quot;just_pension&quot;, &quot;just_salud&quot;, &quot;des_perc&quot;,
-#             &quot;merit_effort&quot;,&quot;merit_talent&quot;,
-#             &quot;ahead_family&quot;,&quot;ahead_educ&quot;,&quot;ahead_ambition&quot;, &quot;ahead_hardwork&quot;)) {
-# elsoc_long_2016_2022.2[[i]] &lt;-
-# sjlabelled::set_labels(x = elsoc_long_2016_2022.2[[i]],
-#                        labels = c(&quot;Strongly disagree&quot;,&quot;Disagree&quot;,
-#                                   &quot;Neither disagree nor agree&quot;,
-#                                   &quot;Agree&quot;, &quot;Strongly agree&quot;))
-# }
-# 
-# sjmisc::frq(elsoc_long_2016_2022.2$just_educ)
-# sjmisc::frq(elsoc_long_2016_2022.2$merit_effort)
-# sjmisc::frq(elsoc_long_2016_2022.2$merit_talent)
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_family)
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_educ)
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_ambition)
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_hardwork)
 # Socioeconomic_________________________________________________________________
 
 # Education_______________________________________
-elsoc_long_2016_2022.2$educ &lt;- 
-  car::recode(elsoc_long_2016_2022.2$educacion,
+elsoc_long_2016_2023$educ &lt;- 
+  car::recode(elsoc_long_2016_2023$educacion,
               &quot;c(1,2,3,4,5)=1;c(6,7)=2;c(8,9,10)=3; c(-888,-999)=NA&quot;)
-elsoc_long_2016_2022.2$educ &lt;-
-  factor(elsoc_long_2016_2022.2$educ,
+elsoc_long_2016_2023$educ &lt;-
+  factor(elsoc_long_2016_2023$educ,
          labels = c(&quot;Media o menos&quot;,&quot;Técnica&quot;,&quot;Universitaria&quot;))
 
 #reverse education, reference level is the highest level
-#elsoc_long_2016_2022.2$educ &lt;- forcats::fct_rev(elsoc_long_2016_2022.2$educ)
+#elsoc_long_2016_2023$educ &lt;- forcats::fct_rev(elsoc_long_2016_2023$educ)
 
-elsoc_long_2016_2022.2$educ &lt;- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$educ,
+elsoc_long_2016_2023$educ &lt;- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$educ,
                       label = &quot;Educación&quot;)
-sjmisc::frq(elsoc_long_2016_2022.2$educ)</code></pre>
+sjmisc::frq(elsoc_long_2016_2023$educ)</code></pre>
 <pre><code>## Educación (x) &lt;categorical&gt; 
-## # total N=18035 valid N=18020 mean=1.54 sd=0.79
+## # total N=20761 valid N=20746 mean=1.54 sd=0.79
 ## 
 ## Value         |     N | Raw % | Valid % | Cum. %
 ## ------------------------------------------------
-## Media o menos | 11671 | 64.71 |   64.77 |  64.77
-## Técnica       |  2927 | 16.23 |   16.24 |  81.01
-## Universitaria |  3422 | 18.97 |   18.99 | 100.00
-## &lt;NA&gt;          |    15 |  0.08 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
-<pre class="r"><code>#Recoding of education to years based on casen 2017.
-# elsoc_long_2016_2022.2$educyear&lt;- as.numeric(
-#   car::recode(elsoc_long_2016_2022.2$m01, 
-#               &quot;1=0;2=4.3;3=7.5;4=9.8;5=12.02;6=13.9;
-#                7=14.8;8=14.9;9=16.9;10=19.07;c(-888,-999)=NA&quot;, 
-#               as.numeric = T))
-
-# elsoc_long_2016_2022.2$educyear &lt;- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$educyear,
-#                       label = &quot;Education in years&quot;)
-# 
-# class(elsoc_long_2016_2022.2$educyear)
-# sjmisc::frq(elsoc_long_2016_2022.2$educyear)
-
-# Household income_________________________________________
+## Media o menos | 13418 | 64.63 |   64.68 |  64.68
+## Técnica       |  3368 | 16.22 |   16.23 |  80.91
+## Universitaria |  3960 | 19.07 |   19.09 | 100.00
+## &lt;NA&gt;          |    15 |  0.07 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+<pre class="r"><code># Household income_________________________________________
 
 #Impute midpoint of income ranges
-elsoc_long_2016_2022.2$m30_rec &lt;-
-as.numeric(car::recode(elsoc_long_2016_2022.2$m30,
+elsoc_long_2016_2023$m30_rec &lt;-
+as.numeric(car::recode(elsoc_long_2016_2023$m30,
            &quot;1=110000;2=251000;3=305000;4=355000;5=400000;
             6=445000;7=490000;8=535000;9=585000;10=640000;11=700000;12=765000;
             13=845000;14=935000;15=1040000;16=1180000;17=1375000;18=1670000;
             19=2275000;20=2700000;NA=NA;c(-888,-999)=NA&quot;))
 
 #Impute midpoint of income ranges (2021)
-elsoc_long_2016_2022.2$m30b_rec &lt;-
-as.numeric(car::recode(elsoc_long_2016_2022.2$m30b,
+elsoc_long_2016_2023$m30b_rec &lt;-
+as.numeric(car::recode(elsoc_long_2016_2023$m30b,
            &quot;1=125000;2=300000;3=400000;4=575000;5=70000;NA=NA;c(-888,-999)=NA&quot;))
 
-sjmisc::frq(elsoc_long_2016_2022.2$m30b_rec)</code></pre>
+sjmisc::frq(elsoc_long_2016_2023$m30b_rec)</code></pre>
 <pre><code>## x &lt;numeric&gt; 
-## # total N=18035 valid N=187 mean=259839.57 sd=158185.19
+## # total N=20761 valid N=187 mean=259839.57 sd=158185.19
 ## 
 ##  Value |     N | Raw % | Valid % | Cum. %
 ## -----------------------------------------
-##  70000 |    27 |  0.15 |   14.44 |  14.44
-## 125000 |    58 |  0.32 |   31.02 |  45.45
-## 300000 |    45 |  0.25 |   24.06 |  69.52
-## 400000 |    39 |  0.22 |   20.86 |  90.37
-## 575000 |    18 |  0.10 |    9.63 | 100.00
-##   &lt;NA&gt; | 17848 | 98.96 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+##  70000 |    27 |  0.13 |   14.44 |  14.44
+## 125000 |    58 |  0.28 |   31.02 |  45.45
+## 300000 |    45 |  0.22 |   24.06 |  69.52
+## 400000 |    39 |  0.19 |   20.86 |  90.37
+## 575000 |    18 |  0.09 |    9.63 | 100.00
+##   &lt;NA&gt; | 20574 | 99.10 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code>#Recode DK/DA of Income to NA
-elsoc_long_2016_2022.2$m29_rec &lt;-
-  as.numeric(car::recode(elsoc_long_2016_2022.2$m29,&quot;c(-888,-999)=NA&quot;))
+elsoc_long_2016_2023$m29_rec &lt;-
+  as.numeric(car::recode(elsoc_long_2016_2023$m29,&quot;c(-888,-999)=NA&quot;))
 
 #replace NA of income with new imputed variable
-elsoc_long_2016_2022.2$m29_imp &lt;- 
-  ifelse(test = !is.na(elsoc_long_2016_2022.2$m29_rec),
-         yes =  elsoc_long_2016_2022.2$m29_rec,
-         no =  elsoc_long_2016_2022.2$m30_rec)
-summary(elsoc_long_2016_2022.2$m29_imp)</code></pre>
+elsoc_long_2016_2023$m29_imp &lt;- 
+  ifelse(test = !is.na(elsoc_long_2016_2023$m29_rec),
+         yes =  elsoc_long_2016_2023$m29_rec,
+         no =  elsoc_long_2016_2023$m30_rec)
+summary(elsoc_long_2016_2023$m29_imp)</code></pre>
 <pre><code>##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max.       NA&#39;s 
-##          0     300000     500000     965048     800000 4000000000        796</code></pre>
-<pre class="r"><code>elsoc_long_2016_2022.2$m29_imp &lt;- 
-  ifelse(test = is.na(elsoc_long_2016_2022.2$m29_imp),
-         yes =  elsoc_long_2016_2022.2$m30b_rec,
-         no =  elsoc_long_2016_2022.2$m29_imp)
-summary(elsoc_long_2016_2022.2$m29_imp)</code></pre>
+##          0     300000     500000     960976     800000 4000000000        882</code></pre>
+<pre class="r"><code>elsoc_long_2016_2023$m29_imp &lt;- 
+  ifelse(test = is.na(elsoc_long_2016_2023$m29_imp),
+         yes =  elsoc_long_2016_2023$m30b_rec,
+         no =  elsoc_long_2016_2023$m29_imp)
+summary(elsoc_long_2016_2023$m29_imp)</code></pre>
 <pre><code>##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max.       NA&#39;s 
-##          0     300000     500000     957480     800000 4000000000        609</code></pre>
+##          0     300000     500000     954442     800000 4000000000        695</code></pre>
 <pre class="r"><code># deflate at each year&#39;s prices
-elsoc_long_2016_2022.2$deflactor &lt;-
-  with(elsoc_long_2016_2022.2, case_when(
+elsoc_long_2016_2023$deflactor &lt;-
+  with(elsoc_long_2016_2023, case_when(
     ola == 2016 ~ 113.88 / 123.82,
     ola == 2017 ~ 116.46 / 123.82,
     ola == 2018 ~ 119.45 / 123.82,
@@ -1835,203 +1751,205 @@ elsoc_long_2016_2022.2$deflactor &lt;-
   ))
 
 # N Household:
-elsoc_long_2016_2022.2 &lt;-
-  elsoc_long_2016_2022.2 %&gt;%
+elsoc_long_2016_2023 &lt;-
+  elsoc_long_2016_2023 %&gt;%
   mutate(n_hogar =
            dplyr::case_when(ola == 1 ~ nhogar1,
                             ola == 2 ~ m46_nhogar,
                             ola == 3 ~ m54,
                             ola == 4 ~ m54,
-                            ola == 5 ~ m54))
-sjmisc::frq(elsoc_long_2016_2022.2$n_hogar)</code></pre>
+                            ola == 5 ~ m54,
+                            ola == 6 ~ m54,
+                            ola == 7 ~ m54))
+sjmisc::frq(elsoc_long_2016_2023$n_hogar)</code></pre>
 <pre><code>## x &lt;numeric&gt; 
-## # total N=18035 valid N=14967 mean=3.11 sd=1.57
+## # total N=20761 valid N=17682 mean=3.12 sd=1.57
 ## 
 ## Value |    N | Raw % | Valid % | Cum. %
 ## ---------------------------------------
-##     1 | 2260 | 12.53 |   15.10 |  15.10
-##     2 | 3637 | 20.17 |   24.30 |  39.40
-##     3 | 3534 | 19.60 |   23.61 |  63.01
-##     4 | 3021 | 16.75 |   20.18 |  83.20
-##     5 | 1504 |  8.34 |   10.05 |  93.25
-##     6 |  611 |  3.39 |    4.08 |  97.33
-##     7 |  225 |  1.25 |    1.50 |  98.83
-##     8 |  108 |  0.60 |    0.72 |  99.55
-##     9 |   33 |  0.18 |    0.22 |  99.77
-##    10 |   19 |  0.11 |    0.13 |  99.90
-##    11 |    7 |  0.04 |    0.05 |  99.95
-##    12 |    3 |  0.02 |    0.02 |  99.97
+##     1 | 2602 | 12.53 |   14.72 |  14.72
+##     2 | 4376 | 21.08 |   24.75 |  39.46
+##     3 | 4148 | 19.98 |   23.46 |  62.92
+##     4 | 3571 | 17.20 |   20.20 |  83.12
+##     5 | 1766 |  8.51 |    9.99 |  93.11
+##     6 |  724 |  3.49 |    4.09 |  97.20
+##     7 |  277 |  1.33 |    1.57 |  98.77
+##     8 |  132 |  0.64 |    0.75 |  99.51
+##     9 |   40 |  0.19 |    0.23 |  99.74
+##    10 |   26 |  0.13 |    0.15 |  99.89
+##    11 |    9 |  0.04 |    0.05 |  99.94
+##    12 |    6 |  0.03 |    0.03 |  99.97
 ##    13 |    2 |  0.01 |    0.01 |  99.98
 ##    14 |    2 |  0.01 |    0.01 |  99.99
-##    15 |    1 |  0.01 |    0.01 | 100.00
-##  &lt;NA&gt; | 3068 | 17.01 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+##    15 |    1 |  0.00 |    0.01 | 100.00
+##  &lt;NA&gt; | 3079 | 14.83 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code>#Recode DK/DA to NA
-elsoc_long_2016_2022.2$n_hogar_r&lt;-
-  car::recode(elsoc_long_2016_2022.2$n_hogar,&quot;c(-888,-999)=NA&quot;)
+elsoc_long_2016_2023$n_hogar_r&lt;-
+  car::recode(elsoc_long_2016_2023$n_hogar,&quot;c(-888,-999)=NA&quot;)
 
 # Per capita household income:
-elsoc_long_2016_2022.2$ing_pc &lt;- 
-  (elsoc_long_2016_2022.2$m29_imp/elsoc_long_2016_2022.2$n_hogar_r)
+elsoc_long_2016_2023$ing_pc &lt;- 
+  (elsoc_long_2016_2023$m29_imp/elsoc_long_2016_2023$n_hogar_r)
 
-elsoc_long_2016_2022.2$ing_pc &lt;-
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$ing_pc,
+elsoc_long_2016_2023$ing_pc &lt;-
+sjlabelled::set_label(x = elsoc_long_2016_2023$ing_pc,
                       label = &quot;Ingreso per capita del hogar&quot;)  
 
-sjmisc::descr(elsoc_long_2016_2022.2$ing_pc)</code></pre>
+sjmisc::descr(elsoc_long_2016_2023$ing_pc)</code></pre>
 <pre><code>## 
 ## ## Basic descriptive statistics
 ## 
 ##  var    type                        label     n NA.prc     mean       sd
-##   dd numeric Ingreso per capita del hogar 14489  19.66 418085.4 16654763
-##        se       md  trimmed                     range    iqr  skew
-##  138362.8 166666.7 201837.4 2000000000 (0-2000000000) 200000 119.5</code></pre>
+##   dd numeric Ingreso per capita del hogar 17120  17.54 408303.6 15322492
+##        se     md trimmed                     range    iqr   skew
+##  117105.6 175000  212930 2000000000 (0-2000000000) 225000 129.87</code></pre>
 <pre class="r"><code># Compute income quintiles
-elsoc_long_2016_2022.2 &lt;- elsoc_long_2016_2022.2 %&gt;% 
+elsoc_long_2016_2023 &lt;- elsoc_long_2016_2023 %&gt;% 
   group_by(ola) %&gt;% 
   mutate(quintil = ntile(-desc(ing_pc), 5)) %&gt;% 
   ungroup()
 
-elsoc_long_2016_2022.2$quintil &lt;- 
-  factor(elsoc_long_2016_2022.2$quintil,
+elsoc_long_2016_2023$quintil &lt;- 
+  factor(elsoc_long_2016_2023$quintil,
          levels = c(1, 2, 3, 4, 5),
          labels = c(&#39;Q1&#39;, &#39;Q2&#39;, &#39;Q3&#39;, &#39;Q4&#39;, &#39;Q5&#39;)) # Quintiles as factors
 
 #reverse quintile, reference level is the highest quintile
-#elsoc_long_2016_2022.2$quintil &lt;- forcats::fct_rev(elsoc_long_2016_2022.2$quintil)
+#elsoc_long_2016_2023$quintil &lt;- forcats::fct_rev(elsoc_long_2016_2023$quintil)
 
-elsoc_long_2016_2022.2$quintil &lt;- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$quintil,
+elsoc_long_2016_2023$quintil &lt;- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$quintil,
                       label = &quot;Household income quintile per capita&quot;)  
 
-sjmisc::frq(elsoc_long_2016_2022.2$quintil)</code></pre>
+sjmisc::frq(elsoc_long_2016_2023$quintil)</code></pre>
 <pre><code>## Household income quintile per capita (x) &lt;categorical&gt; 
-## # total N=18035 valid N=14489 mean=3.00 sd=1.41
+## # total N=20761 valid N=17120 mean=3.00 sd=1.41
 ## 
 ## Value |    N | Raw % | Valid % | Cum. %
 ## ---------------------------------------
-## Q1    | 2900 | 16.08 |   20.02 |  20.02
-## Q2    | 2899 | 16.07 |   20.01 |  40.02
-## Q3    | 2898 | 16.07 |   20.00 |  60.02
-## Q4    | 2896 | 16.06 |   19.99 |  80.01
-## Q5    | 2896 | 16.06 |   19.99 | 100.00
-## &lt;NA&gt;  | 3546 | 19.66 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+## Q1    | 3427 | 16.51 |   20.02 |  20.02
+## Q2    | 3425 | 16.50 |   20.01 |  40.02
+## Q3    | 3424 | 16.49 |   20.00 |  60.02
+## Q4    | 3422 | 16.48 |   19.99 |  80.01
+## Q5    | 3422 | 16.48 |   19.99 | 100.00
+## &lt;NA&gt;  | 3641 | 17.54 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code>#include new quintile category with missing cases
-elsoc_long_2016_2022.2$quintil1&lt;-
-  car::recode(elsoc_long_2016_2022.2$quintil, 
+elsoc_long_2016_2023$quintil1&lt;-
+  car::recode(elsoc_long_2016_2023$quintil, 
               &quot;&#39;Q1&#39;=&#39;Q1&#39;;&#39;Q2&#39;= &#39;Q2&#39;;&#39;Q3&#39;=&#39;Q3&#39;;&#39;Q4&#39;=&#39;Q4&#39;;&#39;Q5&#39;=&#39;Q5&#39;; NA=&#39;QNA&#39;&quot;)
 
-#elsoc_long_2016_2022.2$quintil1 &lt;- factor(elsoc_long_2016_2022.2$quintil1, c(&quot;Q1&quot;,&quot;Q2&quot;,&quot;Q3&quot;,&quot;Q4&quot;,&quot;Q5&quot;,&quot;QNA&quot;))
+#elsoc_long_2016_2023$quintil1 &lt;- factor(elsoc_long_2016_2023$quintil1, c(&quot;Q1&quot;,&quot;Q2&quot;,&quot;Q3&quot;,&quot;Q4&quot;,&quot;Q5&quot;,&quot;QNA&quot;))
 
-elsoc_long_2016_2022.2$quintil1 &lt;- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$quintil1,
+elsoc_long_2016_2023$quintil1 &lt;- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$quintil1,
                       label = &quot;Household income quintile per capita (NA)&quot;) 
-sjmisc::frq(elsoc_long_2016_2022.2$quintil1)</code></pre>
+sjmisc::frq(elsoc_long_2016_2023$quintil1)</code></pre>
 <pre><code>## Household income quintile per capita (NA) (x) &lt;categorical&gt; 
-## # total N=18035 valid N=18035 mean=3.59 sd=1.74
+## # total N=20761 valid N=20761 mean=3.53 sd=1.72
 ## 
 ## Value |    N | Raw % | Valid % | Cum. %
 ## ---------------------------------------
-## Q1    | 2900 | 16.08 |   16.08 |  16.08
-## Q2    | 2899 | 16.07 |   16.07 |  32.15
-## Q3    | 2898 | 16.07 |   16.07 |  48.22
-## Q4    | 2896 | 16.06 |   16.06 |  64.28
-## Q5    | 2896 | 16.06 |   16.06 |  80.34
-## QNA   | 3546 | 19.66 |   19.66 | 100.00
+## Q1    | 3427 | 16.51 |   16.51 |  16.51
+## Q2    | 3425 | 16.50 |   16.50 |  33.00
+## Q3    | 3424 | 16.49 |   16.49 |  49.50
+## Q4    | 3422 | 16.48 |   16.48 |  65.98
+## Q5    | 3422 | 16.48 |   16.48 |  82.46
+## QNA   | 3641 | 17.54 |   17.54 | 100.00
 ## &lt;NA&gt;  |    0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code>#Age Ranges
-elsoc_long_2016_2022.2$edad &lt;- as.numeric(elsoc_long_2016_2022.2$m0_edad)
+elsoc_long_2016_2023$edad &lt;- as.numeric(elsoc_long_2016_2023$m0_edad)
 
-elsoc_long_2016_2022.2$edad_cat &lt;- 
-  factor(car::recode(elsoc_long_2016_2022.2$m0_edad, 
+elsoc_long_2016_2023$edad_cat &lt;- 
+  factor(car::recode(elsoc_long_2016_2023$m0_edad, 
                      &quot;18:29=1;30:49=2;50:64=3;65:150=4&quot;),
          labels = c(&#39;18-29&#39;, &#39;30-49&#39;, &#39;50-64&#39;, &#39;65 or more&#39;))
-elsoc_long_2016_2022.2$edad_cat &lt;-
-  sjlabelled::set_label(elsoc_long_2016_2022.2$edad_cat, 
+elsoc_long_2016_2023$edad_cat &lt;-
+  sjlabelled::set_label(elsoc_long_2016_2023$edad_cat, 
                         label = c(&quot;Rango etario&quot;)) 
 # Other controls______________________________________________________________
 # Subjective social status: individual ____________________________
 
-elsoc_long_2016_2022.2$ess &lt;- 
-as.numeric(elsoc_long_2016_2022.2$d01_01)
-sjmisc::frq(elsoc_long_2016_2022.2$ess)</code></pre>
+elsoc_long_2016_2023$ess &lt;- 
+as.numeric(elsoc_long_2016_2023$d01_01)
+sjmisc::frq(elsoc_long_2016_2023$ess)</code></pre>
 <pre><code>## x &lt;numeric&gt; 
-## # total N=18035 valid N=17916 mean=4.43 sd=1.62
+## # total N=20761 valid N=20635 mean=4.44 sd=1.61
 ## 
 ## Value |    N | Raw % | Valid % | Cum. %
 ## ---------------------------------------
-##     0 |  402 |  2.23 |    2.24 |   2.24
-##     1 |  477 |  2.64 |    2.66 |   4.91
-##     2 |  963 |  5.34 |    5.38 |  10.28
-##     3 | 2318 | 12.85 |   12.94 |  23.22
-##     4 | 3954 | 21.92 |   22.07 |  45.29
-##     5 | 6833 | 37.89 |   38.14 |  83.43
-##     6 | 1707 |  9.46 |    9.53 |  92.96
-##     7 |  607 |  3.37 |    3.39 |  96.34
-##     8 |  439 |  2.43 |    2.45 |  98.79
-##     9 |   60 |  0.33 |    0.33 |  99.13
-##    10 |  156 |  0.86 |    0.87 | 100.00
-##  &lt;NA&gt; |  119 |  0.66 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
-<pre class="r"><code>#elsoc_long_2016_2022.2$ess &lt;- sjmisc::rec(elsoc_long_2016_2022.2$ess,rec = &quot;rev&quot;)
-#sjmisc::frq(elsoc_long_2016_2022.2$ess)
+##     0 |  451 |  2.17 |    2.19 |   2.19
+##     1 |  529 |  2.55 |    2.56 |   4.75
+##     2 | 1097 |  5.28 |    5.32 |  10.07
+##     3 | 2644 | 12.74 |   12.81 |  22.88
+##     4 | 4566 | 21.99 |   22.13 |  45.01
+##     5 | 7933 | 38.21 |   38.44 |  83.45
+##     6 | 1964 |  9.46 |    9.52 |  92.97
+##     7 |  684 |  3.29 |    3.31 |  96.28
+##     8 |  522 |  2.51 |    2.53 |  98.81
+##     9 |   72 |  0.35 |    0.35 |  99.16
+##    10 |  173 |  0.83 |    0.84 | 100.00
+##  &lt;NA&gt; |  126 |  0.61 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+<pre class="r"><code>#elsoc_long_2016_2023$ess &lt;- sjmisc::rec(elsoc_long_2016_2023$ess,rec = &quot;rev&quot;)
+#sjmisc::frq(elsoc_long_2016_2023$ess)
 
-elsoc_long_2016_2022.2$ess &lt;- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$ess,
+elsoc_long_2016_2023$ess &lt;- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$ess,
                       label = &quot;Estatus social subjetivo&quot;)
 
 
-sjmisc::frq(elsoc_long_2016_2022.2$ess)</code></pre>
+sjmisc::frq(elsoc_long_2016_2023$ess)</code></pre>
 <pre><code>## Estatus social subjetivo (x) &lt;numeric&gt; 
-## # total N=18035 valid N=17916 mean=4.43 sd=1.62
+## # total N=20761 valid N=20635 mean=4.44 sd=1.61
 ## 
 ## Value |    N | Raw % | Valid % | Cum. %
 ## ---------------------------------------
-##     0 |  402 |  2.23 |    2.24 |   2.24
-##     1 |  477 |  2.64 |    2.66 |   4.91
-##     2 |  963 |  5.34 |    5.38 |  10.28
-##     3 | 2318 | 12.85 |   12.94 |  23.22
-##     4 | 3954 | 21.92 |   22.07 |  45.29
-##     5 | 6833 | 37.89 |   38.14 |  83.43
-##     6 | 1707 |  9.46 |    9.53 |  92.96
-##     7 |  607 |  3.37 |    3.39 |  96.34
-##     8 |  439 |  2.43 |    2.45 |  98.79
-##     9 |   60 |  0.33 |    0.33 |  99.13
-##    10 |  156 |  0.86 |    0.87 | 100.00
-##  &lt;NA&gt; |  119 |  0.66 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
-<pre class="r"><code># sjPlot::plot_frq(elsoc_long_2016_2022.2$ess)
+##     0 |  451 |  2.17 |    2.19 |   2.19
+##     1 |  529 |  2.55 |    2.56 |   4.75
+##     2 | 1097 |  5.28 |    5.32 |  10.07
+##     3 | 2644 | 12.74 |   12.81 |  22.88
+##     4 | 4566 | 21.99 |   22.13 |  45.01
+##     5 | 7933 | 38.21 |   38.44 |  83.45
+##     6 | 1964 |  9.46 |    9.52 |  92.97
+##     7 |  684 |  3.29 |    3.31 |  96.28
+##     8 |  522 |  2.51 |    2.53 |  98.81
+##     9 |   72 |  0.35 |    0.35 |  99.16
+##    10 |  173 |  0.83 |    0.84 | 100.00
+##  &lt;NA&gt; |  126 |  0.61 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+<pre class="r"><code># sjPlot::plot_frq(elsoc_long_2016_2023$ess)
 
 # Political position ____________________________
-elsoc_long_2016_2022.2$pos_id &lt;-
+elsoc_long_2016_2023$pos_id &lt;-
 factor(
   car::recode(
-    elsoc_long_2016_2022.2$c15,
+    elsoc_long_2016_2023$c15,
     &quot;c(11,12,-888,-999)=&#39;No se identifica&#39;;c(0,1,2,3,4)=&#39;Izquierda&#39;;
      c(5)=&#39;Centro&#39;;c(6,7,8,9,10)=&#39;Derecha&#39;&quot;
   ),
   levels = c(&#39;Izquierda&#39;, &#39;Centro&#39;, &#39;Derecha&#39;, &#39;No se identifica&#39;)
 )
 
-elsoc_long_2016_2022.2$pos_id &lt;- factor(elsoc_long_2016_2022.2$pos_id,
-                                      levels = levels(elsoc_long_2016_2022.2$pos_id))
+elsoc_long_2016_2023$pos_id &lt;- factor(elsoc_long_2016_2023$pos_id,
+                                      levels = levels(elsoc_long_2016_2023$pos_id))
 
-elsoc_long_2016_2022.2$pos_id &lt;- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$pos_id, 
+elsoc_long_2016_2023$pos_id &lt;- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$pos_id, 
                       label = &quot;Identificación política&quot;) 
 
-sjmisc::frq(elsoc_long_2016_2022.2$pos_id)</code></pre>
+sjmisc::frq(elsoc_long_2016_2023$pos_id)</code></pre>
 <pre><code>## Identificación política (x) &lt;categorical&gt; 
-## # total N=18035 valid N=17738 mean=2.67 sd=1.17
+## # total N=20761 valid N=20443 mean=2.67 sd=1.17
 ## 
 ## Value            |    N | Raw % | Valid % | Cum. %
 ## --------------------------------------------------
-## Izquierda        | 3792 | 21.03 |   21.38 |  21.38
-## Centro           | 4666 | 25.87 |   26.31 |  47.68
-## Derecha          | 2885 | 16.00 |   16.26 |  63.95
-## No se identifica | 6395 | 35.46 |   36.05 | 100.00
-## &lt;NA&gt;             |  297 |  1.65 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+## Izquierda        | 4357 | 20.99 |   21.31 |  21.31
+## Centro           | 5360 | 25.82 |   26.22 |  47.53
+## Derecha          | 3369 | 16.23 |   16.48 |  64.01
+## No se identifica | 7357 | 35.44 |   35.99 | 100.00
+## &lt;NA&gt;             |  318 |  1.53 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code># Select variables______________________________________________________________
 
 df_study1 &lt;- 
-elsoc_long_2016_2022.2 %&gt;% 
+elsoc_long_2016_2023 %&gt;% 
   filter(muestra == 1) %&gt;% #keep original sample (vs refresh)
   select(idencuesta,ola,region,region_cod,comuna,comunacod=comuna_cod,
          muestra,
@@ -2042,6 +1960,7 @@ elsoc_long_2016_2022.2 %&gt;%
          starts_with(&quot;satisfaccion_&quot;),
          part_com,
          marchar,
+         perc_seguridad,
          educ,#educyear,
          # ing_pc,
          # quintil,
@@ -2067,64 +1986,70 @@ df_study1_wide &lt;- df_study1 %&gt;%
                      names_from = &quot;ola&quot;,
                      # names_prefix = c(&quot;educ&quot;,&quot;educyear&quot;,&quot;ing_pc&quot;,&quot;quintil&quot;,&quot;quintil1&quot;),
                      values_from = names(select(df_study1,comuna,comunacod,region,region_cod,ponderador_long_total,segmento, estrato, sexo:edad)))
+## Casos austentes/ola: barrio_ideal_5, barrio_integrado_5, barrio_identifico_5, barrio_partedemi_5, barrio_amigos_5, barrio_sociable_5, barrio_cordial_5, barrio_colaboradora_5, satisfaccion_seguridad_5, satisfaccion_seguridad_7, satisfaccion_conectividad_5, satisfaccion_conectividad_7, satisfaccion_areasverdes_5, satisfaccion_areasverdes_7, satisfaccion_limpieza_5, satisfaccion_limpieza_7, satisfaccion_proximidadtrabajo_5, satisfaccion_proximidadcolegios_5, satisfaccion_proximidadcomercio_5, satisfaccion_proximidadfamilia_5, satisfaccion_proximidadfamilia_7, part_com_6
 
 # fix data to w01 values
+
 df_study1_wide$edad_2 &lt;-df_study1_wide$edad_1 #age
 df_study1_wide$edad_3 &lt;-df_study1_wide$edad_1
 df_study1_wide$edad_4 &lt;-df_study1_wide$edad_1
 df_study1_wide$edad_5 &lt;-df_study1_wide$edad_1
 df_study1_wide$edad_6 &lt;-df_study1_wide$edad_1
+df_study1_wide$edad_7 &lt;-df_study1_wide$edad_1
 
 df_study1_wide$sexo_2 &lt;-df_study1_wide$sexo_1 #sex
 df_study1_wide$sexo_3 &lt;-df_study1_wide$sexo_1
 df_study1_wide$sexo_4 &lt;-df_study1_wide$sexo_1
 df_study1_wide$sexo_5 &lt;-df_study1_wide$sexo_1
 df_study1_wide$sexo_6 &lt;-df_study1_wide$sexo_1
+df_study1_wide$sexo_7 &lt;-df_study1_wide$sexo_1
 
 df_study1_wide$educ_2 &lt;-df_study1_wide$educ_1 #education
 df_study1_wide$educ_3 &lt;-df_study1_wide$educ_1
 df_study1_wide$educ_4 &lt;-df_study1_wide$educ_1
 df_study1_wide$educ_5 &lt;-df_study1_wide$educ_1
 df_study1_wide$educ_6 &lt;-df_study1_wide$educ_1
-
-# df_study1_wide$educyear_2 &lt;-df_study1_wide$educyear_1 #education years
-# df_study1_wide$educyear_3 &lt;-df_study1_wide$educyear_1
-# df_study1_wide$educyear_4 &lt;-df_study1_wide$educyear_1
-# df_study1_wide$educyear_5 &lt;-df_study1_wide$educyear_1
-# df_study1_wide$educyear_6 &lt;-df_study1_wide$educyear_1
+df_study1_wide$educ_7 &lt;-df_study1_wide$educ_1
 
 df_study1_wide$quintil1_2 &lt;-df_study1_wide$quintil1_1 #quintiles
 df_study1_wide$quintil1_3 &lt;-df_study1_wide$quintil1_1
 df_study1_wide$quintil1_4 &lt;-df_study1_wide$quintil1_1
 df_study1_wide$quintil1_5 &lt;-df_study1_wide$quintil1_1
 df_study1_wide$quintil1_6 &lt;-df_study1_wide$quintil1_1
+df_study1_wide$quintil1_7 &lt;-df_study1_wide$quintil1_1
 
 df_study1_wide$ess_2 &lt;-df_study1_wide$ess_1 # subjective status
 df_study1_wide$ess_3 &lt;-df_study1_wide$ess_1
 df_study1_wide$ess_4 &lt;-df_study1_wide$ess_1
 df_study1_wide$ess_5 &lt;-df_study1_wide$ess_1
 df_study1_wide$ess_6 &lt;-df_study1_wide$ess_1
+df_study1_wide$ess_7 &lt;-df_study1_wide$ess_1
 
 df_study1_wide$pos_id_2 &lt;-df_study1_wide$pos_id_1 # political position
 df_study1_wide$pos_id_3 &lt;-df_study1_wide$pos_id_1
 df_study1_wide$pos_id_4 &lt;-df_study1_wide$pos_id_1
 df_study1_wide$pos_id_5 &lt;-df_study1_wide$pos_id_1
 df_study1_wide$pos_id_6 &lt;-df_study1_wide$pos_id_1
+df_study1_wide$pos_id_7 &lt;-df_study1_wide$pos_id_1
 
 df_study1_wide$comuna_2 &lt;-df_study1_wide$comuna_1 #comuna
 df_study1_wide$comuna_3 &lt;-df_study1_wide$comuna_1
 df_study1_wide$comuna_4 &lt;-df_study1_wide$comuna_1
 df_study1_wide$comuna_5 &lt;-df_study1_wide$comuna_1
 df_study1_wide$comuna_6 &lt;-df_study1_wide$comuna_1
+df_study1_wide$comuna_7 &lt;-df_study1_wide$comuna_1
 
 df_study1_wide$comunacod_2 &lt;-df_study1_wide$comunacod_1 #comuna
 df_study1_wide$comunacod_3 &lt;-df_study1_wide$comunacod_1
 df_study1_wide$comunacod_4 &lt;-df_study1_wide$comunacod_1
 df_study1_wide$comunacod_5 &lt;-df_study1_wide$comunacod_1
 df_study1_wide$comunacod_6 &lt;-df_study1_wide$comunacod_1
+df_study1_wide$comunacod_7 &lt;-df_study1_wide$comunacod_1
+
+df_study1_wide$part_com_6 &lt;- df_study1_wide$part_com_7
 
 dim(df_study1_wide)</code></pre>
-<pre><code>## [1] 2928  188</code></pre>
+<pre><code>## [1] 2928  226</code></pre>
 <pre class="r"><code># sjPlot::view_df(df_study1_wide,
 #                 show.frq = T,show.values = T,show.na = T,show.prc = T, show.type = T)</code></pre>
 <pre class="r"><code># reshape from long to wide
@@ -2134,7 +2059,7 @@ df_study1_long &lt;- data.table::melt.data.table(data.table::setDT(df_study1_wid
               variable.name = c(&quot;ola&quot;),
               measure = patterns(&quot;^comuna_&quot;,&quot;^comunacod_&quot;, &quot;^region_cod_&quot;, 
                                  &quot;^ponderador_long_total_&quot;, &quot;^segmento_&quot;, &quot;^estrato_&quot;,
-                                 &quot;^part_com&quot;, &quot;^marchar_&quot;,
+                                 &quot;^part_com&quot;, &quot;^marchar_&quot;, &quot;^perc_seguridad_&quot;,
                                  &quot;^barrio_ideal_&quot;, &quot;^barrio_integrado_&quot;, &quot;^barrio_identifico_&quot;, &quot;^barrio_partedemi_&quot;,
                                  &quot;^barrio_amigos_&quot;,&quot;^barrio_sociable_&quot;, &quot;^barrio_cordial_&quot;, &quot;^barrio_colaboradora_&quot;,
                                  &quot;^satisfaccion_seguridad_&quot;, &quot;^satisfaccion_conectivdad_&quot;, &quot;^satisfaccion_areasverdes_&quot;, &quot;^satisfaccion_limpieza_&quot;,
@@ -2145,7 +2070,7 @@ df_study1_long &lt;- data.table::melt.data.table(data.table::setDT(df_study1_wid
                                  ),
               value.name = c(&quot;comuna&quot;,&quot;comunacod&quot;, &quot;region_cod&quot;, 
                              &quot;ponderador_long_total&quot;,&quot;segmento&quot;,&quot;estrato&quot;,
-                             &quot;part_com&quot;, &quot;marchar&quot;, 
+                             &quot;part_com&quot;, &quot;marchar&quot;, &quot;perc_seguridad&quot;,
                              &quot;barrio_ideal&quot;,&quot;barrio_integrado&quot;, &quot;barrio_identifico&quot;, &quot;barrio_partedemi&quot;,
                              &quot;barrio_amigos&quot;,&quot;barrio_sociable&quot;, &quot;barrio_cordial&quot;, &quot;barrio_colaboradora&quot;,
                              &quot;satisfaccion_seguridad&quot;, &quot;satisfaccion_conectivdad&quot;, &quot;satisfaccion_areasverdes&quot;, &quot;satisfaccion_limpieza&quot;,
@@ -2162,20 +2087,20 @@ names(df_study1_long) #check names of long dataset</code></pre>
 ##  [5] &quot;comunacod&quot;                       &quot;region_cod&quot;                     
 ##  [7] &quot;ponderador_long_total&quot;           &quot;segmento&quot;                       
 ##  [9] &quot;estrato&quot;                         &quot;part_com&quot;                       
-## [11] &quot;marchar&quot;                         &quot;barrio_ideal&quot;                   
-## [13] &quot;barrio_integrado&quot;                &quot;barrio_identifico&quot;              
-## [15] &quot;barrio_partedemi&quot;                &quot;barrio_amigos&quot;                  
-## [17] &quot;barrio_sociable&quot;                 &quot;barrio_cordial&quot;                 
-## [19] &quot;barrio_colaboradora&quot;             &quot;satisfaccion_seguridad&quot;         
-## [21] &quot;satisfaccion_conectivdad&quot;        &quot;satisfaccion_areasverdes&quot;       
-## [23] &quot;satisfaccion_limpieza&quot;           &quot;satisfaccion_proximidadtrabajo&quot; 
-## [25] &quot;satisfaccion_proximidadcolegios&quot; &quot;satisfaccion_proximidadcomercio&quot;
-## [27] &quot;satisfaccion_proximidadfamilia&quot;  &quot;educ&quot;                           
-## [29] &quot;quintil1&quot;                        &quot;ess&quot;                            
-## [31] &quot;pos_id&quot;                          &quot;edad&quot;                           
-## [33] &quot;sexo&quot;</code></pre>
+## [11] &quot;marchar&quot;                         &quot;perc_seguridad&quot;                 
+## [13] &quot;barrio_ideal&quot;                    &quot;barrio_integrado&quot;               
+## [15] &quot;barrio_identifico&quot;               &quot;barrio_partedemi&quot;               
+## [17] &quot;barrio_amigos&quot;                   &quot;barrio_sociable&quot;                
+## [19] &quot;barrio_cordial&quot;                  &quot;barrio_colaboradora&quot;            
+## [21] &quot;satisfaccion_seguridad&quot;          &quot;satisfaccion_conectivdad&quot;       
+## [23] &quot;satisfaccion_areasverdes&quot;        &quot;satisfaccion_limpieza&quot;          
+## [25] &quot;satisfaccion_proximidadtrabajo&quot;  &quot;satisfaccion_proximidadcolegios&quot;
+## [27] &quot;satisfaccion_proximidadcomercio&quot; &quot;satisfaccion_proximidadfamilia&quot; 
+## [29] &quot;educ&quot;                            &quot;quintil1&quot;                       
+## [31] &quot;ess&quot;                             &quot;pos_id&quot;                         
+## [33] &quot;edad&quot;                            &quot;sexo&quot;</code></pre>
 <pre class="r"><code>dim(df_study1_long) #check dimensions of the dataframe</code></pre>
-<pre><code>## [1] 17568    33</code></pre>
+<pre><code>## [1] 20496    34</code></pre>
 <pre class="r"><code># Original dataset with 6 waves
 df_study2_long &lt;- df_study1_long
 
@@ -2274,7 +2199,7 @@ Identificador de muestra de encuesta
 Muestra Original<br>Muestra Refresco
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-17568<br>0
+20496<br>0
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 100.00<br>0.00
@@ -2299,13 +2224,13 @@ Identificador de ola de encuesta
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-1<br>2<br>3<br>4<br>5<br>6
+1<br>2<br>3<br>4<br>5<br>6<br>7
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2928<br>2928<br>2928<br>2928<br>2928<br>2928
+2928<br>2928<br>2928<br>2928<br>2928<br>2928<br>2928
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-16.67<br>16.67<br>16.67<br>16.67<br>16.67<br>16.67
+14.29<br>14.29<br>14.29<br>14.29<br>14.29<br>14.29<br>14.29
 </td>
 </tr>
 <tr>
@@ -2319,9 +2244,10 @@ comuna
 character
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Comuna
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6 (0.03%)
+7 (0.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
@@ -2351,7 +2277,7 @@ numeric
 Comuna (Codigo)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6 (0.03%)
+7 (0.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
 <em>range: 1101-16203</em>
@@ -2375,7 +2301,7 @@ numeric
 Region (Codigo)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4319 (24.58%)
+5510 (26.88%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
 <em>range: 1-16</em>
@@ -2399,10 +2325,10 @@ numeric
 Ponderador longitudinal (2016-2022). Muestra<br>completa
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4319 (24.58%)
+5510 (26.88%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
-<em>range: 0.0-14.9</em>
+<em>range: 0.0-16.4</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
@@ -2423,7 +2349,7 @@ numeric
 Segmento
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4319 (24.58%)
+5510 (26.88%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
 <em>range: 110101-1420411</em>
@@ -2447,7 +2373,7 @@ numeric
 Estrato muestral
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4319 (24.58%)
+5510 (26.88%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5<br>6
@@ -2457,10 +2383,10 @@ Gran Santiago<br>Gran Valparaiso<br>Gran Concepcion<br>Ciudades
 Grandes<br>Ciudades Medianas<br>Ciudades Pequennias
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3138<br>1665<br>1854<br>1921<br>2459<br>2212
+3532<br>1884<br>2088<br>2169<br>2785<br>2528
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-23.68<br>12.57<br>13.99<br>14.50<br>18.56<br>16.70
+23.57<br>12.57<br>13.93<br>14.47<br>18.58<br>16.87
 </td>
 </tr>
 <tr>
@@ -2477,7 +2403,7 @@ numeric
 Frecuencia: reuniones publicas/comunitarias
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6063 (34.51%)
+5517 (26.92%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3
@@ -2486,10 +2412,10 @@ Frecuencia: reuniones publicas/comunitarias
 Nunca lo hizo<br>Lo hizo una o dos veces<br>Lo hizo mas de dos veces
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6961<br>2408<br>2136
+9063<br>3136<br>2780
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-60.50<br>20.93<br>18.57
+60.50<br>20.94<br>18.56
 </td>
 </tr>
 <tr>
@@ -2506,7 +2432,7 @@ numeric
 Frecuencia: mbackground-color:#eeeeeehar
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4326 (24.62%)
+5517 (26.92%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2515,10 +2441,10 @@ Frecuencia: mbackground-color:#eeeeeehar
 Nunca<br>Casi nunca<br>A veces<br>Frecuentemente<br>Muy frecuentemente
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-11341<br>672<br>844<br>284<br>101
+12946<br>726<br>896<br>303<br>108
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-85.64<br>5.07<br>6.37<br>2.14<br>0.76
+86.43<br>4.85<br>5.98<br>2.02<br>0.72
 </td>
 </tr>
 <tr>
@@ -2526,29 +2452,29 @@ Nunca<br>Casi nunca<br>A veces<br>Frecuentemente<br>Muy frecuentemente
 12
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_ideal
+perc_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: Este es el barrio ideal para mi
+Percepcion de seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6065 (34.52%)
+5542 (27.04%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
-desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
+Muy inseguro<br>Inseguro<br>Ni seguro ni inseguro<br>Seguro<br>Muy
+seguro
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-437<br>1519<br>1293<br>6273<br>1981
+711<br>2202<br>2859<br>7497<br>1685
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.80<br>13.21<br>11.24<br>54.53<br>17.22
+4.75<br>14.73<br>19.12<br>50.13<br>11.27
 </td>
 </tr>
 <tr>
@@ -2556,16 +2482,16 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 13
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_integrado
+barrio_ideal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: Me siento integrado/a en este<br>barrio
+Grado de acuerdo: Este es el barrio ideal para mi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6068 (34.54%)
+7256 (35.40%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2575,10 +2501,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-383<br>1421<br>1374<br>6519<br>1803
+491<br>1713<br>1536<br>7250<br>2250
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.33<br>12.36<br>11.95<br>56.69<br>15.68
+3.71<br>12.94<br>11.60<br>54.76<br>16.99
 </td>
 </tr>
 <tr>
@@ -2586,16 +2512,16 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 14
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_identifico
+barrio_integrado
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: Me identifico con la gente de<br>este barrio
+Grado de acuerdo: Me siento integrado/a en este<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6073 (34.57%)
+7259 (35.42%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -2605,10 +2531,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-418<br>1640<br>1657<br>6139<br>1641
+427<br>1603<br>1618<br>7537<br>2052
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.64<br>14.27<br>14.41<br>53.41<br>14.28
+3.23<br>12.11<br>12.22<br>56.94<br>15.50
 </td>
 </tr>
 <tr>
@@ -2616,16 +2542,16 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 15
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_partedemi
+barrio_identifico
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: Este barrio es parte de mi
+Grado de acuerdo: Me identifico con la gente de<br>este barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6068 (34.54%)
+7264 (35.44%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2635,10 +2561,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-399<br>1499<br>1318<br>6365<br>1919
+462<br>1865<br>1969<br>7071<br>1865
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.47<br>13.03<br>11.46<br>55.35<br>16.69
+3.49<br>14.09<br>14.88<br>53.44<br>14.09
 </td>
 </tr>
 <tr>
@@ -2646,16 +2572,16 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 16
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_amigos
+barrio_partedemi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: En este barrio es facil hacer<br>amigos
+Grado de acuerdo: Este barrio es parte de mi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6117 (34.82%)
+7260 (35.42%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -2665,10 +2591,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-449<br>2334<br>2269<br>5344<br>1055
+447<br>1683<br>1561<br>7354<br>2191
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.92<br>20.38<br>19.81<br>46.67<br>9.21
+3.38<br>12.72<br>11.79<br>55.56<br>16.55
 </td>
 </tr>
 <tr>
@@ -2676,16 +2602,16 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 17
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_sociable
+barrio_amigos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: La gente en este barrio es<br>sociable
+Grado de acuerdo: En este barrio es facil hacer<br>amigos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6091 (34.67%)
+7314 (35.69%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2695,10 +2621,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-279<br>1567<br>2068<br>6356<br>1207
+511<br>2680<br>2636<br>6141<br>1214
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.43<br>13.65<br>18.02<br>55.38<br>10.52
+3.88<br>20.33<br>20.00<br>46.59<br>9.21
 </td>
 </tr>
 <tr>
@@ -2706,16 +2632,16 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 18
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_cordial
+barrio_sociable
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: La gente en este barrio es<br>cordial
+Grado de acuerdo: La gente en este barrio es<br>sociable
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6088 (34.65%)
+7285 (35.54%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -2725,10 +2651,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-229<br>1219<br>1895<br>6881<br>1256
+322<br>1788<br>2398<br>7313<br>1390
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-1.99<br>10.62<br>16.51<br>59.94<br>10.94
+2.44<br>13.53<br>18.15<br>55.36<br>10.52
 </td>
 </tr>
 <tr>
@@ -2736,16 +2662,16 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 19
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_colaboradora
+barrio_cordial
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: La gente en este barrio es<br>colaboradora
+Grado de acuerdo: La gente en este barrio es<br>cordial
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6207 (35.33%)
+7280 (35.52%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2755,10 +2681,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-323<br>1587<br>2252<br>5863<br>1336
+260<br>1385<br>2182<br>7944<br>1445
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.84<br>13.97<br>19.82<br>51.61<br>11.76
+1.97<br>10.48<br>16.51<br>60.11<br>10.93
 </td>
 </tr>
 <tr>
@@ -2766,29 +2692,29 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 20
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_seguridad
+barrio_colaboradora
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Seguridad del barrio
+Grado de acuerdo: La gente en este barrio es<br>colaboradora
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6064 (34.52%)
+7406 (36.13%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
-insatisfecho<br>Satisfecho<br>Totalmente satisfecho
+Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
+desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-710<br>2508<br>1802<br>5469<br>1015
+360<br>1843<br>2598<br>6748<br>1541
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6.17<br>21.80<br>15.66<br>47.54<br>8.82
+2.75<br>14.08<br>19.85<br>51.55<br>11.77
 </td>
 </tr>
 <tr>
@@ -2796,16 +2722,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 21
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_conectivdad
+satisfaccion_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Conectividad
+Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6087 (34.65%)
+8992 (43.87%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2815,10 +2741,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-373<br>1479<br>1067<br>6986<br>1576
+710<br>2508<br>1802<br>5469<br>1015
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.25<br>12.88<br>9.29<br>60.85<br>13.73
+6.17<br>21.80<br>15.66<br>47.54<br>8.82
 </td>
 </tr>
 <tr>
@@ -2826,16 +2752,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 22
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_areasverdes
+satisfaccion_conectivdad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
+Grado de satisfaccion: Conectividad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6068 (34.54%)
+9015 (43.98%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -2845,10 +2771,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-904<br>3104<br>1192<br>5285<br>1015
+373<br>1479<br>1067<br>6986<br>1576
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7.86<br>26.99<br>10.37<br>45.96<br>8.83
+3.25<br>12.88<br>9.29<br>60.85<br>13.73
 </td>
 </tr>
 <tr>
@@ -2856,16 +2782,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 23
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_limpieza
+satisfaccion_areasverdes
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Limpieza y belleza del<br>barrio
+Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6064 (34.52%)
+8996 (43.89%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2875,10 +2801,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-795<br>2772<br>1684<br>5387<br>866
+904<br>3104<br>1192<br>5285<br>1015
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6.91<br>24.10<br>14.64<br>46.83<br>7.53
+7.86<br>26.99<br>10.37<br>45.96<br>8.83
 </td>
 </tr>
 <tr>
@@ -2886,16 +2812,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 24
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadtrabajo
+satisfaccion_limpieza
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
+Grado de satisfaccion: Limpieza y belleza del<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6180 (35.18%)
+8992 (43.87%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -2905,10 +2831,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-581<br>1839<br>1404<br>6298<br>1266
+795<br>2772<br>1684<br>5387<br>866
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-5.10<br>16.15<br>12.33<br>55.30<br>11.12
+6.91<br>24.10<br>14.64<br>46.83<br>7.53
 </td>
 </tr>
 <tr>
@@ -2916,16 +2842,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 25
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadcolegios
+satisfaccion_proximidadtrabajo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
+Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6163 (35.08%)
+7398 (36.09%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2935,10 +2861,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-320<br>1520<br>1140<br>7055<br>1370
+622<br>2024<br>1594<br>7340<br>1518
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.81<br>13.33<br>10.00<br>61.86<br>12.01
+4.75<br>15.45<br>12.17<br>56.04<br>11.59
 </td>
 </tr>
 <tr>
@@ -2946,16 +2872,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 26
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadcomercio
+satisfaccion_proximidadcolegios
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad a areas de<br>comercio
+Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6071 (34.56%)
+7364 (35.93%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -2965,10 +2891,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-300<br>1557<br>953<br>6986<br>1701
+340<br>1693<br>1322<br>8167<br>1610
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2.61<br>13.54<br>8.29<br>60.76<br>14.80
+2.59<br>12.89<br>10.07<br>62.19<br>12.26
 </td>
 </tr>
 <tr>
@@ -2976,16 +2902,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 27
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadfamilia
+satisfaccion_proximidadcomercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
+Grado de satisfaccion: Proximidad a areas de<br>comercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6079 (34.60%)
+7264 (35.44%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2995,10 +2921,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-395<br>1864<br>1163<br>6727<br>1340
+325<br>1748<br>1111<br>8062<br>1986
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.44<br>16.22<br>10.12<br>58.55<br>11.66
+2.46<br>13.21<br>8.40<br>60.93<br>15.01
 </td>
 </tr>
 <tr>
@@ -3006,27 +2932,29 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 28
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-educ
+satisfaccion_proximidadfamilia
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-categorical
+numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Educación
+Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-18 (0.10%)
+9007 (43.95%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Media o menos<br>Técnica<br>Universitaria
+Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
+insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-11442<br>2898<br>3210
+395<br>1864<br>1163<br>6727<br>1340
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-65.20<br>16.51<br>18.29
+3.44<br>16.22<br>10.12<br>58.55<br>11.66
 </td>
 </tr>
 <tr>
@@ -3034,27 +2962,27 @@ Media o menos<br>Técnica<br>Universitaria
 29
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-quintil1
+educ
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 categorical
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Household income quintile per capita (NA)
+Educación
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6 (0.03%)
+21 (0.10%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3348<br>3348<br>3348<br>3342<br>3342<br>834
+13349<br>3381<br>3745
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-19.06<br>19.06<br>19.06<br>19.03<br>19.03<br>4.75
+65.20<br>16.51<br>18.29
 </td>
 </tr>
 <tr>
@@ -3062,23 +2990,27 @@ Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
 30
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-ess
+quintil1
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-numeric
+categorical
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Estatus social subjetivo
+Household income quintile per capita (NA)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-78 (0.44%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 0-10</em>
+7 (0.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+3906<br>3906<br>3906<br>3899<br>3899<br>973
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+19.06<br>19.06<br>19.06<br>19.03<br>19.03<br>4.75
 </td>
 </tr>
 <tr>
@@ -3086,27 +3018,23 @@ Estatus social subjetivo
 31
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-pos_id
+ess
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-categorical
+numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Identificación política
+Estatus social subjetivo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-402 (2.29%)
+91 (0.44%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 0-10</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Izquierda<br>Centro<br>Derecha<br>No se identifica
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3498<br>3624<br>2454<br>7590
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-20.38<br>21.11<br>14.30<br>44.22
 </td>
 </tr>
 <tr>
@@ -3114,22 +3042,27 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 32
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-edad
+pos_id
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-numeric
+categorical
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Identificación política
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6 (0.03%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 18-88</em>
+469 (2.29%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Izquierda<br>Centro<br>Derecha<br>No se identifica
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+4081<br>4228<br>2863<br>8855
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+20.38<br>21.11<br>14.30<br>44.22
 </td>
 </tr>
 <tr>
@@ -3137,81 +3070,105 @@ numeric
 33
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-sexo
+edad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+7 (0.03%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 18-88</em>
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+34
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+sexo
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+numeric
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 Sexo del entrevistado
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6 (0.03%)
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+7 (0.03%)
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 Hombre<br>Mujer
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6978<br>10584
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+8141<br>12348
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 39.73<br>60.27
 </td>
 </tr>
 </table>
 <pre class="r"><code>#______________________________________________________________________________
-# obtain the idencuesta for wave 6
+# obtain the idencuesta for wave 7
 ids &lt;- 
   df_study1 %&gt;% 
   select(idencuesta,ola) %&gt;% 
-  filter(ola==6) %&gt;% 
+  filter(ola==7) %&gt;% 
   sjmisc::frq(idencuesta,show.na = F) %&gt;% as.data.frame()
 
 
 # filter data by the idencuesta of t5
-df_study1_long_t6 &lt;- 
+df_study1_long_t7 &lt;- 
   df_study1_long %&gt;%
   filter(idencuesta %in% ids$val)
 
-names(df_study1_long_t6)</code></pre>
+names(df_study1_long_t7)</code></pre>
 <pre><code>##  [1] &quot;idencuesta&quot;                      &quot;muestra&quot;                        
 ##  [3] &quot;ola&quot;                             &quot;comuna&quot;                         
 ##  [5] &quot;comunacod&quot;                       &quot;region_cod&quot;                     
 ##  [7] &quot;ponderador_long_total&quot;           &quot;segmento&quot;                       
 ##  [9] &quot;estrato&quot;                         &quot;part_com&quot;                       
-## [11] &quot;marchar&quot;                         &quot;barrio_ideal&quot;                   
-## [13] &quot;barrio_integrado&quot;                &quot;barrio_identifico&quot;              
-## [15] &quot;barrio_partedemi&quot;                &quot;barrio_amigos&quot;                  
-## [17] &quot;barrio_sociable&quot;                 &quot;barrio_cordial&quot;                 
-## [19] &quot;barrio_colaboradora&quot;             &quot;satisfaccion_seguridad&quot;         
-## [21] &quot;satisfaccion_conectivdad&quot;        &quot;satisfaccion_areasverdes&quot;       
-## [23] &quot;satisfaccion_limpieza&quot;           &quot;satisfaccion_proximidadtrabajo&quot; 
-## [25] &quot;satisfaccion_proximidadcolegios&quot; &quot;satisfaccion_proximidadcomercio&quot;
-## [27] &quot;satisfaccion_proximidadfamilia&quot;  &quot;educ&quot;                           
-## [29] &quot;quintil1&quot;                        &quot;ess&quot;                            
-## [31] &quot;pos_id&quot;                          &quot;edad&quot;                           
-## [33] &quot;sexo&quot;</code></pre>
-<pre class="r"><code>dim(df_study1_long_t6)</code></pre>
-<pre><code>## [1] 10368    33</code></pre>
-<pre class="r"><code>sjmisc::frq(df_study1_long_t6$ola)</code></pre>
+## [11] &quot;marchar&quot;                         &quot;perc_seguridad&quot;                 
+## [13] &quot;barrio_ideal&quot;                    &quot;barrio_integrado&quot;               
+## [15] &quot;barrio_identifico&quot;               &quot;barrio_partedemi&quot;               
+## [17] &quot;barrio_amigos&quot;                   &quot;barrio_sociable&quot;                
+## [19] &quot;barrio_cordial&quot;                  &quot;barrio_colaboradora&quot;            
+## [21] &quot;satisfaccion_seguridad&quot;          &quot;satisfaccion_conectivdad&quot;       
+## [23] &quot;satisfaccion_areasverdes&quot;        &quot;satisfaccion_limpieza&quot;          
+## [25] &quot;satisfaccion_proximidadtrabajo&quot;  &quot;satisfaccion_proximidadcolegios&quot;
+## [27] &quot;satisfaccion_proximidadcomercio&quot; &quot;satisfaccion_proximidadfamilia&quot; 
+## [29] &quot;educ&quot;                            &quot;quintil1&quot;                       
+## [31] &quot;ess&quot;                             &quot;pos_id&quot;                         
+## [33] &quot;edad&quot;                            &quot;sexo&quot;</code></pre>
+<pre class="r"><code>dim(df_study1_long_t7)</code></pre>
+<pre><code>## [1] 12159    34</code></pre>
+<pre class="r"><code>sjmisc::frq(df_study1_long_t7$ola)</code></pre>
 <pre><code>## Identificador de ola de encuesta (x) &lt;categorical&gt; 
-## # total N=10368 valid N=10368 mean=3.50 sd=1.71
+## # total N=12159 valid N=12159 mean=4.00 sd=2.00
 ## 
 ## Value |    N | Raw % | Valid % | Cum. %
 ## ---------------------------------------
-##     1 | 1728 | 16.67 |   16.67 |  16.67
-##     2 | 1728 | 16.67 |   16.67 |  33.33
-##     3 | 1728 | 16.67 |   16.67 |  50.00
-##     4 | 1728 | 16.67 |   16.67 |  66.67
-##     5 | 1728 | 16.67 |   16.67 |  83.33
-##     6 | 1728 | 16.67 |   16.67 | 100.00
+##     1 | 1737 | 14.29 |   14.29 |  14.29
+##     2 | 1737 | 14.29 |   14.29 |  28.57
+##     3 | 1737 | 14.29 |   14.29 |  42.86
+##     4 | 1737 | 14.29 |   14.29 |  57.14
+##     5 | 1737 | 14.29 |   14.29 |  71.43
+##     6 | 1737 | 14.29 |   14.29 |  85.71
+##     7 | 1737 | 14.29 |   14.29 | 100.00
 ##  &lt;NA&gt; |    0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code># SAVE DATA____________________________________________________________________
 save(df_study1_long,file = here::here(&quot;input/data-proc/df_study1_long.RData&quot;))
-save(df_study1_long_t6,file = here::here(&quot;input/data-proc/df_study1_long_t6.RData&quot;))
+save(df_study1_long_t7,file = here::here(&quot;input/data-proc/df_study1_long_t7.RData&quot;))
 save(df_study2_long,file = here::here(&quot;input/data-proc/df_study2_long.RData&quot;))
 # save codebook
 sjPlot::view_df(df_study1_long,
@@ -3290,7 +3247,7 @@ Identificador de muestra de encuesta
 Muestra Original<br>Muestra Refresco
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-17568<br>0
+20496<br>0
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 100.00<br>0.00
@@ -3312,13 +3269,13 @@ Identificador de ola de encuesta
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-1<br>2<br>3<br>4<br>5<br>6
+1<br>2<br>3<br>4<br>5<br>6<br>7
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2928<br>2928<br>2928<br>2928<br>2928<br>2928
+2928<br>2928<br>2928<br>2928<br>2928<br>2928<br>2928
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-16.67<br>16.67<br>16.67<br>16.67<br>16.67<br>16.67
+14.29<br>14.29<br>14.29<br>14.29<br>14.29<br>14.29<br>14.29
 </td>
 </tr>
 <tr>
@@ -3329,9 +3286,10 @@ Identificador de ola de encuesta
 comuna
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Comuna
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6 (0.03%)
+7 (0.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
@@ -3358,7 +3316,7 @@ comunacod
 Comuna (Codigo)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6 (0.03%)
+7 (0.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
 <em>range: 1101-16203</em>
@@ -3379,7 +3337,7 @@ region_cod
 Region (Codigo)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4319 (24.58%)
+5510 (26.88%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
 <em>range: 1-16</em>
@@ -3400,10 +3358,10 @@ ponderador_long_total
 Ponderador longitudinal (2016-2022). Muestra<br>completa
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4319 (24.58%)
+5510 (26.88%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
-<em>range: 0.0-14.9</em>
+<em>range: 0.0-16.4</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
@@ -3421,7 +3379,7 @@ segmento
 Segmento
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4319 (24.58%)
+5510 (26.88%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
 <em>range: 110101-1420411</em>
@@ -3442,7 +3400,7 @@ estrato
 Estrato muestral
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4319 (24.58%)
+5510 (26.88%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5<br>6
@@ -3452,10 +3410,10 @@ Gran Santiago<br>Gran Valparaiso<br>Gran Concepcion<br>Ciudades
 Grandes<br>Ciudades Medianas<br>Ciudades Pequennias
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3138<br>1665<br>1854<br>1921<br>2459<br>2212
+3532<br>1884<br>2088<br>2169<br>2785<br>2528
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-23.68<br>12.57<br>13.99<br>14.50<br>18.56<br>16.70
+23.57<br>12.57<br>13.93<br>14.47<br>18.58<br>16.87
 </td>
 </tr>
 <tr>
@@ -3469,7 +3427,7 @@ part_com
 Frecuencia: reuniones publicas/comunitarias
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6063 (34.51%)
+5517 (26.92%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3
@@ -3478,10 +3436,10 @@ Frecuencia: reuniones publicas/comunitarias
 Nunca lo hizo<br>Lo hizo una o dos veces<br>Lo hizo mas de dos veces
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6961<br>2408<br>2136
+9063<br>3136<br>2780
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-60.50<br>20.93<br>18.57
+60.50<br>20.94<br>18.56
 </td>
 </tr>
 <tr>
@@ -3495,7 +3453,7 @@ mbackground-color:#eeeeeehar
 Frecuencia: mbackground-color:#eeeeeehar
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4326 (24.62%)
+5517 (26.92%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3504,10 +3462,10 @@ Frecuencia: mbackground-color:#eeeeeehar
 Nunca<br>Casi nunca<br>A veces<br>Frecuentemente<br>Muy frecuentemente
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-11341<br>672<br>844<br>284<br>101
+12946<br>726<br>896<br>303<br>108
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-85.64<br>5.07<br>6.37<br>2.14<br>0.76
+86.43<br>4.85<br>5.98<br>2.02<br>0.72
 </td>
 </tr>
 <tr>
@@ -3515,26 +3473,26 @@ Nunca<br>Casi nunca<br>A veces<br>Frecuentemente<br>Muy frecuentemente
 12
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_ideal
+perc_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: Este es el barrio ideal para mi
+Percepcion de seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6065 (34.52%)
+5542 (27.04%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
-desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
+Muy inseguro<br>Inseguro<br>Ni seguro ni inseguro<br>Seguro<br>Muy
+seguro
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-437<br>1519<br>1293<br>6273<br>1981
+711<br>2202<br>2859<br>7497<br>1685
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.80<br>13.21<br>11.24<br>54.53<br>17.22
+4.75<br>14.73<br>19.12<br>50.13<br>11.27
 </td>
 </tr>
 <tr>
@@ -3542,13 +3500,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 13
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_integrado
+barrio_ideal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: Me siento integrado/a en este<br>barrio
+Grado de acuerdo: Este es el barrio ideal para mi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6068 (34.54%)
+7256 (35.40%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3558,10 +3516,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-383<br>1421<br>1374<br>6519<br>1803
+491<br>1713<br>1536<br>7250<br>2250
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.33<br>12.36<br>11.95<br>56.69<br>15.68
+3.71<br>12.94<br>11.60<br>54.76<br>16.99
 </td>
 </tr>
 <tr>
@@ -3569,13 +3527,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 14
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_identifico
+barrio_integrado
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: Me identifico con la gente de<br>este barrio
+Grado de acuerdo: Me siento integrado/a en este<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6073 (34.57%)
+7259 (35.42%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -3585,10 +3543,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-418<br>1640<br>1657<br>6139<br>1641
+427<br>1603<br>1618<br>7537<br>2052
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.64<br>14.27<br>14.41<br>53.41<br>14.28
+3.23<br>12.11<br>12.22<br>56.94<br>15.50
 </td>
 </tr>
 <tr>
@@ -3596,13 +3554,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 15
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_partedemi
+barrio_identifico
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: Este barrio es parte de mi
+Grado de acuerdo: Me identifico con la gente de<br>este barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6068 (34.54%)
+7264 (35.44%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3612,10 +3570,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-399<br>1499<br>1318<br>6365<br>1919
+462<br>1865<br>1969<br>7071<br>1865
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.47<br>13.03<br>11.46<br>55.35<br>16.69
+3.49<br>14.09<br>14.88<br>53.44<br>14.09
 </td>
 </tr>
 <tr>
@@ -3623,13 +3581,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 16
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_amigos
+barrio_partedemi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: En este barrio es facil hacer<br>amigos
+Grado de acuerdo: Este barrio es parte de mi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6117 (34.82%)
+7260 (35.42%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -3639,10 +3597,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-449<br>2334<br>2269<br>5344<br>1055
+447<br>1683<br>1561<br>7354<br>2191
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.92<br>20.38<br>19.81<br>46.67<br>9.21
+3.38<br>12.72<br>11.79<br>55.56<br>16.55
 </td>
 </tr>
 <tr>
@@ -3650,13 +3608,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 17
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_sociable
+barrio_amigos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: La gente en este barrio es<br>sociable
+Grado de acuerdo: En este barrio es facil hacer<br>amigos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6091 (34.67%)
+7314 (35.69%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3666,10 +3624,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-279<br>1567<br>2068<br>6356<br>1207
+511<br>2680<br>2636<br>6141<br>1214
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.43<br>13.65<br>18.02<br>55.38<br>10.52
+3.88<br>20.33<br>20.00<br>46.59<br>9.21
 </td>
 </tr>
 <tr>
@@ -3677,13 +3635,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 18
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_cordial
+barrio_sociable
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: La gente en este barrio es<br>cordial
+Grado de acuerdo: La gente en este barrio es<br>sociable
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6088 (34.65%)
+7285 (35.54%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -3693,10 +3651,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-229<br>1219<br>1895<br>6881<br>1256
+322<br>1788<br>2398<br>7313<br>1390
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-1.99<br>10.62<br>16.51<br>59.94<br>10.94
+2.44<br>13.53<br>18.15<br>55.36<br>10.52
 </td>
 </tr>
 <tr>
@@ -3704,13 +3662,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 19
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_colaboradora
+barrio_cordial
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: La gente en este barrio es<br>colaboradora
+Grado de acuerdo: La gente en este barrio es<br>cordial
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6207 (35.33%)
+7280 (35.52%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3720,10 +3678,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-323<br>1587<br>2252<br>5863<br>1336
+260<br>1385<br>2182<br>7944<br>1445
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.84<br>13.97<br>19.82<br>51.61<br>11.76
+1.97<br>10.48<br>16.51<br>60.11<br>10.93
 </td>
 </tr>
 <tr>
@@ -3731,26 +3689,26 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 20
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_seguridad
+barrio_colaboradora
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Seguridad del barrio
+Grado de acuerdo: La gente en este barrio es<br>colaboradora
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6064 (34.52%)
+7406 (36.13%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
-insatisfecho<br>Satisfecho<br>Totalmente satisfecho
+Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
+desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-710<br>2508<br>1802<br>5469<br>1015
+360<br>1843<br>2598<br>6748<br>1541
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6.17<br>21.80<br>15.66<br>47.54<br>8.82
+2.75<br>14.08<br>19.85<br>51.55<br>11.77
 </td>
 </tr>
 <tr>
@@ -3758,13 +3716,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 21
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_conectivdad
+satisfaccion_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Conectividad
+Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6087 (34.65%)
+8992 (43.87%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3774,10 +3732,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-373<br>1479<br>1067<br>6986<br>1576
+710<br>2508<br>1802<br>5469<br>1015
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.25<br>12.88<br>9.29<br>60.85<br>13.73
+6.17<br>21.80<br>15.66<br>47.54<br>8.82
 </td>
 </tr>
 <tr>
@@ -3785,13 +3743,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 22
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_areasverdes
+satisfaccion_conectivdad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
+Grado de satisfaccion: Conectividad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6068 (34.54%)
+9015 (43.98%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -3801,10 +3759,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-904<br>3104<br>1192<br>5285<br>1015
+373<br>1479<br>1067<br>6986<br>1576
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7.86<br>26.99<br>10.37<br>45.96<br>8.83
+3.25<br>12.88<br>9.29<br>60.85<br>13.73
 </td>
 </tr>
 <tr>
@@ -3812,13 +3770,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 23
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_limpieza
+satisfaccion_areasverdes
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Limpieza y belleza del<br>barrio
+Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6064 (34.52%)
+8996 (43.89%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3828,10 +3786,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-795<br>2772<br>1684<br>5387<br>866
+904<br>3104<br>1192<br>5285<br>1015
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6.91<br>24.10<br>14.64<br>46.83<br>7.53
+7.86<br>26.99<br>10.37<br>45.96<br>8.83
 </td>
 </tr>
 <tr>
@@ -3839,13 +3797,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 24
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadtrabajo
+satisfaccion_limpieza
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
+Grado de satisfaccion: Limpieza y belleza del<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6180 (35.18%)
+8992 (43.87%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -3855,10 +3813,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-581<br>1839<br>1404<br>6298<br>1266
+795<br>2772<br>1684<br>5387<br>866
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-5.10<br>16.15<br>12.33<br>55.30<br>11.12
+6.91<br>24.10<br>14.64<br>46.83<br>7.53
 </td>
 </tr>
 <tr>
@@ -3866,13 +3824,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 25
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadcolegios
+satisfaccion_proximidadtrabajo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
+Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6163 (35.08%)
+7398 (36.09%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3882,10 +3840,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-320<br>1520<br>1140<br>7055<br>1370
+622<br>2024<br>1594<br>7340<br>1518
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.81<br>13.33<br>10.00<br>61.86<br>12.01
+4.75<br>15.45<br>12.17<br>56.04<br>11.59
 </td>
 </tr>
 <tr>
@@ -3893,13 +3851,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 26
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadcomercio
+satisfaccion_proximidadcolegios
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad a areas de<br>comercio
+Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6071 (34.56%)
+7364 (35.93%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -3909,10 +3867,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-300<br>1557<br>953<br>6986<br>1701
+340<br>1693<br>1322<br>8167<br>1610
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2.61<br>13.54<br>8.29<br>60.76<br>14.80
+2.59<br>12.89<br>10.07<br>62.19<br>12.26
 </td>
 </tr>
 <tr>
@@ -3920,13 +3878,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 27
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadfamilia
+satisfaccion_proximidadcomercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
+Grado de satisfaccion: Proximidad a areas de<br>comercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6079 (34.60%)
+7264 (35.44%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3936,10 +3894,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-395<br>1864<br>1163<br>6727<br>1340
+325<br>1748<br>1111<br>8062<br>1986
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.44<br>16.22<br>10.12<br>58.55<br>11.66
+2.46<br>13.21<br>8.40<br>60.93<br>15.01
 </td>
 </tr>
 <tr>
@@ -3947,24 +3905,26 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 28
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-educ
+satisfaccion_proximidadfamilia
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Educación
+Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-18 (0.10%)
+9007 (43.95%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Media o menos<br>Técnica<br>Universitaria
+Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
+insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-11442<br>2898<br>3210
+395<br>1864<br>1163<br>6727<br>1340
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-65.20<br>16.51<br>18.29
+3.44<br>16.22<br>10.12<br>58.55<br>11.66
 </td>
 </tr>
 <tr>
@@ -3972,24 +3932,24 @@ Media o menos<br>Técnica<br>Universitaria
 29
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-quintil1
+educ
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Household income quintile per capita (NA)
+Educación
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6 (0.03%)
+21 (0.10%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3348<br>3348<br>3348<br>3342<br>3342<br>834
+13349<br>3381<br>3745
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-19.06<br>19.06<br>19.06<br>19.03<br>19.03<br>4.75
+65.20<br>16.51<br>18.29
 </td>
 </tr>
 <tr>
@@ -3997,20 +3957,24 @@ Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
 30
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-ess
+quintil1
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Estatus social subjetivo
+Household income quintile per capita (NA)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-78 (0.44%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 0-10</em>
+7 (0.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+3906<br>3906<br>3906<br>3899<br>3899<br>973
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+19.06<br>19.06<br>19.06<br>19.03<br>19.03<br>4.75
 </td>
 </tr>
 <tr>
@@ -4018,24 +3982,20 @@ Estatus social subjetivo
 31
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-pos_id
+ess
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Identificación política
+Estatus social subjetivo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-402 (2.29%)
+91 (0.44%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 0-10</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Izquierda<br>Centro<br>Derecha<br>No se identifica
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3498<br>3624<br>2454<br>7590
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-20.38<br>21.11<br>14.30<br>44.22
 </td>
 </tr>
 <tr>
@@ -4043,19 +4003,24 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 32
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-edad
+pos_id
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Identificación política
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+469 (2.29%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6 (0.03%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 18-88</em>
+Izquierda<br>Centro<br>Derecha<br>No se identifica
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+4081<br>4228<br>2863<br>8855
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+20.38<br>21.11<br>14.30<br>44.22
 </td>
 </tr>
 <tr>
@@ -4063,36 +4028,56 @@ edad
 33
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
+edad
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+7 (0.03%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 18-88</em>
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+34
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 sexo
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 Sexo del entrevistado
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6 (0.03%)
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+7 (0.03%)
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 Hombre<br>Mujer
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6978<br>10584
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+8141<br>12348
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 39.73<br>60.27
 </td>
 </tr>
 </table>
-<pre class="r"><code>sjPlot::view_df(df_study1_long_t6,
+<pre class="r"><code>sjPlot::view_df(df_study1_long_t7,
         show.frq = T,
         show.prc = T,
         show.na = T,
-        file = here::here(&quot;output/df_study1_long_t6.html&quot;))</code></pre>
+        file = here::here(&quot;output/df_study1_long_t7.html&quot;))</code></pre>
 <table style="border-collapse:collapse; border:none;">
 <caption>
-Data frame: df_study1_long_t6
+Data frame: df_study1_long_t7
 </caption>
 <tr>
 <th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">
@@ -4134,7 +4119,7 @@ Folio identificador de participante
 0 (0.00%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
-<em>range: 1101011-131230214</em>
+<em>range: 1101011-131230213</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
@@ -4161,7 +4146,7 @@ Identificador de muestra de encuesta
 Muestra Original<br>Muestra Refresco
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-10368<br>0
+12159<br>0
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 100.00<br>0.00
@@ -4183,13 +4168,13 @@ Identificador de ola de encuesta
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-1<br>2<br>3<br>4<br>5<br>6
+1<br>2<br>3<br>4<br>5<br>6<br>7
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-1728<br>1728<br>1728<br>1728<br>1728<br>1728
+1737<br>1737<br>1737<br>1737<br>1737<br>1737<br>1737
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-16.67<br>16.67<br>16.67<br>16.67<br>16.67<br>16.67
+14.29<br>14.29<br>14.29<br>14.29<br>14.29<br>14.29<br>14.29
 </td>
 </tr>
 <tr>
@@ -4200,6 +4185,7 @@ Identificador de ola de encuesta
 comuna
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Comuna
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 0 (0.00%)
@@ -4250,7 +4236,7 @@ region_cod
 Region (Codigo)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-595 (5.74%)
+918 (7.55%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
 <em>range: 1-16</em>
@@ -4271,10 +4257,10 @@ ponderador_long_total
 Ponderador longitudinal (2016-2022). Muestra<br>completa
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-595 (5.74%)
+918 (7.55%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
-<em>range: 0.0-14.9</em>
+<em>range: 0.0-16.4</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
@@ -4292,7 +4278,7 @@ segmento
 Segmento
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-595 (5.74%)
+918 (7.55%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
 <em>range: 110101-1420411</em>
@@ -4313,7 +4299,7 @@ estrato
 Estrato muestral
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-595 (5.74%)
+918 (7.55%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5<br>6
@@ -4323,10 +4309,10 @@ Gran Santiago<br>Gran Valparaiso<br>Gran Concepcion<br>Ciudades
 Grandes<br>Ciudades Medianas<br>Ciudades Pequennias
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2265<br>1182<br>1381<br>1455<br>1716<br>1774
+2534<br>1422<br>1533<br>1617<br>2094<br>2041
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-23.18<br>12.09<br>14.13<br>14.89<br>17.56<br>18.15
+22.54<br>12.65<br>13.64<br>14.38<br>18.63<br>18.16
 </td>
 </tr>
 <tr>
@@ -4340,7 +4326,7 @@ part_com
 Frecuencia: reuniones publicas/comunitarias
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2330 (22.47%)
+679 (5.58%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3
@@ -4349,10 +4335,10 @@ Frecuencia: reuniones publicas/comunitarias
 Nunca lo hizo<br>Lo hizo una o dos veces<br>Lo hizo mas de dos veces
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4782<br>1684<br>1572
+6870<br>2397<br>2213
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-59.49<br>20.95<br>19.56
+59.84<br>20.88<br>19.28
 </td>
 </tr>
 <tr>
@@ -4366,7 +4352,7 @@ mbackground-color:#eeeeeehar
 Frecuencia: mbackground-color:#eeeeeehar
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-598 (5.77%)
+921 (7.57%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4375,10 +4361,10 @@ Frecuencia: mbackground-color:#eeeeeehar
 Nunca<br>Casi nunca<br>A veces<br>Frecuentemente<br>Muy frecuentemente
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-8368<br>494<br>624<br>220<br>64
+9750<br>535<br>663<br>219<br>71
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-85.65<br>5.06<br>6.39<br>2.25<br>0.66
+86.76<br>4.76<br>5.90<br>1.95<br>0.63
 </td>
 </tr>
 <tr>
@@ -4386,26 +4372,26 @@ Nunca<br>Casi nunca<br>A veces<br>Frecuentemente<br>Muy frecuentemente
 12
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_ideal
+perc_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: Este es el barrio ideal para mi
+Percepcion de seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2051 (19.78%)
+937 (7.71%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
-desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
+Muy inseguro<br>Inseguro<br>Ni seguro ni inseguro<br>Seguro<br>Muy
+seguro
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-306<br>1093<br>932<br>4535<br>1451
+524<br>1647<br>2138<br>5678<br>1235
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.68<br>13.14<br>11.21<br>54.53<br>17.45
+4.67<br>14.68<br>19.05<br>50.60<br>11.01
 </td>
 </tr>
 <tr>
@@ -4413,13 +4399,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 13
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_integrado
+barrio_ideal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: Me siento integrado/a en este<br>barrio
+Grado de acuerdo: Este es el barrio ideal para mi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2052 (19.79%)
+2335 (19.20%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4429,10 +4415,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-270<br>978<br>966<br>4741<br>1361
+344<br>1257<br>1133<br>5420<br>1670
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.25<br>11.76<br>11.62<br>57.01<br>16.37
+3.50<br>12.80<br>11.53<br>55.17<br>17.00
 </td>
 </tr>
 <tr>
@@ -4440,13 +4426,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 14
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_identifico
+barrio_integrado
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: Me identifico con la gente de<br>este barrio
+Grado de acuerdo: Me siento integrado/a en este<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2055 (19.82%)
+2338 (19.23%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4456,10 +4442,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-290<br>1136<br>1183<br>4501<br>1203
+302<br>1123<br>1189<br>5641<br>1566
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.49<br>13.67<br>14.23<br>54.14<br>14.47
+3.08<br>11.43<br>12.11<br>57.44<br>15.95
 </td>
 </tr>
 <tr>
@@ -4467,13 +4453,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 15
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_partedemi
+barrio_identifico
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: Este barrio es parte de mi
+Grado de acuerdo: Me identifico con la gente de<br>este barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2050 (19.77%)
+2342 (19.26%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4483,10 +4469,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-278<br>1041<br>901<br>4676<br>1422
+334<br>1303<br>1454<br>5330<br>1396
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.34<br>12.52<br>10.83<br>56.22<br>17.10
+3.40<br>13.27<br>14.81<br>54.29<br>14.22
 </td>
 </tr>
 <tr>
@@ -4494,13 +4480,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 16
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_amigos
+barrio_partedemi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: En este barrio es facil hacer<br>amigos
+Grado de acuerdo: Este barrio es parte de mi
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2089 (20.15%)
+2337 (19.22%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4510,10 +4496,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-315<br>1638<br>1606<br>3937<br>783
+320<br>1176<br>1120<br>5558<br>1648
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-3.80<br>19.78<br>19.40<br>47.55<br>9.46
+3.26<br>11.97<br>11.40<br>56.59<br>16.78
 </td>
 </tr>
 <tr>
@@ -4521,13 +4507,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 17
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_sociable
+barrio_amigos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: La gente en este barrio es<br>sociable
+Grado de acuerdo: En este barrio es facil hacer<br>amigos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2070 (19.97%)
+2373 (19.52%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4537,10 +4523,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-196<br>1083<br>1497<br>4634<br>888
+374<br>1935<br>1928<br>4635<br>914
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.36<br>13.05<br>18.04<br>55.84<br>10.70
+3.82<br>19.77<br>19.70<br>47.36<br>9.34
 </td>
 </tr>
 <tr>
@@ -4548,13 +4534,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 18
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-barrio_cordial
+barrio_sociable
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de acuerdo: La gente en este barrio es<br>cordial
+Grado de acuerdo: La gente en este barrio es<br>sociable
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2069 (19.96%)
+2355 (19.37%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4564,10 +4550,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-157<br>864<br>1322<br>5038<br>918
+239<br>1303<br>1754<br>5487<br>1021
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-1.89<br>10.41<br>15.93<br>60.71<br>11.06
+2.44<br>13.29<br>17.89<br>55.97<br>10.41
 </td>
 </tr>
 <tr>
@@ -4575,13 +4561,13 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 19
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-barrio_colaboradora
+barrio_cordial
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de acuerdo: La gente en este barrio es<br>colaboradora
+Grado de acuerdo: La gente en este barrio es<br>cordial
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2150 (20.74%)
+2351 (19.34%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4591,10 +4577,10 @@ Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
 desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-216<br>1139<br>1603<br>4266<br>994
+184<br>1023<br>1571<br>5973<br>1057
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.63<br>13.86<br>19.51<br>51.91<br>12.10
+1.88<br>10.43<br>16.02<br>60.90<br>10.78
 </td>
 </tr>
 <tr>
@@ -4602,26 +4588,26 @@ desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 20
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_seguridad
+barrio_colaboradora
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Seguridad del barrio
+Grado de acuerdo: La gente en este barrio es<br>colaboradora
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2051 (19.78%)
+2435 (20.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
-insatisfecho<br>Satisfecho<br>Totalmente satisfecho
+Totalmente en desacuerdo<br>En desacuerdo<br>Ni de acuerdo ni en
+desacuerdo<br>De acuerdo<br>Totalmente de acuerdo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-473<br>1857<br>1333<br>3909<br>745
+251<br>1388<br>1883<br>5049<br>1153
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-5.69<br>22.33<br>16.03<br>47.00<br>8.96
+2.58<br>14.27<br>19.36<br>51.92<br>11.86
 </td>
 </tr>
 <tr>
@@ -4629,13 +4615,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 21
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_conectivdad
+satisfaccion_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Conectividad
+Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2063 (19.90%)
+4074 (33.51%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4645,10 +4631,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-261<br>1099<br>776<br>5030<br>1139
+474<br>1767<br>1285<br>3864<br>695
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.14<br>13.23<br>9.34<br>60.57<br>13.71
+5.86<br>21.86<br>15.89<br>47.79<br>8.60
 </td>
 </tr>
 <tr>
@@ -4656,13 +4642,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 22
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_areasverdes
+satisfaccion_conectivdad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
+Grado de satisfaccion: Conectividad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2050 (19.77%)
+4085 (33.60%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4672,10 +4658,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-650<br>2255<br>863<br>3788<br>762
+253<br>1048<br>781<br>4895<br>1097
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7.81<br>27.11<br>10.38<br>45.54<br>9.16
+3.13<br>12.98<br>9.67<br>60.63<br>13.59
 </td>
 </tr>
 <tr>
@@ -4683,13 +4669,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 23
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_limpieza
+satisfaccion_areasverdes
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Limpieza y belleza del<br>barrio
+Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2046 (19.73%)
+4073 (33.50%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4699,10 +4685,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-567<br>2070<br>1242<br>3814<br>629
+624<br>2215<br>820<br>3685<br>742
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6.81<br>24.87<br>14.92<br>45.83<br>7.56
+7.72<br>27.39<br>10.14<br>45.57<br>9.18
 </td>
 </tr>
 <tr>
@@ -4710,13 +4696,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 24
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadtrabajo
+satisfaccion_limpieza
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
+Grado de satisfaccion: Limpieza y belleza del<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2134 (20.58%)
+4069 (33.46%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4726,10 +4712,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-415<br>1334<br>1026<br>4541<br>918
+545<br>1999<br>1210<br>3717<br>619
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-5.04<br>16.20<br>12.46<br>55.15<br>11.15
+6.74<br>24.71<br>14.96<br>45.95<br>7.65
 </td>
 </tr>
 <tr>
@@ -4737,13 +4723,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 25
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadcolegios
+satisfaccion_proximidadtrabajo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
+Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2113 (20.38%)
+2443 (20.09%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4753,10 +4739,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-219<br>1081<br>805<br>5146<br>1004
+437<br>1448<br>1187<br>5486<br>1158
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.65<br>13.10<br>9.75<br>62.34<br>12.16
+4.50<br>14.90<br>12.22<br>56.46<br>11.92
 </td>
 </tr>
 <tr>
@@ -4764,13 +4750,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 26
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadcomercio
+satisfaccion_proximidadcolegios
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad a areas de<br>comercio
+Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2055 (19.82%)
+2414 (19.85%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4780,10 +4766,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-203<br>1123<br>684<br>5064<br>1239
+234<br>1211<br>975<br>6125<br>1200
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2.44<br>13.51<br>8.23<br>60.92<br>14.90
+2.40<br>12.43<br>10.01<br>62.85<br>12.31
 </td>
 </tr>
 <tr>
@@ -4791,13 +4777,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 27
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadfamilia
+satisfaccion_proximidadcomercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
+Grado de satisfaccion: Proximidad a areas de<br>comercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2061 (19.88%)
+2343 (19.27%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4807,10 +4793,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-278<br>1296<br>821<br>4916<br>996
+229<br>1298<br>832<br>5988<br>1469
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.35<br>15.60<br>9.88<br>59.18<br>11.99
+2.33<br>13.22<br>8.48<br>61.00<br>14.97
 </td>
 </tr>
 <tr>
@@ -4818,24 +4804,26 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 28
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-educ
+satisfaccion_proximidadfamilia
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Educación
+Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6 (0.06%)
+4083 (33.58%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Media o menos<br>Técnica<br>Universitaria
+Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
+insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6924<br>1590<br>1848
+277<br>1257<br>809<br>4776<br>957
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-66.82<br>15.34<br>17.83
+3.43<br>15.56<br>10.02<br>59.14<br>11.85
 </td>
 </tr>
 <tr>
@@ -4843,24 +4831,24 @@ Media o menos<br>Técnica<br>Universitaria
 29
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-quintil1
+educ
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Household income quintile per capita (NA)
+Educación
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-0 (0.00%)
+7 (0.06%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2148<br>2088<br>2052<br>1908<br>1752<br>420
+8239<br>1855<br>2058
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-20.72<br>20.14<br>19.79<br>18.40<br>16.90<br>4.05
+67.80<br>15.26<br>16.94
 </td>
 </tr>
 <tr>
@@ -4868,20 +4856,24 @@ Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
 30
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-ess
+quintil1
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Estatus social subjetivo
+Household income quintile per capita (NA)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-24 (0.23%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 0-10</em>
+0 (0.00%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+2618<br>2338<br>2429<br>2275<br>2002<br>497
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+21.53<br>19.23<br>19.98<br>18.71<br>16.47<br>4.09
 </td>
 </tr>
 <tr>
@@ -4889,24 +4881,20 @@ Estatus social subjetivo
 31
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-pos_id
+ess
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Identificación política
+Estatus social subjetivo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-210 (2.03%)
+28 (0.23%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 0-10</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Izquierda<br>Centro<br>Derecha<br>No se identifica
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2088<br>2172<br>1416<br>4482
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-20.56<br>21.38<br>13.94<br>44.12
 </td>
 </tr>
 <tr>
@@ -4914,19 +4902,24 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 32
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-edad
+pos_id
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Identificación política
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+217 (1.78%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-0 (0.00%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 18-78</em>
+Izquierda<br>Centro<br>Derecha<br>No se identifica
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+2492<br>2485<br>1575<br>5390
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+20.87<br>20.81<br>13.19<br>45.13
 </td>
 </tr>
 <tr>
@@ -4934,25 +4927,45 @@ edad
 33
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-sexo
+edad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Sexo del entrevistado
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 0 (0.00%)
 </td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 18-81</em>
+</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+34
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+sexo
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Sexo del entrevistado
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+0 (0.00%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 Hombre<br>Mujer
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3690<br>6678
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+4326<br>7833
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-35.59<br>64.41
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+35.58<br>64.42
 </td>
 </tr>
 </table>

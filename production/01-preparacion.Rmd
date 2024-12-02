@@ -40,46 +40,6 @@ div.tocify {
 }
 ```
 
-
-# Download data
-```{r download data, eval=FALSE, include=FALSE}
-#download and save data
-
-file.exists(here::here("input/data-original/elsoc_long.Rdata"))
-
-load(url("https://dataverse.harvard.edu/api/access/datafile/7245118")) #ELSOC
-save(elsoc_long_2016_2022.2,file = here::here("input/data-original/elsoc_long.Rdata"))
-
-#cit17<- read.table(url("https://dataverse.harvard.edu/api/access/datafile/5216836"), 
-#                   header = T, sep = "\t", fill = TRUE)
-#save(cit17,file = here::here("input/data-original/cit17.Rdata"))
-#cit18<- read.table(url("https://dataverse.harvard.edu/api/access/datafile/5216941"), 
-#                   header = T, sep = "\t", fill = TRUE)
-#save(cit18,file = here::here("input/data-original/cit18.Rdata"))
-#cit19<- read.table(url("https://dataverse.harvard.edu/api/access/datafile/5216990"), 
-#                   header = T, sep = "\t", fill = TRUE)
-#save(cit19,file = here::here("input/data-original/cit19.Rdata"))
-
-# Chilean CENSUS data (2017)____________________________________________________
-# options(timeout=100*100)
-#download.file(url = "https://github.com/jciturras/data-chile/raw/main/data/censo-2017/censo-2017.RData",
-#              destfile = here::here("input/data-original/censo17.Rdata"))
-
-# Chilean Socioeconomic Household Survey (CASEN)_______________________________
-
-# Year 2017_______________________________________________
-#download.file(url = "https://github.com/jciturras/data-chile/raw/main/data/casen-2017/casen2017.RData",
-#              destfile = here::here("input/data-original/casen17.Rdata"))
-# Year 2020_______________________________________________
-# Download the original data from:
-# http://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2020/Casen_en_Pandemia_2020_STATA.dta.zip 
-# note: we changed the original name of the file -> casen20.dta 
-#casen20 <- 
-#  haven::read_dta(file = here::here("input/data-original/casen20.dta"))
-# save the original data in R format 
-#save(casen20,file = here::here("input/data-original/casen20.Rdata"))
-```
-
 ## Individual data
 
 ```{r}
@@ -88,16 +48,16 @@ remove(list = ls()) # clean workspace
 if (!require("pacman")) install.packages("pacman") # install pacman
 # load libraries
 pacman::p_load(dplyr,readxl,sjmisc, sjlabelled, questionr, car,here)
-load(here::here("input/data-original/elsoc_long.Rdata"))
+load(here::here("input/data-original/elsoc_long_2016_2023.Rdata"))
 
-elsoc_long_2016_2022.2[elsoc_long_2016_2022.2 ==-999] <- NA
-elsoc_long_2016_2022.2[elsoc_long_2016_2022.2 ==-888] <- NA
-elsoc_long_2016_2022.2[elsoc_long_2016_2022.2 ==-777] <- NA
-elsoc_long_2016_2022.2[elsoc_long_2016_2022.2 ==-666] <- NA
+elsoc_long_2016_2023[elsoc_long_2016_2023 ==-999] <- NA
+elsoc_long_2016_2023[elsoc_long_2016_2023 ==-888] <- NA
+elsoc_long_2016_2023[elsoc_long_2016_2023 ==-777] <- NA
+elsoc_long_2016_2023[elsoc_long_2016_2023 ==-666] <- NA
 
 # Attitudes toward inmigrants__________________________________________________
-elsoc_long_2016_2022.2 <- 
-elsoc_long_2016_2022.2 %>% 
+elsoc_long_2016_2023 <- 
+elsoc_long_2016_2023 %>% 
   #create new variables
   mutate(part_com=c07_02,
          marchar=c08_02,
@@ -117,6 +77,7 @@ elsoc_long_2016_2022.2 %>%
          satisfaccion_proximidadcolegios=t06_06,
          satisfaccion_proximidadcomercio=t06_07,
          satisfaccion_proximidadfamilia=t06_08,
+         perc_seguridad=t10,
          sexo=m0_sexo,
          edad=m0_edad,
          educacion=m01,
@@ -125,154 +86,72 @@ elsoc_long_2016_2022.2 %>%
   sjlabelled::drop_labels(., drop.na = FALSE)
   
 #
-sjmisc::frq(elsoc_long_2016_2022.2$marchar)
-elsoc_long_2016_2022.2$marchar <- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$marchar, 
+sjmisc::frq(elsoc_long_2016_2023$marchar)
+elsoc_long_2016_2023$marchar <- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$marchar, 
                       label = "Frecuencia: marchar")
 
 
-sjmisc::frq(elsoc_long_2016_2022.2$part_com)
-elsoc_long_2016_2022.2$part_com <- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$part_com, 
+sjmisc::frq(elsoc_long_2016_2023$part_com)
+elsoc_long_2016_2023$part_com <- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$part_com, 
                       label = "Frecuencia: reuniones publicas/comunitarias")
 
-# #
-# elsoc_long_2016_2022.2$just_pension <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$just_pension, 
-#                       label = "Pension distributive justice")
-# 
-# #
-# elsoc_long_2016_2022.2$just_salud <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$just_salud, 
-#                       label = "Health distributive justice")
-# 
-# #
-# elsoc_long_2016_2022.2$des_perc <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$des_perc, 
-#                       label = "Income differences are too large")
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$merit_effort)
-# elsoc_long_2016_2022.2$merit_effort <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$merit_effort, 
-#                       label = "People are rewarded for their efforts")
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$merit_talent)
-# elsoc_long_2016_2022.2$merit_talent <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$merit_talent, 
-#                       label = "People are rewarded for their intelligence")
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_family)
-# elsoc_long_2016_2022.2$ahead_family <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$ahead_family, 
-#                       label = "Coming from a wealthy family") 
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_educ)
-# elsoc_long_2016_2022.2$ahead_educ <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$ahead_educ, 
-#                       label = "Having a good level of education") 
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_ambition)
-# elsoc_long_2016_2022.2$ahead_ambition <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$ahead_ambition, 
-#                       label = "Having ambition") 
-# 
-# #
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_hardwork)
-# elsoc_long_2016_2022.2$ahead_hardwork <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$ahead_hardwork, 
-#                       label = "Hard work")
-
-# for (i in c("marchar", "just_pension", "just_salud", "des_perc",
-#             "merit_effort","merit_talent",
-#             "ahead_family","ahead_educ","ahead_ambition", "ahead_hardwork")) {
-# elsoc_long_2016_2022.2[[i]] <-
-# sjlabelled::set_labels(x = elsoc_long_2016_2022.2[[i]],
-#                        labels = c("Strongly disagree","Disagree",
-#                                   "Neither disagree nor agree",
-#                                   "Agree", "Strongly agree"))
-# }
-# 
-# sjmisc::frq(elsoc_long_2016_2022.2$just_educ)
-# sjmisc::frq(elsoc_long_2016_2022.2$merit_effort)
-# sjmisc::frq(elsoc_long_2016_2022.2$merit_talent)
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_family)
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_educ)
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_ambition)
-# sjmisc::frq(elsoc_long_2016_2022.2$ahead_hardwork)
 # Socioeconomic_________________________________________________________________
 
 # Education_______________________________________
-elsoc_long_2016_2022.2$educ <- 
-  car::recode(elsoc_long_2016_2022.2$educacion,
+elsoc_long_2016_2023$educ <- 
+  car::recode(elsoc_long_2016_2023$educacion,
               "c(1,2,3,4,5)=1;c(6,7)=2;c(8,9,10)=3; c(-888,-999)=NA")
-elsoc_long_2016_2022.2$educ <-
-  factor(elsoc_long_2016_2022.2$educ,
+elsoc_long_2016_2023$educ <-
+  factor(elsoc_long_2016_2023$educ,
          labels = c("Media o menos","Técnica","Universitaria"))
 
 #reverse education, reference level is the highest level
-#elsoc_long_2016_2022.2$educ <- forcats::fct_rev(elsoc_long_2016_2022.2$educ)
+#elsoc_long_2016_2023$educ <- forcats::fct_rev(elsoc_long_2016_2023$educ)
 
-elsoc_long_2016_2022.2$educ <- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$educ,
+elsoc_long_2016_2023$educ <- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$educ,
                       label = "Educación")
-sjmisc::frq(elsoc_long_2016_2022.2$educ)
-
-#Recoding of education to years based on casen 2017.
-# elsoc_long_2016_2022.2$educyear<- as.numeric(
-#   car::recode(elsoc_long_2016_2022.2$m01, 
-#               "1=0;2=4.3;3=7.5;4=9.8;5=12.02;6=13.9;
-#                7=14.8;8=14.9;9=16.9;10=19.07;c(-888,-999)=NA", 
-#               as.numeric = T))
-
-# elsoc_long_2016_2022.2$educyear <- 
-# sjlabelled::set_label(x = elsoc_long_2016_2022.2$educyear,
-#                       label = "Education in years")
-# 
-# class(elsoc_long_2016_2022.2$educyear)
-# sjmisc::frq(elsoc_long_2016_2022.2$educyear)
+sjmisc::frq(elsoc_long_2016_2023$educ)
 
 # Household income_________________________________________
 
 #Impute midpoint of income ranges
-elsoc_long_2016_2022.2$m30_rec <-
-as.numeric(car::recode(elsoc_long_2016_2022.2$m30,
+elsoc_long_2016_2023$m30_rec <-
+as.numeric(car::recode(elsoc_long_2016_2023$m30,
            "1=110000;2=251000;3=305000;4=355000;5=400000;
             6=445000;7=490000;8=535000;9=585000;10=640000;11=700000;12=765000;
             13=845000;14=935000;15=1040000;16=1180000;17=1375000;18=1670000;
             19=2275000;20=2700000;NA=NA;c(-888,-999)=NA"))
 
 #Impute midpoint of income ranges (2021)
-elsoc_long_2016_2022.2$m30b_rec <-
-as.numeric(car::recode(elsoc_long_2016_2022.2$m30b,
+elsoc_long_2016_2023$m30b_rec <-
+as.numeric(car::recode(elsoc_long_2016_2023$m30b,
            "1=125000;2=300000;3=400000;4=575000;5=70000;NA=NA;c(-888,-999)=NA"))
 
-sjmisc::frq(elsoc_long_2016_2022.2$m30b_rec)
+sjmisc::frq(elsoc_long_2016_2023$m30b_rec)
 
 #Recode DK/DA of Income to NA
-elsoc_long_2016_2022.2$m29_rec <-
-  as.numeric(car::recode(elsoc_long_2016_2022.2$m29,"c(-888,-999)=NA"))
+elsoc_long_2016_2023$m29_rec <-
+  as.numeric(car::recode(elsoc_long_2016_2023$m29,"c(-888,-999)=NA"))
 
 #replace NA of income with new imputed variable
-elsoc_long_2016_2022.2$m29_imp <- 
-  ifelse(test = !is.na(elsoc_long_2016_2022.2$m29_rec),
-         yes =  elsoc_long_2016_2022.2$m29_rec,
-         no =  elsoc_long_2016_2022.2$m30_rec)
-summary(elsoc_long_2016_2022.2$m29_imp)
+elsoc_long_2016_2023$m29_imp <- 
+  ifelse(test = !is.na(elsoc_long_2016_2023$m29_rec),
+         yes =  elsoc_long_2016_2023$m29_rec,
+         no =  elsoc_long_2016_2023$m30_rec)
+summary(elsoc_long_2016_2023$m29_imp)
 
-elsoc_long_2016_2022.2$m29_imp <- 
-  ifelse(test = is.na(elsoc_long_2016_2022.2$m29_imp),
-         yes =  elsoc_long_2016_2022.2$m30b_rec,
-         no =  elsoc_long_2016_2022.2$m29_imp)
-summary(elsoc_long_2016_2022.2$m29_imp)
+elsoc_long_2016_2023$m29_imp <- 
+  ifelse(test = is.na(elsoc_long_2016_2023$m29_imp),
+         yes =  elsoc_long_2016_2023$m30b_rec,
+         no =  elsoc_long_2016_2023$m29_imp)
+summary(elsoc_long_2016_2023$m29_imp)
 
 # deflate at each year's prices
-elsoc_long_2016_2022.2$deflactor <-
-  with(elsoc_long_2016_2022.2, case_when(
+elsoc_long_2016_2023$deflactor <-
+  with(elsoc_long_2016_2023, case_when(
     ola == 2016 ~ 113.88 / 123.82,
     ola == 2017 ~ 116.46 / 123.82,
     ola == 2018 ~ 119.45 / 123.82,
@@ -280,114 +159,116 @@ elsoc_long_2016_2022.2$deflactor <-
   ))
 
 # N Household:
-elsoc_long_2016_2022.2 <-
-  elsoc_long_2016_2022.2 %>%
+elsoc_long_2016_2023 <-
+  elsoc_long_2016_2023 %>%
   mutate(n_hogar =
            dplyr::case_when(ola == 1 ~ nhogar1,
                             ola == 2 ~ m46_nhogar,
                             ola == 3 ~ m54,
                             ola == 4 ~ m54,
-                            ola == 5 ~ m54))
-sjmisc::frq(elsoc_long_2016_2022.2$n_hogar)
+                            ola == 5 ~ m54,
+                            ola == 6 ~ m54,
+                            ola == 7 ~ m54))
+sjmisc::frq(elsoc_long_2016_2023$n_hogar)
 
 #Recode DK/DA to NA
-elsoc_long_2016_2022.2$n_hogar_r<-
-  car::recode(elsoc_long_2016_2022.2$n_hogar,"c(-888,-999)=NA")
+elsoc_long_2016_2023$n_hogar_r<-
+  car::recode(elsoc_long_2016_2023$n_hogar,"c(-888,-999)=NA")
 
 # Per capita household income:
-elsoc_long_2016_2022.2$ing_pc <- 
-  (elsoc_long_2016_2022.2$m29_imp/elsoc_long_2016_2022.2$n_hogar_r)
+elsoc_long_2016_2023$ing_pc <- 
+  (elsoc_long_2016_2023$m29_imp/elsoc_long_2016_2023$n_hogar_r)
 
-elsoc_long_2016_2022.2$ing_pc <-
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$ing_pc,
+elsoc_long_2016_2023$ing_pc <-
+sjlabelled::set_label(x = elsoc_long_2016_2023$ing_pc,
                       label = "Ingreso per capita del hogar")  
 
-sjmisc::descr(elsoc_long_2016_2022.2$ing_pc)
+sjmisc::descr(elsoc_long_2016_2023$ing_pc)
 
 # Compute income quintiles
-elsoc_long_2016_2022.2 <- elsoc_long_2016_2022.2 %>% 
+elsoc_long_2016_2023 <- elsoc_long_2016_2023 %>% 
   group_by(ola) %>% 
   mutate(quintil = ntile(-desc(ing_pc), 5)) %>% 
   ungroup()
 
-elsoc_long_2016_2022.2$quintil <- 
-  factor(elsoc_long_2016_2022.2$quintil,
+elsoc_long_2016_2023$quintil <- 
+  factor(elsoc_long_2016_2023$quintil,
          levels = c(1, 2, 3, 4, 5),
          labels = c('Q1', 'Q2', 'Q3', 'Q4', 'Q5')) # Quintiles as factors
 
 #reverse quintile, reference level is the highest quintile
-#elsoc_long_2016_2022.2$quintil <- forcats::fct_rev(elsoc_long_2016_2022.2$quintil)
+#elsoc_long_2016_2023$quintil <- forcats::fct_rev(elsoc_long_2016_2023$quintil)
 
-elsoc_long_2016_2022.2$quintil <- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$quintil,
+elsoc_long_2016_2023$quintil <- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$quintil,
                       label = "Household income quintile per capita")  
 
-sjmisc::frq(elsoc_long_2016_2022.2$quintil)
+sjmisc::frq(elsoc_long_2016_2023$quintil)
 
 #include new quintile category with missing cases
-elsoc_long_2016_2022.2$quintil1<-
-  car::recode(elsoc_long_2016_2022.2$quintil, 
+elsoc_long_2016_2023$quintil1<-
+  car::recode(elsoc_long_2016_2023$quintil, 
               "'Q1'='Q1';'Q2'= 'Q2';'Q3'='Q3';'Q4'='Q4';'Q5'='Q5'; NA='QNA'")
 
-#elsoc_long_2016_2022.2$quintil1 <- factor(elsoc_long_2016_2022.2$quintil1, c("Q1","Q2","Q3","Q4","Q5","QNA"))
+#elsoc_long_2016_2023$quintil1 <- factor(elsoc_long_2016_2023$quintil1, c("Q1","Q2","Q3","Q4","Q5","QNA"))
 
-elsoc_long_2016_2022.2$quintil1 <- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$quintil1,
+elsoc_long_2016_2023$quintil1 <- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$quintil1,
                       label = "Household income quintile per capita (NA)") 
-sjmisc::frq(elsoc_long_2016_2022.2$quintil1)
+sjmisc::frq(elsoc_long_2016_2023$quintil1)
 
 
 #Age Ranges
-elsoc_long_2016_2022.2$edad <- as.numeric(elsoc_long_2016_2022.2$m0_edad)
+elsoc_long_2016_2023$edad <- as.numeric(elsoc_long_2016_2023$m0_edad)
 
-elsoc_long_2016_2022.2$edad_cat <- 
-  factor(car::recode(elsoc_long_2016_2022.2$m0_edad, 
+elsoc_long_2016_2023$edad_cat <- 
+  factor(car::recode(elsoc_long_2016_2023$m0_edad, 
                      "18:29=1;30:49=2;50:64=3;65:150=4"),
          labels = c('18-29', '30-49', '50-64', '65 or more'))
-elsoc_long_2016_2022.2$edad_cat <-
-  sjlabelled::set_label(elsoc_long_2016_2022.2$edad_cat, 
+elsoc_long_2016_2023$edad_cat <-
+  sjlabelled::set_label(elsoc_long_2016_2023$edad_cat, 
                         label = c("Rango etario")) 
 # Other controls______________________________________________________________
 # Subjective social status: individual ____________________________
 
-elsoc_long_2016_2022.2$ess <- 
-as.numeric(elsoc_long_2016_2022.2$d01_01)
-sjmisc::frq(elsoc_long_2016_2022.2$ess)
-#elsoc_long_2016_2022.2$ess <- sjmisc::rec(elsoc_long_2016_2022.2$ess,rec = "rev")
-#sjmisc::frq(elsoc_long_2016_2022.2$ess)
+elsoc_long_2016_2023$ess <- 
+as.numeric(elsoc_long_2016_2023$d01_01)
+sjmisc::frq(elsoc_long_2016_2023$ess)
+#elsoc_long_2016_2023$ess <- sjmisc::rec(elsoc_long_2016_2023$ess,rec = "rev")
+#sjmisc::frq(elsoc_long_2016_2023$ess)
 
-elsoc_long_2016_2022.2$ess <- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$ess,
+elsoc_long_2016_2023$ess <- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$ess,
                       label = "Estatus social subjetivo")
 
 
-sjmisc::frq(elsoc_long_2016_2022.2$ess)
-# sjPlot::plot_frq(elsoc_long_2016_2022.2$ess)
+sjmisc::frq(elsoc_long_2016_2023$ess)
+# sjPlot::plot_frq(elsoc_long_2016_2023$ess)
 
 # Political position ____________________________
-elsoc_long_2016_2022.2$pos_id <-
+elsoc_long_2016_2023$pos_id <-
 factor(
   car::recode(
-    elsoc_long_2016_2022.2$c15,
+    elsoc_long_2016_2023$c15,
     "c(11,12,-888,-999)='No se identifica';c(0,1,2,3,4)='Izquierda';
      c(5)='Centro';c(6,7,8,9,10)='Derecha'"
   ),
   levels = c('Izquierda', 'Centro', 'Derecha', 'No se identifica')
 )
 
-elsoc_long_2016_2022.2$pos_id <- factor(elsoc_long_2016_2022.2$pos_id,
-                                      levels = levels(elsoc_long_2016_2022.2$pos_id))
+elsoc_long_2016_2023$pos_id <- factor(elsoc_long_2016_2023$pos_id,
+                                      levels = levels(elsoc_long_2016_2023$pos_id))
 
-elsoc_long_2016_2022.2$pos_id <- 
-sjlabelled::set_label(x = elsoc_long_2016_2022.2$pos_id, 
+elsoc_long_2016_2023$pos_id <- 
+sjlabelled::set_label(x = elsoc_long_2016_2023$pos_id, 
                       label = "Identificación política") 
 
-sjmisc::frq(elsoc_long_2016_2022.2$pos_id)
+sjmisc::frq(elsoc_long_2016_2023$pos_id)
 
 # Select variables______________________________________________________________
 
 df_study1 <- 
-elsoc_long_2016_2022.2 %>% 
+elsoc_long_2016_2023 %>% 
   filter(muestra == 1) %>% #keep original sample (vs refresh)
   select(idencuesta,ola,region,region_cod,comuna,comunacod=comuna_cod,
          muestra,
@@ -398,6 +279,7 @@ elsoc_long_2016_2022.2 %>%
          starts_with("satisfaccion_"),
          part_com,
          marchar,
+         perc_seguridad,
          educ,#educyear,
          # ing_pc,
          # quintil,
@@ -423,61 +305,67 @@ df_study1_wide <- df_study1 %>%
                      names_from = "ola",
                      # names_prefix = c("educ","educyear","ing_pc","quintil","quintil1"),
                      values_from = names(select(df_study1,comuna,comunacod,region,region_cod,ponderador_long_total,segmento, estrato, sexo:edad)))
+## Casos austentes/ola: barrio_ideal_5, barrio_integrado_5, barrio_identifico_5, barrio_partedemi_5, barrio_amigos_5, barrio_sociable_5, barrio_cordial_5, barrio_colaboradora_5, satisfaccion_seguridad_5, satisfaccion_seguridad_7, satisfaccion_conectividad_5, satisfaccion_conectividad_7, satisfaccion_areasverdes_5, satisfaccion_areasverdes_7, satisfaccion_limpieza_5, satisfaccion_limpieza_7, satisfaccion_proximidadtrabajo_5, satisfaccion_proximidadcolegios_5, satisfaccion_proximidadcomercio_5, satisfaccion_proximidadfamilia_5, satisfaccion_proximidadfamilia_7, part_com_6
 
 # fix data to w01 values
+
 df_study1_wide$edad_2 <-df_study1_wide$edad_1 #age
 df_study1_wide$edad_3 <-df_study1_wide$edad_1
 df_study1_wide$edad_4 <-df_study1_wide$edad_1
 df_study1_wide$edad_5 <-df_study1_wide$edad_1
 df_study1_wide$edad_6 <-df_study1_wide$edad_1
+df_study1_wide$edad_7 <-df_study1_wide$edad_1
 
 df_study1_wide$sexo_2 <-df_study1_wide$sexo_1 #sex
 df_study1_wide$sexo_3 <-df_study1_wide$sexo_1
 df_study1_wide$sexo_4 <-df_study1_wide$sexo_1
 df_study1_wide$sexo_5 <-df_study1_wide$sexo_1
 df_study1_wide$sexo_6 <-df_study1_wide$sexo_1
+df_study1_wide$sexo_7 <-df_study1_wide$sexo_1
 
 df_study1_wide$educ_2 <-df_study1_wide$educ_1 #education
 df_study1_wide$educ_3 <-df_study1_wide$educ_1
 df_study1_wide$educ_4 <-df_study1_wide$educ_1
 df_study1_wide$educ_5 <-df_study1_wide$educ_1
 df_study1_wide$educ_6 <-df_study1_wide$educ_1
-
-# df_study1_wide$educyear_2 <-df_study1_wide$educyear_1 #education years
-# df_study1_wide$educyear_3 <-df_study1_wide$educyear_1
-# df_study1_wide$educyear_4 <-df_study1_wide$educyear_1
-# df_study1_wide$educyear_5 <-df_study1_wide$educyear_1
-# df_study1_wide$educyear_6 <-df_study1_wide$educyear_1
+df_study1_wide$educ_7 <-df_study1_wide$educ_1
 
 df_study1_wide$quintil1_2 <-df_study1_wide$quintil1_1 #quintiles
 df_study1_wide$quintil1_3 <-df_study1_wide$quintil1_1
 df_study1_wide$quintil1_4 <-df_study1_wide$quintil1_1
 df_study1_wide$quintil1_5 <-df_study1_wide$quintil1_1
 df_study1_wide$quintil1_6 <-df_study1_wide$quintil1_1
+df_study1_wide$quintil1_7 <-df_study1_wide$quintil1_1
 
 df_study1_wide$ess_2 <-df_study1_wide$ess_1 # subjective status
 df_study1_wide$ess_3 <-df_study1_wide$ess_1
 df_study1_wide$ess_4 <-df_study1_wide$ess_1
 df_study1_wide$ess_5 <-df_study1_wide$ess_1
 df_study1_wide$ess_6 <-df_study1_wide$ess_1
+df_study1_wide$ess_7 <-df_study1_wide$ess_1
 
 df_study1_wide$pos_id_2 <-df_study1_wide$pos_id_1 # political position
 df_study1_wide$pos_id_3 <-df_study1_wide$pos_id_1
 df_study1_wide$pos_id_4 <-df_study1_wide$pos_id_1
 df_study1_wide$pos_id_5 <-df_study1_wide$pos_id_1
 df_study1_wide$pos_id_6 <-df_study1_wide$pos_id_1
+df_study1_wide$pos_id_7 <-df_study1_wide$pos_id_1
 
 df_study1_wide$comuna_2 <-df_study1_wide$comuna_1 #comuna
 df_study1_wide$comuna_3 <-df_study1_wide$comuna_1
 df_study1_wide$comuna_4 <-df_study1_wide$comuna_1
 df_study1_wide$comuna_5 <-df_study1_wide$comuna_1
 df_study1_wide$comuna_6 <-df_study1_wide$comuna_1
+df_study1_wide$comuna_7 <-df_study1_wide$comuna_1
 
 df_study1_wide$comunacod_2 <-df_study1_wide$comunacod_1 #comuna
 df_study1_wide$comunacod_3 <-df_study1_wide$comunacod_1
 df_study1_wide$comunacod_4 <-df_study1_wide$comunacod_1
 df_study1_wide$comunacod_5 <-df_study1_wide$comunacod_1
 df_study1_wide$comunacod_6 <-df_study1_wide$comunacod_1
+df_study1_wide$comunacod_7 <-df_study1_wide$comunacod_1
+
+df_study1_wide$part_com_6 <- df_study1_wide$part_com_7
 
 dim(df_study1_wide)
 
@@ -494,7 +382,7 @@ df_study1_long <- data.table::melt.data.table(data.table::setDT(df_study1_wide),
               variable.name = c("ola"),
               measure = patterns("^comuna_","^comunacod_", "^region_cod_", 
                                  "^ponderador_long_total_", "^segmento_", "^estrato_",
-                                 "^part_com", "^marchar_",
+                                 "^part_com", "^marchar_", "^perc_seguridad_",
                                  "^barrio_ideal_", "^barrio_integrado_", "^barrio_identifico_", "^barrio_partedemi_",
                                  "^barrio_amigos_","^barrio_sociable_", "^barrio_cordial_", "^barrio_colaboradora_",
                                  "^satisfaccion_seguridad_", "^satisfaccion_conectivdad_", "^satisfaccion_areasverdes_", "^satisfaccion_limpieza_",
@@ -505,7 +393,7 @@ df_study1_long <- data.table::melt.data.table(data.table::setDT(df_study1_wide),
                                  ),
               value.name = c("comuna","comunacod", "region_cod", 
                              "ponderador_long_total","segmento","estrato",
-                             "part_com", "marchar", 
+                             "part_com", "marchar", "perc_seguridad",
                              "barrio_ideal","barrio_integrado", "barrio_identifico", "barrio_partedemi",
                              "barrio_amigos","barrio_sociable", "barrio_cordial", "barrio_colaboradora",
                              "satisfaccion_seguridad", "satisfaccion_conectivdad", "satisfaccion_areasverdes", "satisfaccion_limpieza",
@@ -537,26 +425,26 @@ sjPlot::view_df(df_study1_long,
                 show.frq = T,show.values = T,show.na = T,show.prc = T,
                 show.type = T)
 #______________________________________________________________________________
-# obtain the idencuesta for wave 6
+# obtain the idencuesta for wave 7
 ids <- 
   df_study1 %>% 
   select(idencuesta,ola) %>% 
-  filter(ola==6) %>% 
+  filter(ola==7) %>% 
   sjmisc::frq(idencuesta,show.na = F) %>% as.data.frame()
 
 
 # filter data by the idencuesta of t5
-df_study1_long_t6 <- 
+df_study1_long_t7 <- 
   df_study1_long %>%
   filter(idencuesta %in% ids$val)
 
-names(df_study1_long_t6)
-dim(df_study1_long_t6)
-sjmisc::frq(df_study1_long_t6$ola)
+names(df_study1_long_t7)
+dim(df_study1_long_t7)
+sjmisc::frq(df_study1_long_t7$ola)
 
 # SAVE DATA____________________________________________________________________
 save(df_study1_long,file = here::here("input/data-proc/df_study1_long.RData"))
-save(df_study1_long_t6,file = here::here("input/data-proc/df_study1_long_t6.RData"))
+save(df_study1_long_t7,file = here::here("input/data-proc/df_study1_long_t7.RData"))
 save(df_study2_long,file = here::here("input/data-proc/df_study2_long.RData"))
 # save codebook
 sjPlot::view_df(df_study1_long,
@@ -565,10 +453,10 @@ sjPlot::view_df(df_study1_long,
         show.na = T,
         file = here::here("output/df_study1_long.html"))
 
-sjPlot::view_df(df_study1_long_t6,
+sjPlot::view_df(df_study1_long_t7,
         show.frq = T,
         show.prc = T,
         show.na = T,
-        file = here::here("output/df_study1_long_t6.html"))
+        file = here::here("output/df_study1_long_t7.html"))
 ```
 
