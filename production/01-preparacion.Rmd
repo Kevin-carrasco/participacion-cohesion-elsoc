@@ -79,6 +79,7 @@ elsoc_long_2016_2023 %>%
          satisfaccion_proximidadfamilia=t06_08,
          jjvv=c12_01,
          org_religiosa=c12_02,
+         org_caridad=c12_06,
          org_deportiva=c12_07,
          perc_seguridad=t10,
          sexo=m0_sexo,
@@ -274,12 +275,14 @@ elsoc_long_2016_2023 <- elsoc_long_2016_2023 %>%
     # Calcular el promedio longitudinal inicial por persona excluyendo NAs
     jjvv_prom = mean(jjvv, na.rm = TRUE),
     org_religiosa_prom = mean(org_religiosa, na.rm = TRUE),
+    org_caridad_prom = mean(org_caridad, na.rm = TRUE),
     org_deportiva_prom = mean(org_deportiva, na.rm = TRUE),
     
     # Asegurar que el promedio longitudinal no sea NA
     jjvv_prom = ifelse(is.na(jjvv_prom), mean(jjvv, na.rm = TRUE), jjvv_prom),
     org_religiosa_prom = ifelse(is.na(org_religiosa_prom), mean(org_religiosa, na.rm = TRUE), org_religiosa_prom),
-    org_deportiva_prom = ifelse(is.na(org_deportiva_prom), mean(org_deportiva, na.rm = TRUE), org_deportiva_prom)
+    org_caridad_prom = ifelse(is.na(org_caridad_prom), mean(org_caridad, na.rm = TRUE), org_caridad_prom),
+    org_deportiva_prom = ifelse(is.na(org_deportiva_prom), mean(org_deportiva, na.rm = TRUE), org_deportiva_prom),
   ) %>% 
   ungroup()
 ```
@@ -300,6 +303,7 @@ elsoc_long_2016_2023 %>%
          starts_with("satisfaccion_"),
          jjvv_prom,
          org_religiosa_prom,
+         org_caridad_prom,
          org_deportiva_prom,
          part_com,
          marchar,
@@ -411,7 +415,7 @@ df_study1_long <- data.table::melt.data.table(data.table::setDT(df_study1_wide),
                                  "^part_com", "^marchar_", "^perc_seguridad_",
                                  "^barrio_ideal_", "^barrio_integrado_", "^barrio_identifico_", "^barrio_partedemi_",
                                  "^barrio_amigos_","^barrio_sociable_", "^barrio_cordial_", "^barrio_colaboradora_",
-                                 "^jjvv_prom_", "^org_religiosa_prom_", "^org_deportiva_prom_", 
+                                 "^jjvv_prom_", "^org_religiosa_prom_", "^org_caridad_prom_", "^org_deportiva_prom_", 
                                  "^satisfaccion_seguridad_", "^satisfaccion_conectivdad_", "^satisfaccion_areasverdes_", "^satisfaccion_limpieza_",
                                  "^satisfaccion_proximidadtrabajo_", "^satisfaccion_proximidadcolegios_", "^satisfaccion_proximidadcomercio_", "^satisfaccion_proximidadfamilia_",
                                  "^educ_", "^quintil1_","^ess_",
@@ -423,7 +427,7 @@ df_study1_long <- data.table::melt.data.table(data.table::setDT(df_study1_wide),
                              "part_com", "marchar", "perc_seguridad",
                              "barrio_ideal","barrio_integrado", "barrio_identifico", "barrio_partedemi",
                              "barrio_amigos","barrio_sociable", "barrio_cordial", "barrio_colaboradora",
-                             "jjvv_prom", "org_religiosa_prom", "org_deportiva_prom",
+                             "jjvv_prom", "org_religiosa_prom", "org_caridad_prom", "org_deportiva_prom",
                              "satisfaccion_seguridad", "satisfaccion_conectivdad", "satisfaccion_areasverdes", "satisfaccion_limpieza",
                              "satisfaccion_proximidadtrabajo", "satisfaccion_proximidadcolegios", "satisfaccion_proximidadcomercio", "satisfaccion_proximidadfamilia",
                              "educ","quintil1","ess",

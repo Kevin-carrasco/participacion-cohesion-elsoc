@@ -1566,7 +1566,7 @@ border-radius: 0px;
 
 
 <h1 class="title toc-ignore">Preparación de datos</h1>
-<h4 class="date">lunes 09 diciembre 2024 13:00:29</h4>
+<h4 class="date">viernes 13 diciembre 2024 22:56:23</h4>
 
 </div>
 
@@ -1631,6 +1631,7 @@ elsoc_long_2016_2023 %&gt;%
          satisfaccion_proximidadfamilia=t06_08,
          jjvv=c12_01,
          org_religiosa=c12_02,
+         org_caridad=c12_06,
          org_deportiva=c12_07,
          perc_seguridad=t10,
          sexo=m0_sexo,
@@ -1955,12 +1956,14 @@ sjmisc::frq(elsoc_long_2016_2023$pos_id)</code></pre>
     # Calcular el promedio longitudinal inicial por persona excluyendo NAs
     jjvv_prom = mean(jjvv, na.rm = TRUE),
     org_religiosa_prom = mean(org_religiosa, na.rm = TRUE),
+    org_caridad_prom = mean(org_caridad, na.rm = TRUE),
     org_deportiva_prom = mean(org_deportiva, na.rm = TRUE),
     
     # Asegurar que el promedio longitudinal no sea NA
     jjvv_prom = ifelse(is.na(jjvv_prom), mean(jjvv, na.rm = TRUE), jjvv_prom),
     org_religiosa_prom = ifelse(is.na(org_religiosa_prom), mean(org_religiosa, na.rm = TRUE), org_religiosa_prom),
-    org_deportiva_prom = ifelse(is.na(org_deportiva_prom), mean(org_deportiva, na.rm = TRUE), org_deportiva_prom)
+    org_caridad_prom = ifelse(is.na(org_caridad_prom), mean(org_caridad, na.rm = TRUE), org_caridad_prom),
+    org_deportiva_prom = ifelse(is.na(org_deportiva_prom), mean(org_deportiva, na.rm = TRUE), org_deportiva_prom),
   ) %&gt;% 
   ungroup()</code></pre>
 <pre class="r"><code># Select variables______________________________________________________________
@@ -1977,6 +1980,7 @@ elsoc_long_2016_2023 %&gt;%
          starts_with(&quot;satisfaccion_&quot;),
          jjvv_prom,
          org_religiosa_prom,
+         org_caridad_prom,
          org_deportiva_prom,
          part_com,
          marchar,
@@ -2090,7 +2094,7 @@ sjmisc::frq(df_study1_wide$jjvv_prom_7)</code></pre>
 ##  3.00 |   82 |  2.80 |    4.72 | 100.00
 ##  &lt;NA&gt; | 1191 | 40.68 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
 <pre class="r"><code>dim(df_study1_wide)</code></pre>
-<pre><code>## [1] 2928  247</code></pre>
+<pre><code>## [1] 2928  254</code></pre>
 <pre class="r"><code># sjPlot::view_df(df_study1_wide,
 #                 show.frq = T,show.values = T,show.na = T,show.prc = T, show.type = T)</code></pre>
 <pre class="r"><code># reshape from long to wide
@@ -2103,7 +2107,7 @@ df_study1_long &lt;- data.table::melt.data.table(data.table::setDT(df_study1_wid
                                  &quot;^part_com&quot;, &quot;^marchar_&quot;, &quot;^perc_seguridad_&quot;,
                                  &quot;^barrio_ideal_&quot;, &quot;^barrio_integrado_&quot;, &quot;^barrio_identifico_&quot;, &quot;^barrio_partedemi_&quot;,
                                  &quot;^barrio_amigos_&quot;,&quot;^barrio_sociable_&quot;, &quot;^barrio_cordial_&quot;, &quot;^barrio_colaboradora_&quot;,
-                                 &quot;^jjvv_prom_&quot;, &quot;^org_religiosa_prom_&quot;, &quot;^org_deportiva_prom_&quot;, 
+                                 &quot;^jjvv_prom_&quot;, &quot;^org_religiosa_prom_&quot;, &quot;^org_caridad_prom_&quot;, &quot;^org_deportiva_prom_&quot;, 
                                  &quot;^satisfaccion_seguridad_&quot;, &quot;^satisfaccion_conectivdad_&quot;, &quot;^satisfaccion_areasverdes_&quot;, &quot;^satisfaccion_limpieza_&quot;,
                                  &quot;^satisfaccion_proximidadtrabajo_&quot;, &quot;^satisfaccion_proximidadcolegios_&quot;, &quot;^satisfaccion_proximidadcomercio_&quot;, &quot;^satisfaccion_proximidadfamilia_&quot;,
                                  &quot;^educ_&quot;, &quot;^quintil1_&quot;,&quot;^ess_&quot;,
@@ -2115,7 +2119,7 @@ df_study1_long &lt;- data.table::melt.data.table(data.table::setDT(df_study1_wid
                              &quot;part_com&quot;, &quot;marchar&quot;, &quot;perc_seguridad&quot;,
                              &quot;barrio_ideal&quot;,&quot;barrio_integrado&quot;, &quot;barrio_identifico&quot;, &quot;barrio_partedemi&quot;,
                              &quot;barrio_amigos&quot;,&quot;barrio_sociable&quot;, &quot;barrio_cordial&quot;, &quot;barrio_colaboradora&quot;,
-                             &quot;jjvv_prom&quot;, &quot;org_religiosa_prom&quot;, &quot;org_deportiva_prom&quot;,
+                             &quot;jjvv_prom&quot;, &quot;org_religiosa_prom&quot;, &quot;org_caridad_prom&quot;, &quot;org_deportiva_prom&quot;,
                              &quot;satisfaccion_seguridad&quot;, &quot;satisfaccion_conectivdad&quot;, &quot;satisfaccion_areasverdes&quot;, &quot;satisfaccion_limpieza&quot;,
                              &quot;satisfaccion_proximidadtrabajo&quot;, &quot;satisfaccion_proximidadcolegios&quot;, &quot;satisfaccion_proximidadcomercio&quot;, &quot;satisfaccion_proximidadfamilia&quot;,
                              &quot;educ&quot;,&quot;quintil1&quot;,&quot;ess&quot;,
@@ -2136,16 +2140,16 @@ names(df_study1_long) #check names of long dataset</code></pre>
 ## [17] &quot;barrio_amigos&quot;                   &quot;barrio_sociable&quot;                
 ## [19] &quot;barrio_cordial&quot;                  &quot;barrio_colaboradora&quot;            
 ## [21] &quot;jjvv_prom&quot;                       &quot;org_religiosa_prom&quot;             
-## [23] &quot;org_deportiva_prom&quot;              &quot;satisfaccion_seguridad&quot;         
-## [25] &quot;satisfaccion_conectivdad&quot;        &quot;satisfaccion_areasverdes&quot;       
-## [27] &quot;satisfaccion_limpieza&quot;           &quot;satisfaccion_proximidadtrabajo&quot; 
-## [29] &quot;satisfaccion_proximidadcolegios&quot; &quot;satisfaccion_proximidadcomercio&quot;
-## [31] &quot;satisfaccion_proximidadfamilia&quot;  &quot;educ&quot;                           
-## [33] &quot;quintil1&quot;                        &quot;ess&quot;                            
-## [35] &quot;pos_id&quot;                          &quot;edad&quot;                           
-## [37] &quot;sexo&quot;</code></pre>
+## [23] &quot;org_caridad_prom&quot;                &quot;org_deportiva_prom&quot;             
+## [25] &quot;satisfaccion_seguridad&quot;          &quot;satisfaccion_conectivdad&quot;       
+## [27] &quot;satisfaccion_areasverdes&quot;        &quot;satisfaccion_limpieza&quot;          
+## [29] &quot;satisfaccion_proximidadtrabajo&quot;  &quot;satisfaccion_proximidadcolegios&quot;
+## [31] &quot;satisfaccion_proximidadcomercio&quot; &quot;satisfaccion_proximidadfamilia&quot; 
+## [33] &quot;educ&quot;                            &quot;quintil1&quot;                       
+## [35] &quot;ess&quot;                             &quot;pos_id&quot;                         
+## [37] &quot;edad&quot;                            &quot;sexo&quot;</code></pre>
 <pre class="r"><code>dim(df_study1_long) #check dimensions of the dataframe</code></pre>
-<pre><code>## [1] 20496    37</code></pre>
+<pre><code>## [1] 20496    38</code></pre>
 <pre class="r"><code># Original dataset with 6 waves
 df_study2_long &lt;- df_study1_long
 
@@ -2813,7 +2817,7 @@ numeric
 23
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-org_deportiva_prom
+org_caridad_prom
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
@@ -2821,7 +2825,7 @@ numeric
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-5511 (26.89%)
+5513 (26.90%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
 <em>range: 1.0-3.0</em>
@@ -2836,29 +2840,22 @@ numeric
 24
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_seguridad
+org_deportiva_prom
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7265 (35.45%)
+5511 (26.89%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
+<em>range: 1.0-3.0</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
-insatisfecho<br>Satisfecho<br>Totalmente satisfecho
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-794<br>2902<br>2116<br>6287<br>1132
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6.00<br>21.93<br>15.99<br>47.52<br>8.56
 </td>
 </tr>
 <tr>
@@ -2866,16 +2863,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 25
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_conectivdad
+satisfaccion_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Conectividad
+Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-9015 (43.98%)
+7265 (35.45%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2885,10 +2882,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-373<br>1479<br>1067<br>6986<br>1576
+794<br>2902<br>2116<br>6287<br>1132
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.25<br>12.88<br>9.29<br>60.85<br>13.73
+6.00<br>21.93<br>15.99<br>47.52<br>8.56
 </td>
 </tr>
 <tr>
@@ -2896,16 +2893,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 26
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_areasverdes
+satisfaccion_conectivdad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
+Grado de satisfaccion: Conectividad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-8996 (43.89%)
+9015 (43.98%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -2915,10 +2912,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-904<br>3104<br>1192<br>5285<br>1015
+373<br>1479<br>1067<br>6986<br>1576
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7.86<br>26.99<br>10.37<br>45.96<br>8.83
+3.25<br>12.88<br>9.29<br>60.85<br>13.73
 </td>
 </tr>
 <tr>
@@ -2926,16 +2923,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 27
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_limpieza
+satisfaccion_areasverdes
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Limpieza y belleza del<br>barrio
+Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-8992 (43.87%)
+8996 (43.89%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -2945,10 +2942,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-795<br>2772<br>1684<br>5387<br>866
+904<br>3104<br>1192<br>5285<br>1015
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6.91<br>24.10<br>14.64<br>46.83<br>7.53
+7.86<br>26.99<br>10.37<br>45.96<br>8.83
 </td>
 </tr>
 <tr>
@@ -2956,16 +2953,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 28
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadtrabajo
+satisfaccion_limpieza
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
+Grado de satisfaccion: Limpieza y belleza del<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7398 (36.09%)
+8992 (43.87%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -2975,10 +2972,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-622<br>2024<br>1594<br>7340<br>1518
+795<br>2772<br>1684<br>5387<br>866
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4.75<br>15.45<br>12.17<br>56.04<br>11.59
+6.91<br>24.10<br>14.64<br>46.83<br>7.53
 </td>
 </tr>
 <tr>
@@ -2986,16 +2983,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 29
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadcolegios
+satisfaccion_proximidadtrabajo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
+Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-7364 (35.93%)
+7398 (36.09%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3005,10 +3002,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-340<br>1693<br>1322<br>8167<br>1610
+622<br>2024<br>1594<br>7340<br>1518
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.59<br>12.89<br>10.07<br>62.19<br>12.26
+4.75<br>15.45<br>12.17<br>56.04<br>11.59
 </td>
 </tr>
 <tr>
@@ -3016,16 +3013,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 30
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadcomercio
+satisfaccion_proximidadcolegios
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad a areas de<br>comercio
+Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7264 (35.44%)
+7364 (35.93%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -3035,10 +3032,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-325<br>1748<br>1111<br>8062<br>1986
+340<br>1693<br>1322<br>8167<br>1610
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2.46<br>13.21<br>8.40<br>60.93<br>15.01
+2.59<br>12.89<br>10.07<br>62.19<br>12.26
 </td>
 </tr>
 <tr>
@@ -3046,16 +3043,16 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 31
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadfamilia
+satisfaccion_proximidadcomercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
+Grado de satisfaccion: Proximidad a areas de<br>comercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-9007 (43.95%)
+7264 (35.44%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3065,10 +3062,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-395<br>1864<br>1163<br>6727<br>1340
+325<br>1748<br>1111<br>8062<br>1986
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.44<br>16.22<br>10.12<br>58.55<br>11.66
+2.46<br>13.21<br>8.40<br>60.93<br>15.01
 </td>
 </tr>
 <tr>
@@ -3076,27 +3073,29 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 32
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-educ
+satisfaccion_proximidadfamilia
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-categorical
+numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Educación
+Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-21 (0.10%)
+9007 (43.95%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Media o menos<br>Técnica<br>Universitaria
+Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
+insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-13349<br>3381<br>3745
+395<br>1864<br>1163<br>6727<br>1340
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-65.20<br>16.51<br>18.29
+3.44<br>16.22<br>10.12<br>58.55<br>11.66
 </td>
 </tr>
 <tr>
@@ -3104,27 +3103,27 @@ Media o menos<br>Técnica<br>Universitaria
 33
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-quintil1
+educ
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 categorical
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Household income quintile per capita (NA)
+Educación
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-7 (0.03%)
+21 (0.10%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3906<br>3906<br>3906<br>3899<br>3899<br>973
+13349<br>3381<br>3745
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-19.06<br>19.06<br>19.06<br>19.03<br>19.03<br>4.75
+65.20<br>16.51<br>18.29
 </td>
 </tr>
 <tr>
@@ -3132,23 +3131,27 @@ Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
 34
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-ess
+quintil1
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-numeric
+categorical
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Estatus social subjetivo
+Household income quintile per capita (NA)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-91 (0.44%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 0-10</em>
+7 (0.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+3906<br>3906<br>3906<br>3899<br>3899<br>973
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+19.06<br>19.06<br>19.06<br>19.03<br>19.03<br>4.75
 </td>
 </tr>
 <tr>
@@ -3156,27 +3159,23 @@ Estatus social subjetivo
 35
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-pos_id
+ess
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-categorical
+numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Identificación política
+Estatus social subjetivo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-469 (2.29%)
+91 (0.44%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 0-10</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Izquierda<br>Centro<br>Derecha<br>No se identifica
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4081<br>4228<br>2863<br>8855
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-20.38<br>21.11<br>14.30<br>44.22
 </td>
 </tr>
 <tr>
@@ -3184,22 +3183,27 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 36
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-edad
+pos_id
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-numeric
+categorical
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Identificación política
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7 (0.03%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 18-88</em>
+469 (2.29%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Izquierda<br>Centro<br>Derecha<br>No se identifica
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+4081<br>4228<br>2863<br>8855
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+20.38<br>21.11<br>14.30<br>44.22
 </td>
 </tr>
 <tr>
@@ -3207,27 +3211,50 @@ numeric
 37
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-sexo
+edad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 numeric
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Sexo del entrevistado
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 7 (0.03%)
 </td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 18-88</em>
+</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+38
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+sexo
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+numeric
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Sexo del entrevistado
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+7 (0.03%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 Hombre<br>Mujer
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 8141<br>12348
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 39.73<br>60.27
 </td>
 </tr>
@@ -3258,16 +3285,16 @@ names(df_study1_long_t7)</code></pre>
 ## [17] &quot;barrio_amigos&quot;                   &quot;barrio_sociable&quot;                
 ## [19] &quot;barrio_cordial&quot;                  &quot;barrio_colaboradora&quot;            
 ## [21] &quot;jjvv_prom&quot;                       &quot;org_religiosa_prom&quot;             
-## [23] &quot;org_deportiva_prom&quot;              &quot;satisfaccion_seguridad&quot;         
-## [25] &quot;satisfaccion_conectivdad&quot;        &quot;satisfaccion_areasverdes&quot;       
-## [27] &quot;satisfaccion_limpieza&quot;           &quot;satisfaccion_proximidadtrabajo&quot; 
-## [29] &quot;satisfaccion_proximidadcolegios&quot; &quot;satisfaccion_proximidadcomercio&quot;
-## [31] &quot;satisfaccion_proximidadfamilia&quot;  &quot;educ&quot;                           
-## [33] &quot;quintil1&quot;                        &quot;ess&quot;                            
-## [35] &quot;pos_id&quot;                          &quot;edad&quot;                           
-## [37] &quot;sexo&quot;</code></pre>
+## [23] &quot;org_caridad_prom&quot;                &quot;org_deportiva_prom&quot;             
+## [25] &quot;satisfaccion_seguridad&quot;          &quot;satisfaccion_conectivdad&quot;       
+## [27] &quot;satisfaccion_areasverdes&quot;        &quot;satisfaccion_limpieza&quot;          
+## [29] &quot;satisfaccion_proximidadtrabajo&quot;  &quot;satisfaccion_proximidadcolegios&quot;
+## [31] &quot;satisfaccion_proximidadcomercio&quot; &quot;satisfaccion_proximidadfamilia&quot; 
+## [33] &quot;educ&quot;                            &quot;quintil1&quot;                       
+## [35] &quot;ess&quot;                             &quot;pos_id&quot;                         
+## [37] &quot;edad&quot;                            &quot;sexo&quot;</code></pre>
 <pre class="r"><code>dim(df_study1_long_t7)</code></pre>
-<pre><code>## [1] 12159    37</code></pre>
+<pre><code>## [1] 12159    38</code></pre>
 <pre class="r"><code>sjmisc::frq(df_study1_long_t7$ola)</code></pre>
 <pre><code>## Identificador de ola de encuesta (x) &lt;categorical&gt; 
 ## # total N=12159 valid N=12159 mean=4.00 sd=2.00
@@ -3872,12 +3899,12 @@ org_religiosa_prom
 23
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-org_deportiva_prom
+org_caridad_prom
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-5511 (26.89%)
+5513 (26.90%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
 <em>range: 1.0-3.0</em>
@@ -3892,26 +3919,19 @@ org_deportiva_prom
 24
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_seguridad
+org_deportiva_prom
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7265 (35.45%)
+5511 (26.89%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
+<em>range: 1.0-3.0</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
-insatisfecho<br>Satisfecho<br>Totalmente satisfecho
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-794<br>2902<br>2116<br>6287<br>1132
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-6.00<br>21.93<br>15.99<br>47.52<br>8.56
 </td>
 </tr>
 <tr>
@@ -3919,13 +3939,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 25
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_conectivdad
+satisfaccion_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Conectividad
+Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-9015 (43.98%)
+7265 (35.45%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3935,10 +3955,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-373<br>1479<br>1067<br>6986<br>1576
+794<br>2902<br>2116<br>6287<br>1132
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.25<br>12.88<br>9.29<br>60.85<br>13.73
+6.00<br>21.93<br>15.99<br>47.52<br>8.56
 </td>
 </tr>
 <tr>
@@ -3946,13 +3966,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 26
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_areasverdes
+satisfaccion_conectivdad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
+Grado de satisfaccion: Conectividad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-8996 (43.89%)
+9015 (43.98%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -3962,10 +3982,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-904<br>3104<br>1192<br>5285<br>1015
+373<br>1479<br>1067<br>6986<br>1576
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7.86<br>26.99<br>10.37<br>45.96<br>8.83
+3.25<br>12.88<br>9.29<br>60.85<br>13.73
 </td>
 </tr>
 <tr>
@@ -3973,13 +3993,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 27
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_limpieza
+satisfaccion_areasverdes
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Limpieza y belleza del<br>barrio
+Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-8992 (43.87%)
+8996 (43.89%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -3989,10 +4009,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-795<br>2772<br>1684<br>5387<br>866
+904<br>3104<br>1192<br>5285<br>1015
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6.91<br>24.10<br>14.64<br>46.83<br>7.53
+7.86<br>26.99<br>10.37<br>45.96<br>8.83
 </td>
 </tr>
 <tr>
@@ -4000,13 +4020,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 28
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadtrabajo
+satisfaccion_limpieza
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
+Grado de satisfaccion: Limpieza y belleza del<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7398 (36.09%)
+8992 (43.87%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4016,10 +4036,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-622<br>2024<br>1594<br>7340<br>1518
+795<br>2772<br>1684<br>5387<br>866
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4.75<br>15.45<br>12.17<br>56.04<br>11.59
+6.91<br>24.10<br>14.64<br>46.83<br>7.53
 </td>
 </tr>
 <tr>
@@ -4027,13 +4047,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 29
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadcolegios
+satisfaccion_proximidadtrabajo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
+Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-7364 (35.93%)
+7398 (36.09%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4043,10 +4063,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-340<br>1693<br>1322<br>8167<br>1610
+622<br>2024<br>1594<br>7340<br>1518
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.59<br>12.89<br>10.07<br>62.19<br>12.26
+4.75<br>15.45<br>12.17<br>56.04<br>11.59
 </td>
 </tr>
 <tr>
@@ -4054,13 +4074,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 30
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadcomercio
+satisfaccion_proximidadcolegios
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad a areas de<br>comercio
+Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7264 (35.44%)
+7364 (35.93%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4070,10 +4090,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-325<br>1748<br>1111<br>8062<br>1986
+340<br>1693<br>1322<br>8167<br>1610
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2.46<br>13.21<br>8.40<br>60.93<br>15.01
+2.59<br>12.89<br>10.07<br>62.19<br>12.26
 </td>
 </tr>
 <tr>
@@ -4081,13 +4101,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 31
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadfamilia
+satisfaccion_proximidadcomercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
+Grado de satisfaccion: Proximidad a areas de<br>comercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-9007 (43.95%)
+7264 (35.44%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4097,10 +4117,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-395<br>1864<br>1163<br>6727<br>1340
+325<br>1748<br>1111<br>8062<br>1986
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.44<br>16.22<br>10.12<br>58.55<br>11.66
+2.46<br>13.21<br>8.40<br>60.93<br>15.01
 </td>
 </tr>
 <tr>
@@ -4108,24 +4128,26 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 32
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-educ
+satisfaccion_proximidadfamilia
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Educación
+Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-21 (0.10%)
+9007 (43.95%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Media o menos<br>Técnica<br>Universitaria
+Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
+insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-13349<br>3381<br>3745
+395<br>1864<br>1163<br>6727<br>1340
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-65.20<br>16.51<br>18.29
+3.44<br>16.22<br>10.12<br>58.55<br>11.66
 </td>
 </tr>
 <tr>
@@ -4133,24 +4155,24 @@ Media o menos<br>Técnica<br>Universitaria
 33
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-quintil1
+educ
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Household income quintile per capita (NA)
+Educación
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-7 (0.03%)
+21 (0.10%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3906<br>3906<br>3906<br>3899<br>3899<br>973
+13349<br>3381<br>3745
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-19.06<br>19.06<br>19.06<br>19.03<br>19.03<br>4.75
+65.20<br>16.51<br>18.29
 </td>
 </tr>
 <tr>
@@ -4158,20 +4180,24 @@ Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
 34
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-ess
+quintil1
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Estatus social subjetivo
+Household income quintile per capita (NA)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-91 (0.44%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 0-10</em>
+7 (0.03%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+3906<br>3906<br>3906<br>3899<br>3899<br>973
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+19.06<br>19.06<br>19.06<br>19.03<br>19.03<br>4.75
 </td>
 </tr>
 <tr>
@@ -4179,24 +4205,20 @@ Estatus social subjetivo
 35
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-pos_id
+ess
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Identificación política
+Estatus social subjetivo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-469 (2.29%)
+91 (0.44%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 0-10</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Izquierda<br>Centro<br>Derecha<br>No se identifica
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4081<br>4228<br>2863<br>8855
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-20.38<br>21.11<br>14.30<br>44.22
 </td>
 </tr>
 <tr>
@@ -4204,19 +4226,24 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 36
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-edad
+pos_id
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Identificación política
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+469 (2.29%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7 (0.03%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 18-88</em>
+Izquierda<br>Centro<br>Derecha<br>No se identifica
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+4081<br>4228<br>2863<br>8855
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+20.38<br>21.11<br>14.30<br>44.22
 </td>
 </tr>
 <tr>
@@ -4224,24 +4251,44 @@ edad
 37
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-sexo
+edad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Sexo del entrevistado
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 7 (0.03%)
 </td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 18-88</em>
+</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+38
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+sexo
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Sexo del entrevistado
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+7 (0.03%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 Hombre<br>Mujer
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 8141<br>12348
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 39.73<br>60.27
 </td>
 </tr>
@@ -4831,7 +4878,7 @@ org_religiosa_prom
 23
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-org_deportiva_prom
+org_caridad_prom
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
@@ -4851,26 +4898,19 @@ org_deportiva_prom
 24
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_seguridad
+org_deportiva_prom
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2583 (21.24%)
+918 (7.55%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
+<em>range: 1.0-3.0</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
-insatisfecho<br>Satisfecho<br>Totalmente satisfecho
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-549<br>2112<br>1555<br>4569<br>791
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-5.73<br>22.06<br>16.24<br>47.71<br>8.26
 </td>
 </tr>
 <tr>
@@ -4878,13 +4918,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 25
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_conectivdad
+satisfaccion_seguridad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Conectividad
+Grado de satisfaccion: Seguridad del barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4085 (33.60%)
+2583 (21.24%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4894,10 +4934,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-253<br>1048<br>781<br>4895<br>1097
+549<br>2112<br>1555<br>4569<br>791
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.13<br>12.98<br>9.67<br>60.63<br>13.59
+5.73<br>22.06<br>16.24<br>47.71<br>8.26
 </td>
 </tr>
 <tr>
@@ -4905,13 +4945,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 26
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_areasverdes
+satisfaccion_conectivdad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
+Grado de satisfaccion: Conectividad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4073 (33.50%)
+4085 (33.60%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4921,10 +4961,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-624<br>2215<br>820<br>3685<br>742
+253<br>1048<br>781<br>4895<br>1097
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7.72<br>27.39<br>10.14<br>45.57<br>9.18
+3.13<br>12.98<br>9.67<br>60.63<br>13.59
 </td>
 </tr>
 <tr>
@@ -4932,13 +4972,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 27
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_limpieza
+satisfaccion_areasverdes
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Limpieza y belleza del<br>barrio
+Grado de satisfaccion: Areas verdes y de<br>recreacion disponibles
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4069 (33.46%)
+4073 (33.50%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -4948,10 +4988,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-545<br>1999<br>1210<br>3717<br>619
+624<br>2215<br>820<br>3685<br>742
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-6.74<br>24.71<br>14.96<br>45.95<br>7.65
+7.72<br>27.39<br>10.14<br>45.57<br>9.18
 </td>
 </tr>
 <tr>
@@ -4959,13 +4999,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 28
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadtrabajo
+satisfaccion_limpieza
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
+Grado de satisfaccion: Limpieza y belleza del<br>barrio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2443 (20.09%)
+4069 (33.46%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -4975,10 +5015,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-437<br>1448<br>1187<br>5486<br>1158
+545<br>1999<br>1210<br>3717<br>619
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-4.50<br>14.90<br>12.22<br>56.46<br>11.92
+6.74<br>24.71<br>14.96<br>45.95<br>7.65
 </td>
 </tr>
 <tr>
@@ -4986,13 +5026,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 29
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadcolegios
+satisfaccion_proximidadtrabajo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
+Grado de satisfaccion: Proximidad al lugar de<br>actividad principal
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2414 (19.85%)
+2443 (20.09%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -5002,10 +5042,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-234<br>1211<br>975<br>6125<br>1200
+437<br>1448<br>1187<br>5486<br>1158
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2.40<br>12.43<br>10.01<br>62.85<br>12.31
+4.50<br>14.90<br>12.22<br>56.46<br>11.92
 </td>
 </tr>
 <tr>
@@ -5013,13 +5053,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 30
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-satisfaccion_proximidadcomercio
+satisfaccion_proximidadcolegios
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Grado de satisfaccion: Proximidad a areas de<br>comercio
+Grado de satisfaccion: Proximidad a colegios de<br>buena calidad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2343 (19.27%)
+2414 (19.85%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2<br>3<br>4<br>5
@@ -5029,10 +5069,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-229<br>1298<br>832<br>5988<br>1469
+234<br>1211<br>975<br>6125<br>1200
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-2.33<br>13.22<br>8.48<br>61.00<br>14.97
+2.40<br>12.43<br>10.01<br>62.85<br>12.31
 </td>
 </tr>
 <tr>
@@ -5040,13 +5080,13 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 31
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-satisfaccion_proximidadfamilia
+satisfaccion_proximidadcomercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
+Grado de satisfaccion: Proximidad a areas de<br>comercio
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-4083 (33.58%)
+2343 (19.27%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 1<br>2<br>3<br>4<br>5
@@ -5056,10 +5096,10 @@ Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
 insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-277<br>1257<br>809<br>4776<br>957
+229<br>1298<br>832<br>5988<br>1469
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-3.43<br>15.56<br>10.02<br>59.14<br>11.85
+2.33<br>13.22<br>8.48<br>61.00<br>14.97
 </td>
 </tr>
 <tr>
@@ -5067,24 +5107,26 @@ insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 32
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-educ
+satisfaccion_proximidadfamilia
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Educación
+Grado de satisfaccion: Proximidad con familiares<br>y/o amigos cercanos
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-7 (0.06%)
+4083 (33.58%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+1<br>2<br>3<br>4<br>5
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Media o menos<br>Técnica<br>Universitaria
+Totalmente insatisfecho<br>Insatisfecho<br>Ni satisfecho ni
+insatisfecho<br>Satisfecho<br>Totalmente satisfecho
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-8239<br>1855<br>2058
+277<br>1257<br>809<br>4776<br>957
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-67.80<br>15.26<br>16.94
+3.43<br>15.56<br>10.02<br>59.14<br>11.85
 </td>
 </tr>
 <tr>
@@ -5092,24 +5134,24 @@ Media o menos<br>Técnica<br>Universitaria
 33
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-quintil1
+educ
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Household income quintile per capita (NA)
+Educación
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-0 (0.00%)
+7 (0.06%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+Media o menos<br>Técnica<br>Universitaria
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2618<br>2338<br>2429<br>2275<br>2002<br>497
+8239<br>1855<br>2058
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-21.53<br>19.23<br>19.98<br>18.71<br>16.47<br>4.09
+67.80<br>15.26<br>16.94
 </td>
 </tr>
 <tr>
@@ -5117,20 +5159,24 @@ Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
 34
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-ess
+quintil1
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-Estatus social subjetivo
+Household income quintile per capita (NA)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-28 (0.23%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 0-10</em>
+0 (0.00%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Q1<br>Q2<br>Q3<br>Q4<br>Q5<br>QNA
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+2618<br>2338<br>2429<br>2275<br>2002<br>497
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+21.53<br>19.23<br>19.98<br>18.71<br>16.47<br>4.09
 </td>
 </tr>
 <tr>
@@ -5138,24 +5184,20 @@ Estatus social subjetivo
 35
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-pos_id
+ess
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Identificación política
+Estatus social subjetivo
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-217 (1.78%)
+28 (0.23%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 0-10</em>
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Izquierda<br>Centro<br>Derecha<br>No se identifica
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-2492<br>2485<br>1575<br>5390
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
-20.87<br>20.81<br>13.19<br>45.13
 </td>
 </tr>
 <tr>
@@ -5163,19 +5205,24 @@ Izquierda<br>Centro<br>Derecha<br>No se identifica
 36
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-edad
+pos_id
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Identificación política
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+217 (1.78%)
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
-0 (0.00%)
-</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2">
-<em>range: 18-81</em>
+Izquierda<br>Centro<br>Derecha<br>No se identifica
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+2492<br>2485<br>1575<br>5390
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+20.87<br>20.81<br>13.19<br>45.13
 </td>
 </tr>
 <tr>
@@ -5183,24 +5230,44 @@ edad
 37
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-sexo
+edad
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
-Sexo del entrevistado
 </td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
 0 (0.00%)
 </td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2">
+<em>range: 18-81</em>
+</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+38
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+sexo
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+Sexo del entrevistado
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
+0 (0.00%)
+</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 1<br>2
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 Hombre<br>Mujer
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 4326<br>7833
 </td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">
 35.58<br>64.42
 </td>
 </tr>

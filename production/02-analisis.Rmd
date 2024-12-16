@@ -60,7 +60,8 @@ pacman::p_load(dplyr,       # Manipulacion de datos
                ggalluvial,
                survey,
                shadowtext,
-               srvyr
+               srvyr,
+               interactions
                )
 load(file = here::here("input/data-proc/df_study1_long_t7.RData"))
 
@@ -118,6 +119,7 @@ df_study1 <- df_study1_long_t7 %>% dplyr::select(idencuesta,ola,region_cod,comun
          part_com,
          satisfaccion_seguridad,
          jjvv_prom,
+         org_caridad_prom,
          org_religiosa_prom,
          org_deportiva_prom
          )
@@ -187,6 +189,7 @@ df_study1 <- df_study1_long_t7 %>% dplyr::select(idencuesta, ola, ponderador_lon
          satisfaccion_seguridad,
          jjvv_prom,
          org_religiosa_prom,
+         org_caridad_prom,
          org_deportiva_prom,
                                                 educ, quintil1, ess, edad, sexo, pos_id) %>% na.omit()
 df_study1 <- df_study1[complete.cases(df_study1$segmento), ]
@@ -292,7 +295,7 @@ ggsave(satisfaccion_plot, file="output/graphs/satisfaccion_plot.png", height = 6
 ```
 
 
-## Regresión
+# Regresión
 
 
 ```{r marchar}
@@ -311,7 +314,7 @@ load(file = here::here("input/data-proc/df_study1_long_t7.RData"))
 # generate analytical sample
 df_study1 <- 
   df_study1_long_t7 %>%
-  select(idencuesta,ola,comuna, region_cod, ponderador_long_total, marchar, part_com, satisfaccion_seguridad, starts_with("barrio_"), jjvv_prom, org_religiosa_prom, org_deportiva_prom, educ, quintil1, ess, edad, sexo, pos_id) %>% 
+  select(idencuesta,ola,comuna, region_cod, ponderador_long_total, marchar, part_com, satisfaccion_seguridad, starts_with("barrio_"), jjvv_prom, org_religiosa_prom, org_caridad_prom, org_deportiva_prom, educ, quintil1, ess, edad, sexo, pos_id) %>% 
   na.omit() %>% 
   mutate(ola_num=as.numeric(ola),
          ola_2 = ola_num^2,
@@ -339,7 +342,7 @@ texreg::htmlreg(list(marchar.null, marchar1, marchar2, marchar3, marchar4),
 ```
 
 
-```{r marchar2}
+```{r marchar2-cor}
 sjmisc::frq(df_study1$region_cod)
 df_study1 <- df_study1 %>% mutate(rm= case_when(region_cod==13~"RM",
                                                 TRUE~"Otra región"))
@@ -347,13 +350,62 @@ sjmisc::frq(df_study1$rm)
 
 df_study1 %>% filter(ola==1) %>% select(barrio_ideal:barrio_colaboradora) %>% sjPlot::tab_fa(method = "ml", rotation = "promax", show.comm = TRUE, title = "Análisis factorial exploratorio")
 
+M <-df_study1 %>% filter(ola==1) %>% select(barrio_ideal:barrio_colaboradora) %>% cor(use = "complete.obs") # Usar solo casos con observaciones completas
+diag(M) = NA # Elimina la diagonal (correlaciones absolutas de cada variable consigmo misma)
+# Set Row names of the matrix
+rownames(M) <- c("A. Este es el barrio ideal para mi",
+                     "B. Me siento integrado/a en este barrio",
+                     "C. Me identifico con la gente de este barrio",
+                     "D. Este barrio es parte de mi",
+                     "E. En este barrio es fácil hacer amigos",
+                     "F. La gente en este barrio es sociable",
+                     "G. La gente en este barrio es cordial",
+                     "H. La gente en este barrio es colaboradora")
+#set Column names of the matrix
+colnames(M) <-c("(A)", "(B)","(C)","(D)","(E)","(F)","(G)", "(H)")
+```
+
+
+```{r marchar2-cor2}
+#Plot the matrix using corrplot
+corrplot::corrplot(M,
+  method = "color", # Cambia los círculos por color completo de cada cuadrante
+  addCoef.col = "#000390", # Color de los coeficientes
+  type = "upper", # Deja solo las correlaciones de arriba
+  tl.col = "black", # COlor letras, rojo por defecto
+  na.label = "-")
+```
+
+
+```{r marchar2-cor3}
 df_study1 <- df_study1 %>% 
   rowwise() %>%
   mutate(attachment = mean(c(barrio_ideal, barrio_integrado, barrio_identifico, barrio_partedemi, na.rm=TRUE)),
          sociabilidad = mean(c(barrio_amigos, barrio_sociable, barrio_cordial, barrio_colaboradora, na.rm=TRUE))) %>% 
   ungroup()
 
+M2 <-df_study1 %>% filter(ola==1) %>% select(attachment, sociabilidad) %>% cor(use = "complete.obs") # Usar solo casos con observaciones completas
+diag(M2) = NA # Elimina la diagonal (correlaciones absolutas de cada variable consigmo misma)
+# Set Row names of the matrix
+rownames(M2) <- c("A. Attachment",
+                     "B. Sociabilidad")
+#set Column names of the matrix
+colnames(M2) <-c("(A)", "(B)")
+```
 
+
+```{r marchar2-cor4}
+#Plot the matrix using corrplot
+corrplot::corrplot(M2,
+  method = "color", # Cambia los círculos por color completo de cada cuadrante
+  addCoef.col = "#000390", # Color de los coeficientes
+  type = "upper", # Deja solo las correlaciones de arriba
+  tl.col = "black", # COlor letras, rojo por defecto
+  na.label = "-")
+
+```
+
+```{r marchar2}
 h5 <- "ola+edad"
 h6 <- "ola+edad+rm"
 h7 <- "ola+edad+rm+satisfaccion_seguridad"
@@ -362,27 +414,29 @@ h9 <- "ola+edad+rm+sociabilidad"
 h10 <- "ola+edad+rm+part_com"
 h11 <- "ola+edad+rm+jjvv_prom"
 h12 <- "ola+edad+rm+org_religiosa_prom"
-h13 <- "ola+edad+rm+org_deportiva_prom"
-h14 <- "ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom"
-h15 <- "ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h16 <- "ola*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h16.2 <- "edad*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h17 <- "ola*satisfaccion_seguridad+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h17.2 <- "ola+satisfaccion_seguridad*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h18 <- "edad*satisfaccion_seguridad*ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h19 <- "ola+attachment*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h20 <- "edad*attachment*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h21 <- "ola+sociabilidad*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h22 <- "edad*sociabilidad*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-
-h23 <- "ola+part_com*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h24 <- "edad*part_com*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h25 <- "ola+jjvv_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h26 <- "edad*jjvv_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h27 <- "ola+org_religiosa_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h28 <- "edad*org_religiosa_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h29 <- "ola+org_deportiva_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
-h30 <- "edad*org_deportiva_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h13 <- "ola+edad+rm+org_caridad_prom"
+h14 <- "ola+edad+rm+org_deportiva_prom"
+h15 <- "ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom"
+h16 <- "ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h17 <- "ola*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h17.2 <- "edad*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h18 <- "ola*satisfaccion_seguridad+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h18.2 <- "ola+satisfaccion_seguridad*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h19 <- "edad*satisfaccion_seguridad*ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h20 <- "ola+attachment*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h21 <- "edad*attachment*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h22 <- "ola+sociabilidad*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h23 <- "edad*sociabilidad*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h24 <- "ola+part_com*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h25 <- "edad*part_com*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h26 <- "ola+jjvv_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h27 <- "edad*jjvv_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h28 <- "ola+org_religiosa_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h29 <- "edad*org_religiosa_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h30 <- "ola+org_caridad_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h31 <- "edad*org_caridad_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h32 <- "ola+org_deportiva_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h33 <- "edad*org_deportiva_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
 
 
 # A. Education distributive justice
@@ -399,9 +453,9 @@ marchar13 <- lmer(formula(paste0("marchar~",h13,"+(1|idencuesta)")),data = df_st
 marchar14 <- lmer(formula(paste0("marchar~",h14,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 marchar15 <- lmer(formula(paste0("marchar~",h15,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 marchar16 <- lmer(formula(paste0("marchar~",h16,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
-marchar16.2 <- lmer(formula(paste0("marchar~",h16.2,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
-marchar17 <- lmer(formula(paste0("marchar~",h17,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 marchar17.2 <- lmer(formula(paste0("marchar~",h17.2,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar17 <- lmer(formula(paste0("marchar~",h17,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar18.2 <- lmer(formula(paste0("marchar~",h18.2,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 marchar18 <- lmer(formula(paste0("marchar~",h18,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 marchar19 <- lmer(formula(paste0("marchar~",h19,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 marchar20 <- lmer(formula(paste0("marchar~",h20,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
@@ -424,11 +478,125 @@ marchar28 <- lmer(formula(paste0("marchar~",h28,"+(1|idencuesta)")),data = df_st
 
 marchar29 <- lmer(formula(paste0("marchar~",h29,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 marchar30 <- lmer(formula(paste0("marchar~",h30,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar31 <- lmer(formula(paste0("marchar~",h31,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar32 <- lmer(formula(paste0("marchar~",h32,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar33 <- lmer(formula(paste0("marchar~",h33,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 ```
 
-### Modelos de regresión
+## Modelos de regresión (con organizaciones de caridad)
 
 ```{r marchar2-reg, results='asis'}
+#omit <- "(pos_id)|(edad)|(cuestion_mig)|(nation_t1)|(quintil1QNA)|(Intercept)"
+texreg::htmlreg(list(marchar1, marchar5, marchar6, marchar7, marchar8, marchar9, marchar10, marchar11, marchar12, marchar13, marchar14, marchar15, marchar16),
+                custom.note = "*** p < 0.001; ** p < 0.01; * p < 0.05", 
+#                custom.coef.names = c("Intercepto",
+#                                      "ola 2017 <br> <i>(Ref. ola 2016)</i>",
+#                                      "ola 2018",
+#                                      "ola 2019",
+##                                      "ola 2022",
+#                                      "Merito: esfuerzo",
+#                                      "Merito: Inteligencia",
+##                                      "Goahead: Familia",
+#                                      "Goahead: educacion",
+#                                      "Goahead: ambicion",
+#                                      "Goahead: trabajo duro",
+#                                      "Ed. media <br> <i>(Ref. Ed. básica)</i>",
+#                                      "Ed. técnica",
+#                                      "Ed. universitaria",
+#                                      "Quintil 2 <br> <i>(Ref. Quintil 1)</i>",
+#                                      "Quintil 3",
+#                                      "Quintil 4",
+#                                      "Quintil 5",
+#                                      "Quintil NA",
+#                                      "Estatus social subjetivo",
+#                                      "Pos. política: Centro <br> <i>(Ref. izquierda)</i>",
+#                                      "Pos. política: Derecha",
+#                                      "Pos. política: No se identifica",
+#                                      "Edad 30-49 <br> <i>(Ref. 18-29)</i>",
+#                                      "Edad 50-64",
+#                                      "Edad 65 o más",
+#                                      "Mujer <br> <i>(Ref. Hombre)</i>",
+#                                      "Gini comunal",
+#                                      "Cambio gini 2022-2017",
+#                                      "Proporción educ universitaria",
+#                                      "Proporción matrícula privada",
+#                                      "Total matrícula privada",
+#                                      "Varianza Simce comuna",
+#                                      "Promedio Simce comuna"
+                                    
+                              )
+          #omit.coef = omit
+
+```
+
+## Modelos de regresión (sin organizaciones de caridad)
+
+```{r marchar3}
+h5 <- "ola+edad"
+h6 <- "ola+edad+rm"
+h7 <- "ola+edad+rm+satisfaccion_seguridad"
+h8 <- "ola+edad+rm+attachment"
+h9 <- "ola+edad+rm+sociabilidad"
+h10 <- "ola+edad+rm+part_com"
+h11 <- "ola+edad+rm+jjvv_prom"
+h12 <- "ola+edad+rm+org_religiosa_prom"
+h13 <- "ola+edad+rm+org_deportiva_prom"
+h14 <- "ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom"
+h15 <- "ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+```
+
+
+```{r marchar3-interacts}
+h16 <- "ola*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h17 <- "satisfaccion_seguridad*ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h18 <- "ola+satisfaccion_seguridad*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h19 <- "edad*satisfaccion_seguridad*ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h20 <- "ola+attachment*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h21 <- "edad*attachment*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h22 <- "ola+sociabilidad*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h23 <- "edad*sociabilidad*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h24 <- "ola+part_com*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h25 <- "edad*part_com*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h26 <- "ola+jjvv_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h27 <- "edad*jjvv_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h28 <- "ola+org_religiosa_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h29 <- "edad*org_religiosa_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h30 <- "ola+org_deportiva_prom*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+h31 <- "edad*org_deportiva_prom*ola+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_deportiva_prom+educ+quintil1+sexo+ess+pos_id"
+
+
+# A. Education distributive justice
+
+marchar5 <- lmer(formula(paste0("marchar~",h5,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar6 <- lmer(formula(paste0("marchar~",h6,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar7 <- lmer(formula(paste0("marchar~",h7,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar8 <- lmer(formula(paste0("marchar~",h8,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar9 <- lmer(formula(paste0("marchar~",h9,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar10 <- lmer(formula(paste0("marchar~",h10,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar11 <- lmer(formula(paste0("marchar~",h11,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar12 <- lmer(formula(paste0("marchar~",h12,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar13 <- lmer(formula(paste0("marchar~",h13,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar14 <- lmer(formula(paste0("marchar~",h14,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar15 <- lmer(formula(paste0("marchar~",h15,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar16 <- lmer(formula(paste0("marchar~",h16,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar17 <- lmer(formula(paste0("marchar~",h17,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar18 <- lmer(formula(paste0("marchar~",h18,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar19 <- lmer(formula(paste0("marchar~",h19,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar20 <- lmer(formula(paste0("marchar~",h20,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar21 <- lmer(formula(paste0("marchar~",h21,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar22 <- lmer(formula(paste0("marchar~",h22,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar23 <- lmer(formula(paste0("marchar~",h23,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar24 <- lmer(formula(paste0("marchar~",h24,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar25 <- lmer(formula(paste0("marchar~",h25,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar26 <- lmer(formula(paste0("marchar~",h26,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar27 <- lmer(formula(paste0("marchar~",h27,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar28 <- lmer(formula(paste0("marchar~",h28,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar29 <- lmer(formula(paste0("marchar~",h29,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar30 <- lmer(formula(paste0("marchar~",h30,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+marchar31 <- lmer(formula(paste0("marchar~",h31,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
+```
+
+```{r marchar3-reg, results='asis'}
 #omit <- "(pos_id)|(edad)|(cuestion_mig)|(nation_t1)|(quintil1QNA)|(Intercept)"
 texreg::htmlreg(list(marchar1, marchar5, marchar6, marchar7, marchar8, marchar9, marchar10, marchar11, marchar12, marchar13, marchar14, marchar15),
                 custom.note = "*** p < 0.001; ** p < 0.01; * p < 0.05", 
@@ -476,8 +644,9 @@ texreg::htmlreg(list(marchar1, marchar5, marchar6, marchar7, marchar8, marchar9,
 
 ```{r marchar-interac, results='asis'}
 #omit <- "(pos_id)|(edad)|(cuestion_mig)|(nation_t1)|(quintil1QNA)|(Intercept)"
-texreg::htmlreg(list(marchar16, marchar17, marchar17.2, marchar18, marchar19, marchar20,
-                     marchar21,marchar22,marchar23,marchar24,marchar25,marchar26,marchar27,marchar28, marchar29, marchar30),
+texreg::htmlreg(list(marchar16, marchar17, marchar18, marchar19, marchar20,
+                     marchar21,marchar22,marchar23,marchar24,marchar25,
+                     marchar26,marchar27,marchar28, marchar29, marchar30, marchar31),
                 custom.note = "*** p < 0.001; ** p < 0.01; * p < 0.05", 
 #                custom.coef.names = c("Intercepto",
 #                                      "ola 2017 <br> <i>(Ref. ola 2016)</i>",
@@ -522,95 +691,94 @@ texreg::htmlreg(list(marchar16, marchar17, marchar17.2, marchar18, marchar19, ma
 ola x edad
 
 ```{r}
-sjPlot::plot_model(marchar16, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar16, pred = edad, modx = ola, interval = TRUE)
 ```
 
-edad x ola
-
 ```{r}
-sjPlot::plot_model(marchar16.2, type = "int", mdrt.values = "meansd")
+interact_plot(marchar16, pred = edad, modx = ola, interval = TRUE)
 ```
 
-ola x satisfaccion_seguridad
+
+satisfaccion seguridad x edad
 
 ```{r}
-sjPlot::plot_model(marchar17, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar18, pred = satisfaccion_seguridad, modx = edad, jnplot = TRUE)
 ```
 
 ola x satisfaccion_seguridad x edad
 
 ```{r}
-sjPlot::plot_model(marchar18, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar19, pred = satisfaccion_seguridad, modx = edad, mod2 = ola, jnplot = TRUE)
 ```
 
 ola x attachment
 
 ```{r}
-sjPlot::plot_model(marchar19, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar20, pred = attachment, modx = edad, jnplot = TRUE)
 ```
 
 ola x attachment x edad
 
 ```{r}
-sjPlot::plot_model(marchar20, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar21, pred = attachment, modx = edad, mod2 = ola, jnplot = TRUE)
 ```
 
 ola x sociabilidad
 
 ```{r}
-sjPlot::plot_model(marchar21, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar22, pred = sociabilidad, modx = edad, jnplot = TRUE)
 ```
 
 ola x sociabilidad x edad
 
 ```{r}
-sjPlot::plot_model(marchar22, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar23, pred = sociabilidad, modx = edad, mod2 = ola, jnplot = TRUE)
 ```
 
 ola x part_com
 
 ```{r}
-sjPlot::plot_model(marchar23, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar24, pred = part_com, modx = edad, jnplot = TRUE)
 ```
 
 ola x part_com x edad
 
 ```{r}
-sjPlot::plot_model(marchar24, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar25, pred = part_com, modx = edad, mod2 = ola, jnplot = TRUE)
 ```
 
 ola x juntas de vecinos
 
 ```{r}
-sjPlot::plot_model(marchar25, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar26, pred = jjvv_prom, modx = edad, jnplot = TRUE)
 ```
 
 ola x juntas de vecinos x edad
 
 ```{r}
-sjPlot::plot_model(marchar26, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar27, pred = jjvv_prom, modx = edad, mod2 = ola, jnplot = TRUE)
 ```
 
 ola x org religiosas
 
 ```{r}
-sjPlot::plot_model(marchar27, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar28, pred = org_religiosa_prom, modx = edad, jnplot = TRUE)
 ```
 
 ola x org religiosas x edad
 
 ```{r}
-sjPlot::plot_model(marchar28, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar29, pred = org_religiosa_prom, modx = edad, mod2 = ola, jnplot = TRUE)
 ```
 
 ola x org deportivas
 
 ```{r}
-sjPlot::plot_model(marchar29, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar30, pred = org_deportiva_prom, modx = edad, jnplot = TRUE)
 ```
 
 ola x org deportivas x edad
 
 ```{r}
-sjPlot::plot_model(marchar30, type = "int", mdrt.values = "meansd")
+sim_slopes(marchar31, pred = org_deportiva_prom, modx = edad, mod2 = ola, jnplot = TRUE)
 ```
