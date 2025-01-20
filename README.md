@@ -9,3 +9,4 @@ Kevin Carrasco, Center for Social Conflict and Cohesion Studies - [github](https
 
 Análisis: [https://kevin-carrasco.github.io/participacion-cohesion-elsoc/production/02-analisis.html](https://kevin-carrasco.github.io/participacion-cohesion-elsoc/production/02-analisis.html)
 
+Reporte resultados: [https://kevin-carrasco.github.io/participacion-cohesion-elsoc/production/03-resultados.html](https://kevin-carrasco.github.io/participacion-cohesion-elsoc/production/03-resultados.html)

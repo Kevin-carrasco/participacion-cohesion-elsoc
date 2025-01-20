@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.57">
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -71,10 +37,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#participación-política-y-cohesión-barrial" id="toc-participación-política-y-cohesión-barrial" class="nav-link active" data-scroll-target="#participación-política-y-cohesión-barrial">Participación política y cohesión barrial</a>
+  <ul class="collapse">
+  <li><a href="#cambios-en-la-participación-en-manifestaciones-entre-2016-y-2023" id="toc-cambios-en-la-participación-en-manifestaciones-entre-2016-y-2023" class="nav-link" data-scroll-target="#cambios-en-la-participación-en-manifestaciones-entre-2016-y-2023">Cambios en la participación en manifestaciones entre 2016 y 2023</a></li>
+  <li><a href="#modelos-de-regresión-multinivel" id="toc-modelos-de-regresión-multinivel" class="nav-link" data-scroll-target="#modelos-de-regresión-multinivel">Modelos de regresión multinivel</a></li>
+  <li><a href="#tabla-de-interacciones" id="toc-tabla-de-interacciones" class="nav-link" data-scroll-target="#tabla-de-interacciones">Tabla de interacciones</a></li>
+  <li><a href="#gráficos-de-interacciones" id="toc-gráficos-de-interacciones" class="nav-link" data-scroll-target="#gráficos-de-interacciones">Gráficos de interacciones</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -96,211 +76,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="participación-política-y-cohesión-barrial" class="level1">
+<h1>Participación política y cohesión barrial</h1>
+<p><em>Reporte de resultados</em></p>
+<section id="cambios-en-la-participación-en-manifestaciones-entre-2016-y-2023" class="level2">
+<h2 class="anchored" data-anchor-id="cambios-en-la-participación-en-manifestaciones-entre-2016-y-2023">Cambios en la participación en manifestaciones entre 2016 y 2023</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr,       <span class="co"># Manipulacion de datos</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               knitr,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               kableExtra,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               summarytools,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>               ggplot2,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>               sjPlot,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>               tidyverse,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>               ggalluvial,</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>               survey,</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>               shadowtext,</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>               srvyr,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>               interactions,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>               lme4</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>               )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"input/data-proc/df_study1_long_t7.RData"</span>))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df_study1 <span class="ot">&lt;-</span> df_study1_long_t7 <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(idencuesta, ola, ponderador_long_total, segmento, estrato,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                                                marchar,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         barrio_ideal,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>         barrio_integrado,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         barrio_identifico,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         barrio_partedemi,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>         barrio_amigos,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>         barrio_sociable,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         barrio_cordial,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>         barrio_colaboradora,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>         satisfaccion_proximidadtrabajo,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>         satisfaccion_proximidadcolegios,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>         satisfaccion_proximidadcomercio,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>         satisfaccion_seguridad,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>         jjvv_prom,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>         org_religiosa_prom,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>         org_caridad_prom,</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>         org_deportiva_prom,</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                                                educ, quintil1, ess, edad, sexo, pos_id) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>df_study1 <span class="ot">&lt;-</span> df_study1[<span class="fu">complete.cases</span>(df_study1<span class="sc">$</span>segmento), ]</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>df_study1<span class="sc">$</span>marchar <span class="ot">&lt;-</span> <span class="fu">factor</span>(df_study1<span class="sc">$</span>marchar,</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Nunca"</span>, <span class="st">"Casi nunca"</span>, <span class="st">"A veces"</span>, <span class="st">"Frecuentemente"</span>, <span class="st">"Muy </span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="st">frecuentemente"</span>))</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>elsoc_diseno <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids =</span> <span class="sc">~</span>segmento, <span class="co">#muestreo por conglomerado a nivel de manzanas (segmento)</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>                          <span class="at">strata =</span> <span class="sc">~</span>estrato, <span class="co">#muestreo estratificado a nivel ciudad (estato)</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                          <span class="at">weights =</span> <span class="sc">~</span>ponderador_long_total, <span class="co">#ponderador longitudinal</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>                          <span class="at">nest =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> df_study1)</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#Paso 1</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>datos.marchar <span class="ot">&lt;-</span> <span class="fu">data.frame</span>((<span class="fu">svytable</span>(<span class="sc">~</span>marchar <span class="sc">+</span> ola <span class="sc">+</span> idencuesta, elsoc_diseno, <span class="at">round =</span> F))) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(Freq<span class="sc">&gt;</span><span class="dv">0</span>)  <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ola) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">porcentaje=</span>Freq<span class="sc">/</span><span class="fu">sum</span>(Freq)) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#Paso 2</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>etiquetas.marchar <span class="ot">&lt;-</span> <span class="fu">data.frame</span>((<span class="fu">svytable</span>(<span class="sc">~</span>marchar <span class="sc">+</span> ola, elsoc_diseno, <span class="at">round =</span> F))) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ola) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">porcentaje=</span>Freq<span class="sc">/</span><span class="fu">sum</span>(Freq)) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">idencuesta =</span> <span class="dv">1</span>)</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>datos.marchar<span class="sc">$</span>marchar <span class="ot">&lt;-</span> <span class="fu">factor</span>(datos.marchar<span class="sc">$</span>marchar, <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(datos.marchar<span class="sc">$</span>marchar)))</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>etiquetas.marchar<span class="sc">$</span>marchar <span class="ot">&lt;-</span> <span class="fu">factor</span>(etiquetas.marchar<span class="sc">$</span>marchar, <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">levels</span>(etiquetas.marchar<span class="sc">$</span>marchar)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>colors<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#f1eef6ff"</span>,<span class="st">"#bdc9e1ff"</span>,<span class="st">"#b3b3b3ff"</span>,<span class="st">"#74a9cfff"</span>,<span class="st">"#0570b0ff"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>alluvial_marchar <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(datos.marchar, <span class="fu">aes</span>(<span class="at">x =</span> ola, <span class="at">fill =</span> marchar, <span class="at">stratum =</span> marchar,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">alluvium =</span> idencuesta, <span class="at">y =</span> porcentaje))<span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    ggalluvial<span class="sc">::</span><span class="fu">geom_flow</span>(<span class="at">alpha =</span> .<span class="dv">66</span>) <span class="sc">+</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    ggalluvial<span class="sc">::</span><span class="fu">geom_stratum</span>(<span class="at">linetype =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span> </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="at">label =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="at">label =</span> <span class="cn">NULL</span>) <span class="sc">+</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="co">#legend.position = 'top',</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> colors) <span class="sc">+</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_shadowtext</span>(<span class="at">data =</span> etiquetas.marchar, </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(porcentaje <span class="sc">&gt;</span> <span class="dv">0</span> , scales<span class="sc">::</span><span class="fu">percent</span>(porcentaje, <span class="at">accuracy =</span> .<span class="dv">1</span>),<span class="st">""</span>)),</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> .<span class="dv">5</span>),</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">show.legend =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">4</span>,</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="fu">rep</span>(<span class="st">'white'</span>),</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">bg.colour=</span><span class="st">'grey30'</span>)<span class="sc">+</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="dv">2016</span>, <span class="dv">2017</span>, <span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2022</span>, <span class="dv">2023</span>))</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>alluvial_marchar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/alluvial-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-alluvial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-alluvial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-alluvial-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-alluvial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Cambios en la participación en manifestaciones entre 2016 y 2023
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#if (!require("pacman")) install.packages("pacman") # instalar pacman</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                            <span class="co"># cargar librerias</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr,       <span class="co"># Manipulacion de datos</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>               knitr,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>               kableExtra,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>               summarytools,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>               lme4,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>               texreg</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>               )</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"input/data-proc/df_study1_long_t7.RData"</span>))</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># generate analytical sample</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>df_study1 <span class="ot">&lt;-</span> </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  df_study1_long_t7 <span class="sc">%&gt;%</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(idencuesta,ola,comuna, region_cod, ponderador_long_total, marchar, part_com, satisfaccion_seguridad, <span class="fu">starts_with</span>(<span class="st">"barrio_"</span>), jjvv_prom, org_religiosa_prom, org_caridad_prom, org_deportiva_prom, educ, quintil1, ess, edad, sexo, pos_id) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ola_num=</span><span class="fu">as.numeric</span>(ola),</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">ola_2 =</span> ola_num<span class="sc">^</span><span class="dv">2</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">ola=</span><span class="fu">as.factor</span>(ola),</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">sexo=</span><span class="fu">as.factor</span>(sexo)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>         )</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>df_study1 <span class="ot">&lt;-</span> df_study1 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rm=</span> <span class="fu">case_when</span>(region_cod<span class="sc">==</span><span class="dv">13</span><span class="sc">~</span><span class="st">"RM"</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                                                <span class="cn">TRUE</span><span class="sc">~</span><span class="st">"Otra región"</span>))</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>df_study1 <span class="ot">&lt;-</span> df_study1 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">attachment =</span> <span class="fu">mean</span>(<span class="fu">c</span>(barrio_ideal, barrio_integrado, barrio_identifico, barrio_partedemi, <span class="at">na.rm=</span><span class="cn">TRUE</span>)),</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">sociabilidad =</span> <span class="fu">mean</span>(<span class="fu">c</span>(barrio_amigos, barrio_sociable, barrio_cordial, barrio_colaboradora, <span class="at">na.rm=</span><span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>h5 <span class="ot">&lt;-</span> <span class="st">"ola+edad"</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>h6 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm"</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>h7 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad"</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>h8 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+attachment"</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>h9 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+sociabilidad"</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>h10 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+part_com"</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>h11 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+jjvv_prom"</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>h12 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+org_religiosa_prom"</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>h13 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+org_caridad_prom"</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>h14 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+org_deportiva_prom"</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>h15 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom"</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>h16 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id"</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>h17 <span class="ot">&lt;-</span> <span class="st">"ola*edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id"</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>h18 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id+edad*satisfaccion_seguridad"</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>h19 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id+edad*attachment"</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>h20 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id+edad*sociabilidad"</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>h21 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id+edad*part_com"</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>h22 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id+edad*jjvv_prom"</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>h23 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id+edad*org_religiosa_prom"</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>h24 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id+edad*org_caridad_prom"</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>h25 <span class="ot">&lt;-</span> <span class="st">"ola+edad+rm+satisfaccion_seguridad+attachment+sociabilidad+part_com+jjvv_prom+org_religiosa_prom+org_caridad_prom+org_deportiva_prom+educ+quintil1+sexo+pos_id+edad*org_deportiva_prom"</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>marchar5 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h5,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>marchar6 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h6,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>marchar7 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h7,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>marchar8 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h8,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>marchar9 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h9,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>marchar10 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h10,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>marchar11 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h11,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>marchar12 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h12,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>marchar13 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h13,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>marchar14 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h14,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>marchar15 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h15,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>marchar16 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h16,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>marchar17 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h17,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>marchar18 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h18,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>marchar19 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h19,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>marchar20 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h20,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>marchar21 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h21,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>marchar22 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h22,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>marchar23 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h23,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>marchar24 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h24,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>marchar25 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h25,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#omit &lt;- "(pos_id)|(edad)|(cuestion_mig)|(nation_t1)|(quintil1QNA)|(Intercept)"</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>texreg<span class="sc">::</span><span class="fu">htmlreg</span>(<span class="fu">list</span>(marchar5, marchar6, marchar7, marchar8, marchar9, marchar10, marchar11, marchar12, marchar13, marchar14, marchar15, marchar16),</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">custom.note =</span> <span class="st">"*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05"</span>, </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                custom.coef.names = c("Intercepto",</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "ola 2017 &lt;br&gt; &lt;i&gt;(Ref. ola 2016)&lt;/i&gt;",</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "ola 2018",</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "ola 2019",</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">##                                      "ola 2022",</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Merito: esfuerzo",</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Merito: Inteligencia",</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">##                                      "Goahead: Familia",</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Goahead: educacion",</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Goahead: ambicion",</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Goahead: trabajo duro",</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Ed. media &lt;br&gt; &lt;i&gt;(Ref. Ed. básica)&lt;/i&gt;",</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Ed. técnica",</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Ed. universitaria",</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil 2 &lt;br&gt; &lt;i&gt;(Ref. Quintil 1)&lt;/i&gt;",</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil 3",</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil 4",</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil 5",</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil NA",</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Estatus social subjetivo",</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Pos. política: Centro &lt;br&gt; &lt;i&gt;(Ref. izquierda)&lt;/i&gt;",</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Pos. política: Derecha",</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Pos. política: No se identifica",</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Edad 30-49 &lt;br&gt; &lt;i&gt;(Ref. 18-29)&lt;/i&gt;",</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Edad 50-64",</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Edad 65 o más",</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Mujer &lt;br&gt; &lt;i&gt;(Ref. Hombre)&lt;/i&gt;",</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Gini comunal",</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Cambio gini 2022-2017",</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Proporción educ universitaria",</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Proporción matrícula privada",</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Total matrícula privada",</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Varianza Simce comuna",</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Promedio Simce comuna"</span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>                                    </span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                              )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>La <a href="#fig-alluvial" class="quarto-xref">Figura&nbsp;1</a> muestra que en todos los años la participación en manifestaciones es baja, ya que más del 60% de los encuestados señala nunca haber participado. Sin embargo, es notorio el aumento en la cantidad de gente que sí ha participado en el año 2019 en comparación con los años anteriores y, además, es notable cómo esta frecuencia vuelve a disminuir en los años posteriores.</p>
+</section>
+<section id="modelos-de-regresión-multinivel" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-de-regresión-multinivel">Modelos de regresión multinivel</h2>
+<div id="tbl-reg" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-reg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1: Modelos de regresión multinivel
+</figcaption>
+<div aria-describedby="tbl-reg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
@@ -2859,58 +2663,40 @@ Var: Residual
 </tr>
 </tfoot>
 </table>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>          <span class="co">#omit.coef = omit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>marchar17 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h17,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>marchar18 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h18,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>marchar19 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h19,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>marchar20 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h20,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>marchar21 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h21,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>marchar22 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h22,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>marchar23 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h23,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>marchar24 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h24,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>marchar25 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"marchar~"</span>,h25,<span class="st">"+(1|idencuesta)"</span>)),<span class="at">data =</span> df_study1, <span class="at">weights =</span> ponderador_long_total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#omit &lt;- "(pos_id)|(edad)|(cuestion_mig)|(nation_t1)|(quintil1QNA)|(Intercept)"</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>texreg<span class="sc">::</span><span class="fu">htmlreg</span>(<span class="fu">list</span>(marchar16, marchar17, marchar18, marchar19, marchar20,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                     marchar21,marchar22,marchar23,marchar24,marchar25),</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">custom.note =</span> <span class="st">"*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05"</span>, </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#                custom.coef.names = c("Intercepto",</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "ola 2017 &lt;br&gt; &lt;i&gt;(Ref. ola 2016)&lt;/i&gt;",</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "ola 2018",</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "ola 2019",</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">##                                      "ola 2022",</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Merito: esfuerzo",</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Merito: Inteligencia",</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">##                                      "Goahead: Familia",</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Goahead: educacion",</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Goahead: ambicion",</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Goahead: trabajo duro",</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Ed. media &lt;br&gt; &lt;i&gt;(Ref. Ed. básica)&lt;/i&gt;",</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Ed. técnica",</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Ed. universitaria",</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil 2 &lt;br&gt; &lt;i&gt;(Ref. Quintil 1)&lt;/i&gt;",</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil 3",</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil 4",</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil 5",</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Quintil NA",</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Estatus social subjetivo",</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Pos. política: Centro &lt;br&gt; &lt;i&gt;(Ref. izquierda)&lt;/i&gt;",</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Pos. política: Derecha",</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Pos. política: No se identifica",</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Edad 30-49 &lt;br&gt; &lt;i&gt;(Ref. 18-29)&lt;/i&gt;",</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Edad 50-64",</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Edad 65 o más",</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Mujer &lt;br&gt; &lt;i&gt;(Ref. Hombre)&lt;/i&gt;",</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Gini comunal",</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Cambio gini 2022-2017",</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Proporción educ universitaria",</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Proporción matrícula privada",</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Total matrícula privada",</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Varianza Simce comuna",</span></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      "Promedio Simce comuna"</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>                                    </span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>                              )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</figure>
+</div>
+<p>La <a href="#tbl-reg" class="quarto-xref">Tabla&nbsp;1</a> muestra 12 modelos de regresión multinivel utilizando la participación en manifestaciones como variable dependiente.</p>
+<ul>
+<li><p>El modelo 1 incluye los años de la encuesta como variable independiente, donde se puede observar que, en comparación con el año 2016, y exceptuando el año 2019 (ola 4), en promedio todos los encuestados participan con menor frecuencia. En el año 2019, el efecto es positivo, lo que indica que la participación en manifestaciones es, en promedio, mayor que en el 2016. Todos estos efectos son significativos y se mantienen estables al controlar por el resto de las variables.</p></li>
+<li><p>El modelo 1 incluye la edad como variable independiente. Esta variable tiene un efecto negativo, que indica que a mayor edad, en promedio la participación en manifestaciones es mayor. Efecto que es significativo y que se mantiene estable al controlar por el resto de las variables.</p></li>
+<li><p>El modelo 2 incluye pertenecer a la región metropolitana, usando como referencia ser de otra región. Sin embargo, el efecto no es significativo.</p></li>
+<li><p>El modelo 3 incluye la satisfacción con la seguridad en el barrio como variable independiente. Esta variable presenta un efecto negativo, que indica que los encuestados que están más satisfechos con la seguridad en su barrio participan en manifestaciones, en promedio, en menor medida.</p></li>
+<li><p>El modelo 4 agrega el <em>attachment</em> o apego al barrio, que tiene un efecto negativo pero no significativo. Sin embargo, al controlar por el resto de variables este efecto sí se vuelve significativo. Este efecto es negativo, lo que indica que la gente con mayor attachment participa menos en manifestaciones</p></li>
+<li><p>El modelo 5 agrega la sociabilidad (ej. en este barrio es fácil hacer amigos). Este efecto es positivo, lo que indica que la sociabilidad se asocia con una mayor participación en manifestaciones.</p></li>
+<li><p>El modelo 6 agrega la participación en actividades de interés público o comunitario, que tiene un efecto positivo, lo que indica que a mayor participación comunitaria, también mayor será la participación en manifestaciones.</p></li>
+<li><p>El modelo 7 agrega la participación en juntas de vecinos, que tiene un efecto positivo, lo que indica que a mayor participación en juntas de vecinos, también mayor será la participación en manifestaciones.</p></li>
+<li><p>El modelo 8 agrega la participación en organizaciones religiosas, que tiene un efecto negativo, lo que indica que a mayor participación en organizaciones religiosas, será menor la participación en manifestaciones.</p></li>
+<li><p>El modelo 9 agrega la participación en organizaciones de caridad, que tiene un efecto positivo, lo que indica que a mayor participación en organizaciones de caridad, también mayor será la participación en manifestaciones.</p></li>
+<li><p>El modelo 10 agrega la participación en organizaciones deportivas, que tiene un efecto positivo, lo que indica que a mayor participación en organizaciones deportivas, también mayor será la participación en manifestaciones.</p></li>
+<li><p>El modelo 11 agrega todas las variables anteriores a la vez. Todas las variables se mantienen estables en su sentido y, aunque varían un poco su significación, continúan siendo estadísticamente significativas.</p></li>
+<li><p>El modelo 12 agrega como control variables sociodemográficas como nivel educacional, quintiles de ingreso del hogar, sexo y posición política:</p>
+<ul>
+<li>Tener educación técnica o universitaria se asocia con mayor participación en manifestaciones en comparación con quienes tienen educación media o menos</li>
+<li>Pertenecer a los dos quintiles más altos se asocia con una mayor participación en manifestaciones</li>
+<li>Ser mujer no es significativo en comparación con hombres</li>
+<li>Comparado con ser de izquierda, ser de centro, derecho o no identificarse con ninguno se asocia con una menor participación en manifestaciones.</li>
+</ul></li>
+</ul>
+</section>
+<section id="tabla-de-interacciones" class="level2">
+<h2 class="anchored" data-anchor-id="tabla-de-interacciones">Tabla de interacciones</h2>
+<div id="tbl-interact" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-interact-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;2: Tabla de interacciones
+</figcaption>
+<div aria-describedby="tbl-interact-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
@@ -6007,106 +5793,158 @@ Var: Residual
 </tr>
 </tfoot>
 </table>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>          <span class="co">#omit.coef = omit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
+</div>
+<p>La <a href="#tbl-interact" class="quarto-xref">Tabla&nbsp;2</a> muestra las interacciones entre las variables de interes (tiempo y edad y edad con variables barriales). El modelo 1 de esta tabla es el mismo 12 de la tabla anterior.</p>
+<ul>
+<li><p>El modelo 2 incluye la interacción tiempo x edad. Este efecto es significativo y negativo para el año 2019. Específicamente, por cada unidad adicional de edad (un año más), el efecto de 2019 reduce aún más la participación en manifestaciones en comparación con el año de referencia. Como se puede ver en <a href="#fig-tiempo" class="quarto-xref">Figura&nbsp;2</a> esto hace referencia a que la gente joven participa más, mientras que la gente mayor participa aún menos.</p></li>
+<li><p>El modelo 3 incluye interacción edad * satisfacción de seguridad. Este efecto no es significativo, tal como se puede ver en <a href="#fig-seguridad" class="quarto-xref">Figura&nbsp;3</a></p></li>
+<li><p>El modelo 4 incluye interacción edad * attachmente. Este efecto es pequeño, pero significativo y positivo. Como se puede ver en <a href="#fig-attachment" class="quarto-xref">Figura&nbsp;4</a> cuando hay más attachment la gente mayor participa más y los jóvenes participan menos.</p></li>
+<li><p>El modelo 5 incluye interacción edad * sociabilidad. Este efecto no es significativo, tal como se puede ver en <a href="#fig-sociabilidad" class="quarto-xref">Figura&nbsp;5</a></p></li>
+<li><p>El modelo 6 incluye interacción edad * participación en reuniones de interés público o comunitarias. Este efecto es negativo, lo que da cuenta que el efecto positivo de participar en reuniones comunitarias tiene una pendiente menor para las personas mayores y una pendiente mayor para las personas jóvenes. Por ejemplo, los jóvenes que participan en reuniones comunitarias participan aún más en manifestaciones.</p></li>
+<li><p>Los modelos 7, 8, 9 y 10 incluyen la interacción de edad con participar en juntas de vecinos, organizaciones religiosas, de caridad o deportivas. Todos estos efectos no son significativos, como se puede ver en los gráficos <a href="#fig-jjvv" class="quarto-xref">Figura&nbsp;7</a>, <a href="#fig-religiosas" class="quarto-xref">Figura&nbsp;8</a>, <a href="#fig-caridad" class="quarto-xref">Figura&nbsp;9</a> y <a href="#fig-deportivas" class="quarto-xref">Figura&nbsp;10</a></p></li>
+</ul>
+</section>
+<section id="gráficos-de-interacciones" class="level2">
+<h2 class="anchored" data-anchor-id="gráficos-de-interacciones">Gráficos de interacciones</h2>
 <p>ola x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar17, <span class="at">pred =</span> edad, <span class="at">modx =</span> ola, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-tiempo" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tiempo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-tiempo-1.png" id="fig-tiempo" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-tiempo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>satisfaccion seguridad x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar18, <span class="at">pred =</span> satisfaccion_seguridad, <span class="at">modx =</span> edad, <span class="at">jnplot =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-seguridad" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-seguridad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-seguridad-1.png" id="fig-seguridad" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-seguridad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>attachment x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar19, <span class="at">pred =</span> attachment, <span class="at">modx =</span> edad, <span class="at">jnplot =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-attachment" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-attachment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-attachment-1.png" id="fig-attachment" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-attachment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>sociabilidad x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar20, <span class="at">pred =</span> sociabilidad, <span class="at">modx =</span> edad, <span class="at">jnplot =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-sociabilidad" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sociabilidad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-sociabilidad-1.png" id="fig-sociabilidad" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-sociabilidad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>part_com x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar21, <span class="at">pred =</span> part_com, <span class="at">modx =</span> edad, <span class="at">jnplot =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-partcom" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-partcom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-partcom-1.png" id="fig-partcom" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-partcom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>jjvv_prom x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar22, <span class="at">pred =</span> jjvv_prom, <span class="at">modx =</span> edad, <span class="at">jnplot =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-jjvv" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-jjvv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-jjvv-1.png" id="fig-jjvv" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-jjvv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>org_religiosa_prom x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar23, <span class="at">pred =</span> org_religiosa_prom, <span class="at">modx =</span> edad, <span class="at">jnplot =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-religiosas" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-religiosas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-religiosas-1.png" id="fig-religiosas" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-religiosas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;8
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>org_caridad_prom x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar24, <span class="at">pred =</span> org_caridad_prom, <span class="at">modx =</span> edad, <span class="at">jnplot =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-caridad" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-caridad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-caridad-1.png" id="fig-caridad" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-caridad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>org_deportiva_prom x edad</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interact_plot</span>(marchar25, <span class="at">pred =</span> org_deportiva_prom, <span class="at">modx =</span> edad, <span class="at">jnplot =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-resultados_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-deportivas" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-deportivas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-resultados_files/figure-html/fig-deportivas-1.png" id="fig-deportivas" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-deportivas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
+</section>
+</section>
 
 </main>
 <!-- /main column -->
@@ -6153,12 +5991,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",

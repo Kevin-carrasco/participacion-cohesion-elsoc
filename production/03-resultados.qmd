@@ -1,10 +1,25 @@
 ---
 title: "03-resultados"
-format: html
+format: 
+  html:
+    toc: true
 editor: source
+lang: es
 ---
 
-```{r}
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE
+)
+options(scipen=9999) # desactivar notacion cientifica
+remove(list = ls()) #limpieza del entorno de trabajo
+```
+
+# Participación política y cohesión barrial
+
+*Reporte de resultados*
+
+```{r }
 pacman::p_load(dplyr,       # Manipulacion de datos
                knitr,
                kableExtra,
@@ -65,6 +80,8 @@ datos.marchar$marchar <- factor(datos.marchar$marchar, levels = rev(levels(datos
 etiquetas.marchar$marchar <- factor(etiquetas.marchar$marchar, levels = rev(levels(etiquetas.marchar$marchar)))
 ```
 
+## Cambios en la participación en manifestaciones entre 2016 y 2023
+
 ```{r alluvial}
 colors<- c("#f1eef6ff","#bdc9e1ff","#b3b3b3ff","#74a9cfff","#0570b0ff")
 alluvial_marchar <- ggplot(datos.marchar, aes(x = ola, fill = marchar, stratum = marchar,
@@ -86,9 +103,20 @@ alluvial_marchar <- ggplot(datos.marchar, aes(x = ola, fill = marchar, stratum =
               color = rep('white'),
               bg.colour='grey30')+
   scale_x_discrete(labels = c(2016, 2017, 2018, 2019, 2022, 2023))
+```
+
+
+```{r alluvial-2}
+#| label: fig-alluvial
+#| fig-cap: "Cambios en la participación en manifestaciones entre 2016 y 2023"
+
 
 alluvial_marchar
 ```
+
+La @fig-alluvial muestra que en todos los años la participación en manifestaciones es baja, ya que más del 60% de los encuestados señala nunca haber participado. Sin embargo, es notorio el aumento en la cantidad de gente que sí ha participado en el año 2019 en comparación con los años anteriores y, además, es notable cómo esta frecuencia vuelve a disminuir en los años posteriores.
+
+## Modelos de regresión multinivel
 
 ```{r}
 rm(list=ls())
@@ -168,6 +196,10 @@ marchar25 <- lmer(formula(paste0("marchar~",h25,"+(1|idencuesta)")),data = df_st
 ```
 
 ```{r marchar2-reg, results='asis'}
+#| label: tbl-reg
+#| tbl-cap: "Modelos de regresión multinivel"
+
+
 #omit <- "(pos_id)|(edad)|(cuestion_mig)|(nation_t1)|(quintil1QNA)|(Intercept)"
 texreg::htmlreg(list(marchar5, marchar6, marchar7, marchar8, marchar9, marchar10, marchar11, marchar12, marchar13, marchar14, marchar15, marchar16),
                 custom.note = "*** p < 0.001; ** p < 0.01; * p < 0.05", 
@@ -211,6 +243,41 @@ texreg::htmlreg(list(marchar5, marchar6, marchar7, marchar8, marchar9, marchar10
 
 ```
 
+La @tbl-reg muestra 12 modelos de regresión multinivel utilizando la participación en manifestaciones como variable dependiente.
+
+- El modelo 1 incluye los años de la encuesta como variable independiente, donde se puede observar que, en comparación con el año 2016, y exceptuando el año 2019 (ola 4), en promedio todos los encuestados participan con menor frecuencia. En el año 2019, el efecto es positivo, lo que indica que la participación en manifestaciones es, en promedio, mayor que en el 2016. Todos estos efectos son significativos y se mantienen estables al controlar por el resto de las variables.
+
+- El modelo 1 incluye la edad como variable independiente. Esta variable tiene un efecto negativo, que indica que a mayor edad, en promedio la participación en manifestaciones es mayor. Efecto que es significativo y que se mantiene estable al controlar por el resto de las variables.
+
+- El modelo 2 incluye pertenecer a la región metropolitana, usando como referencia ser de otra región. Sin embargo, el efecto no es significativo.
+
+- El modelo 3 incluye la satisfacción con la seguridad en el barrio como variable independiente. Esta variable presenta un efecto negativo, que indica que los encuestados que están más satisfechos con la seguridad en su barrio participan en manifestaciones, en promedio, en menor medida.
+
+- El modelo 4 agrega el *attachment* o apego al barrio, que tiene un efecto negativo pero no significativo. Sin embargo, al controlar por el resto de variables este efecto sí se vuelve significativo. Este efecto es negativo, lo que indica que la gente con mayor attachment participa menos en manifestaciones
+
+- El modelo 5 agrega la sociabilidad (ej. en este barrio es fácil hacer amigos). Este efecto es positivo, lo que indica que la sociabilidad se asocia con una mayor participación en manifestaciones.
+
+- El modelo 6 agrega la participación en actividades de interés público o comunitario, que tiene un efecto positivo, lo que indica que a mayor participación comunitaria, también mayor será la participación en manifestaciones.
+
+- El modelo 7 agrega la participación en juntas de vecinos, que tiene un efecto positivo, lo que indica que a mayor participación en juntas de vecinos, también mayor será la participación en manifestaciones.
+
+- El modelo 8 agrega la participación en organizaciones religiosas, que tiene un efecto negativo, lo que indica que a mayor participación en organizaciones religiosas, será menor la participación en manifestaciones.
+
+- El modelo 9 agrega la participación en organizaciones de caridad, que tiene un efecto positivo, lo que indica que a mayor participación en organizaciones de caridad, también mayor será la participación en manifestaciones.
+
+- El modelo 10 agrega la participación en organizaciones deportivas, que tiene un efecto positivo, lo que indica que a mayor participación en organizaciones deportivas, también mayor será la participación en manifestaciones.
+
+- El modelo 11 agrega todas las variables anteriores a la vez. Todas las variables se mantienen estables en su sentido y, aunque varían un poco su significación, continúan siendo estadísticamente significativas.
+
+- El modelo 12 agrega como control variables sociodemográficas como nivel educacional, quintiles de ingreso del hogar, sexo y posición política:
+
+  * Tener educación técnica o universitaria se asocia con mayor participación en manifestaciones en comparación con quienes tienen educación media o menos
+  * Pertenecer a los dos quintiles más altos se asocia con una mayor participación en manifestaciones
+  * Ser mujer no es significativo en comparación con hombres
+  * Comparado con ser de izquierda, ser de centro, derecho o no identificarse con ninguno se asocia con una menor participación en manifestaciones.
+
+## Tabla de interacciones
+
 ```{r}
 marchar17 <- lmer(formula(paste0("marchar~",h17,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
 marchar18 <- lmer(formula(paste0("marchar~",h18,"+(1|idencuesta)")),data = df_study1, weights = ponderador_long_total)
@@ -224,6 +291,10 @@ marchar25 <- lmer(formula(paste0("marchar~",h25,"+(1|idencuesta)")),data = df_st
 ```
 
 ```{r marchar-interac, results='asis'}
+#| label: tbl-interact
+#| tbl-cap: "Tabla de interacciones"
+
+
 #omit <- "(pos_id)|(edad)|(cuestion_mig)|(nation_t1)|(quintil1QNA)|(Intercept)"
 texreg::htmlreg(list(marchar16, marchar17, marchar18, marchar19, marchar20,
                      marchar21,marchar22,marchar23,marchar24,marchar25),
@@ -268,56 +339,100 @@ texreg::htmlreg(list(marchar16, marchar17, marchar18, marchar19, marchar20,
 
 ```
 
+La @tbl-interact muestra las interacciones entre las variables de interes (tiempo y edad y edad con variables barriales). El modelo 1 de esta tabla es el mismo 12 de la tabla anterior.
+
+- El modelo 2 incluye la interacción tiempo x edad. Este efecto es significativo y negativo para el año 2019. Específicamente, por cada unidad adicional de edad (un año más), el efecto de 2019 reduce aún más la participación en manifestaciones en comparación con el año de referencia. Como se puede ver en @fig-tiempo esto hace referencia a que la gente joven participa más, mientras que la gente mayor participa aún menos.
+
+- El modelo 3 incluye interacción edad * satisfacción de seguridad. Este efecto no es significativo, tal como se puede ver en @fig-seguridad
+
+- El modelo 4 incluye interacción edad * attachmente. Este efecto es pequeño, pero significativo y positivo. Como se puede ver en @fig-attachment cuando hay más attachment la gente mayor participa más y los jóvenes participan menos.
+
+- El modelo 5 incluye interacción edad * sociabilidad. Este efecto no es significativo, tal como se puede ver en @fig-sociabilidad
+
+- El modelo 6 incluye interacción edad * participación en reuniones de interés público o comunitarias. Este efecto es negativo, lo que da cuenta que el efecto positivo de participar en reuniones comunitarias tiene una pendiente menor para las personas mayores y una pendiente mayor para las personas jóvenes. Por ejemplo, los jóvenes que participan en reuniones comunitarias participan aún más en manifestaciones.
+
+- Los modelos 7, 8, 9 y 10 incluyen la interacción de edad con participar en juntas de vecinos, organizaciones religiosas, de caridad o deportivas. Todos estos efectos no son significativos, como se puede ver en los gráficos @fig-jjvv, @fig-religiosas, @fig-caridad y @fig-deportivas
+
+
+## Gráficos de interacciones
+
 ola x edad
 
 ```{r}
+#| label: fig-tiempo
+
+
 interact_plot(marchar17, pred = edad, modx = ola, interval = TRUE)
 ```
 
 satisfaccion seguridad x edad
 
 ```{r}
+#| label: fig-seguridad
+
+
 interact_plot(marchar18, pred = satisfaccion_seguridad, modx = edad, jnplot = TRUE, interval = TRUE)
 ```
 
 attachment x edad
 
 ```{r}
+#| label: fig-attachment
+
+
 interact_plot(marchar19, pred = attachment, modx = edad, jnplot = TRUE, interval = TRUE)
 ```
 
 sociabilidad x edad
 
 ```{r}
+#| label: fig-sociabilidad
+
+
 interact_plot(marchar20, pred = sociabilidad, modx = edad, jnplot = TRUE, interval = TRUE)
 ```
 
 part_com x edad
 
 ```{r}
+#| label: fig-partcom
+
+
 interact_plot(marchar21, pred = part_com, modx = edad, jnplot = TRUE, interval = TRUE)
 ```
 
 jjvv_prom x edad
 
 ```{r}
+#| label: fig-jjvv
+
+
 interact_plot(marchar22, pred = jjvv_prom, modx = edad, jnplot = TRUE, interval = TRUE)
 ```
 
 org_religiosa_prom x edad
 
 ```{r}
+#| label: fig-religiosas
+
+
 interact_plot(marchar23, pred = org_religiosa_prom, modx = edad, jnplot = TRUE, interval = TRUE)
 ```
 
 org_caridad_prom x edad
 
 ```{r}
+#| label: fig-caridad
+
+
 interact_plot(marchar24, pred = org_caridad_prom, modx = edad, jnplot = TRUE, interval = TRUE)
 ```
 
 org_deportiva_prom x edad
 
 ```{r}
+#| label: fig-deportivas
+
+
 interact_plot(marchar25, pred = org_deportiva_prom, modx = edad, jnplot = TRUE, interval = TRUE)
 ```
