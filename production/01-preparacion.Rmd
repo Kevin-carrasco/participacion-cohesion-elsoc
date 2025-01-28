@@ -86,7 +86,12 @@ elsoc_long_2016_2023 %>%
          edad=m0_edad,
          educacion=m01,
          ola,
-         region_cod) %>% 
+         region_cod,
+         part_electoral1=c11, # presidenciales 2013 y 2017
+         part_electoral3=c43, # Plebiscito nueva const
+         part_electoral4=c50, # presidenciales primera vuelta
+         part_electoral5=c52 # presidenciales segunda vuelta
+         ) %>% 
   sjlabelled::drop_labels(., drop.na = FALSE)
   
 #
@@ -324,7 +329,12 @@ elsoc_long_2016_2023 %>%
          # frien_inm_bi,
          # frien_inm_t1t4,
          pos_id,
-         edad)
+         edad,
+         part_electoral1,
+         part_electoral3,
+         part_electoral4,
+         part_electoral5
+         )
 
 
 # Reshape long to wide
@@ -332,7 +342,7 @@ df_study1_wide <- df_study1 %>%
   tidyr::pivot_wider(id_cols = c("idencuesta","muestra"),
                      names_from = "ola",
                      # names_prefix = c("educ","educyear","ing_pc","quintil","quintil1"),
-                     values_from = names(select(df_study1,comuna,comunacod,region,region_cod,ponderador_long_total,segmento, estrato, sexo:edad)))
+                     values_from = names(select(df_study1,comuna,comunacod,region,region_cod,ponderador_long_total,segmento, estrato, sexo:part_electoral5)))
 ## Casos austentes/ola: barrio_ideal_5, barrio_integrado_5, barrio_identifico_5, barrio_partedemi_5, barrio_amigos_5, barrio_sociable_5, barrio_cordial_5, barrio_colaboradora_5, satisfaccion_seguridad_5, satisfaccion_seguridad_7, satisfaccion_conectividad_5, satisfaccion_conectividad_7, satisfaccion_areasverdes_5, satisfaccion_areasverdes_7, satisfaccion_limpieza_5, satisfaccion_limpieza_7, satisfaccion_proximidadtrabajo_5, satisfaccion_proximidadcolegios_5, satisfaccion_proximidadcomercio_5, satisfaccion_proximidadfamilia_5, satisfaccion_proximidadfamilia_7, part_com_6
 
 # fix data to w01 values
@@ -395,12 +405,29 @@ df_study1_wide$comunacod_7 <-df_study1_wide$comunacod_1
 
 df_study1_wide$part_com_6 <- df_study1_wide$part_com_7
 df_study1_wide$satisfaccion_seguridad_7 <- df_study1_wide$satisfaccion_seguridad_6
+df_study1_wide$satisfaccion_seguridad_5 <- df_study1_wide$satisfaccion_seguridad_6
+df_study1_wide$barrio_ideal_5  <- df_study1_wide$barrio_ideal_6
+df_study1_wide$barrio_integrado_5   <- df_study1_wide$barrio_ideal_6
+df_study1_wide$barrio_identifico_5   <- df_study1_wide$barrio_ideal_6
+df_study1_wide$barrio_partedemi_5   <- df_study1_wide$barrio_ideal_6
+df_study1_wide$barrio_amigos_5   <- df_study1_wide$barrio_ideal_6
+df_study1_wide$barrio_sociable_5   <- df_study1_wide$barrio_ideal_6
+df_study1_wide$barrio_cordial_5   <- df_study1_wide$barrio_ideal_6
+df_study1_wide$barrio_colaboradora_5   <- df_study1_wide$barrio_ideal_6
+
+df_study1_wide$part_electoral_1 <- df_study1_wide$part_electoral1_1
+df_study1_wide$part_electoral_2 <- df_study1_wide$part_electoral1_1
+df_study1_wide$part_electoral_3 <- df_study1_wide$part_electoral1_3
+df_study1_wide$part_electoral_4 <- df_study1_wide$part_electoral1_3
+df_study1_wide$part_electoral_5 <- df_study1_wide$part_electoral3_5
+df_study1_wide$part_electoral_6 <- df_study1_wide$part_electoral4_6
+df_study1_wide$part_electoral_7 <- df_study1_wide$part_electoral5_6
 
 sjmisc::frq(df_study1_wide$jjvv_prom_7)
 dim(df_study1_wide)
 
-# sjPlot::view_df(df_study1_wide,
-#                 show.frq = T,show.values = T,show.na = T,show.prc = T, show.type = T)
+ sjPlot::view_df(df_study1_wide,
+                 show.frq = T,show.values = T,show.na = T,show.prc = T, show.type = T)
 ```
 
 
@@ -412,7 +439,7 @@ df_study1_long <- data.table::melt.data.table(data.table::setDT(df_study1_wide),
               variable.name = c("ola"),
               measure = patterns("^comuna_","^comunacod_", "^region_cod_", 
                                  "^ponderador_long_total_", "^segmento_", "^estrato_",
-                                 "^part_com", "^marchar_", "^perc_seguridad_",
+                                 "^part_com", "^marchar_", "^perc_seguridad_", 
                                  "^barrio_ideal_", "^barrio_integrado_", "^barrio_identifico_", "^barrio_partedemi_",
                                  "^barrio_amigos_","^barrio_sociable_", "^barrio_cordial_", "^barrio_colaboradora_",
                                  "^jjvv_prom_", "^org_religiosa_prom_", "^org_caridad_prom_", "^org_deportiva_prom_", 
@@ -420,7 +447,8 @@ df_study1_long <- data.table::melt.data.table(data.table::setDT(df_study1_wide),
                                  "^satisfaccion_proximidadtrabajo_", "^satisfaccion_proximidadcolegios_", "^satisfaccion_proximidadcomercio_", "^satisfaccion_proximidadfamilia_",
                                  "^educ_", "^quintil1_","^ess_",
                                  "^pos_id_",
-                                 "^edad_","^sexo_"
+                                 "^edad_","^sexo_", "^part_electoral_",
+                                 "^part_electoral1_", "^part_electoral3_", "^part_electoral4_", "^part_electoral5_"
                                  ),
               value.name = c("comuna","comunacod", "region_cod", 
                              "ponderador_long_total","segmento","estrato",
@@ -432,7 +460,8 @@ df_study1_long <- data.table::melt.data.table(data.table::setDT(df_study1_wide),
                              "satisfaccion_proximidadtrabajo", "satisfaccion_proximidadcolegios", "satisfaccion_proximidadcomercio", "satisfaccion_proximidadfamilia",
                              "educ","quintil1","ess",
                              "pos_id",
-                             "edad","sexo"),
+                             "edad","sexo","part_electoral",
+                             "part_electoral1", "part_electoral3", "part_electoral4", "part_electoral5"),
               na.rm = F,value.factor = TRUE
               )
 
@@ -448,9 +477,9 @@ df_study2_long <- df_study1_long
 #   mutate(ola=factor(ola,levels = 1:6,labels = 1:6))
 # dim(df_study1_long) #check, now is OK
 
-df_study1_long <- 
-set_label(x = df_study1_long,
-          label = get_label(select(df_study1,names(df_study1_long))))
+# df_study1_long <- 
+# set_label(x = df_study1_long,
+#           label = get_label(select(df_study1,names(df_study1_long))))
   
 
 sjPlot::view_df(df_study1_long,
